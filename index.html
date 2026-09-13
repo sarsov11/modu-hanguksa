@@ -1,44 +1,49 @@
 <!doctype html>
-<html lang="ko" data-skin="">
+<html lang="ko" data-skin="white" data-look="hanji">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>모두의 한국사</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700;900&display=swap">
+<script>try{var L=localStorage.getItem("hs-look");if(L){document.documentElement.dataset.look=L;document.documentElement.dataset.skin=L==="night"?"":"white"}}catch(e){}</script>
 <link rel="stylesheet" href="css/base.css?v=4488879af9">
-<link rel="stylesheet" href="css/timeline.css?v=29e76ae56c">
+<link rel="stylesheet" href="css/timeline.css?v=9b14da3908">
 <style>
-  .hero{max-width:var(--wrap);margin:0 auto;padding:60px 18px 30px}
-  .hero h1{font:900 40px/1.2 var(--kr);letter-spacing:var(--tls);margin:0 0 12px}
+  .hero{max-width:var(--wrap);margin:0 auto;padding:72px 22px 40px}
+  .hero h1{font:900 48px/1.18 var(--title);letter-spacing:-.03em;margin:0 0 18px;word-break:keep-all}
   .hero h1 em{color:var(--red);font-style:normal}
-  .hero p{color:var(--ink-3);font:400 14px/1.85 var(--kr);max-width:760px;margin:0 0 22px}
+  .hero p{color:var(--ink-3);font:400 16px/1.9 var(--sans);max-width:720px;margin:0 0 26px;word-break:keep-all}
   .hero p b{color:var(--ink-2)}
   .keys{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 30px}
-  .keys span{border:1px solid var(--c);background:var(--c-soft);color:var(--ink);
-             border-radius:999px;padding:8px 14px;font:800 13px/1 var(--kr)}
-  .go{display:inline-flex;align-items:center;gap:10px;background:var(--red);color:#fff;
-      border-radius:999px;padding:14px 26px;font:800 15px/1 var(--kr);border:0;cursor:pointer}
+  .keys span{display:inline-flex;align-items:center;gap:8px;border:1px solid color-mix(in srgb,var(--c) 45%,transparent);background:var(--c-soft);color:var(--ink);
+             border-radius:999px;padding:9px 16px 9px 12px;font:600 14px/1 var(--sans)}
+  .keys span::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--c)}
+  .go{display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:var(--bg);
+      border-radius:999px;padding:16px 28px;font:700 16px/1 var(--sans);border:0;cursor:pointer}
   .go:hover{background:var(--red-2)}
   .stat{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;
         margin:34px 0 0;max-width:var(--wrap)}
   .stat div{border:1px solid var(--line);border-radius:var(--r2);background:var(--surface);
             padding:16px}
-  .stat b{display:block;font:800 26px/1 var(--mono);color:var(--ink)}
-  .stat small{display:block;margin-top:7px;color:var(--ink-4);font:600 11.5px/1.5 var(--kr)}
+  .stat b{display:block;font:700 30px/1 var(--num);color:var(--ink);font-variant-numeric:tabular-nums}
+  .stat small{display:block;margin-top:9px;color:var(--ink-3);font:500 12.5px/1.5 var(--sans)}
 </style>
 </head>
 <body>
 <header class="top"><div class="top-in">
-  <div class="brand">모두의 <em>한국사</em></div>
+  <div class="brand"><b>모두의 <em>한국사</em></b></div>
   <div class="spacer"></div>
-  <a class="chip" href="연표.html" style="--c:var(--red);--c-soft:var(--red-soft)" aria-pressed="true"><i></i>연표</a>
+  <a class="chip" href="연표.html" style="--c:var(--red);--c-soft:var(--red-soft)" aria-pressed="true"><i></i>연표 열기</a>
 </div></header>
 
 <section class="hero">
   <h1>한국사를 <em>한 장의 연대표</em>로</h1>
-  <p>정치·대외·경제·사회·문화를 따로 외우지 않는다. <b>다섯 빛깔로 갈라 한 연대표에 얹어</b>
-     같은 시대에 무엇이 함께 일어났는지를 눈으로 잡는다.
-     바탕은 <b>미래엔 2022개정 한국사1·한국사2</b> 실물이고,
-     분야는 <b>교과서가 그 사건을 어느 소단원에서 다루는지</b>로 정했다.</p>
+  <p>정치·대외·경제·사회·문화를 따로 외우지 마세요. <b>다섯 빛깔로 갈라 한 연표에 얹어</b>
+     같은 해에 무엇이 함께 일어났는지 눈으로 잡습니다.
+     사건은 <b>미래엔 2022개정 한국사1·한국사2 부록 연표와 역사부도 연표</b>를 지면과 한 줄씩 맞대어 옮겼습니다.</p>
   <div class="keys">
     <span style="--c:var(--f-정치);--c-soft:var(--f-정치-soft)">정치</span>
     <span style="--c:var(--f-대외);--c-soft:var(--f-대외-soft)">대외</span>
@@ -50,7 +55,7 @@
   <div class="stat" id="stat"></div>
 </section>
 
-<script src="js/timeline.js?v=b7377c7d97"></script>
+<script src="js/timeline.js?v=92d163132e"></script>
 <script>
   const ko = TL.사건.filter(e=>e.계열==="한국사");
   const 세 = TL.사건.length - ko.length;
