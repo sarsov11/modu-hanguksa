@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="ko" data-skin="">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>모두의 한국사 — 연표</title>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/timeline.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="index.html">모두의 <em>한국사</em></a>
+    <div class="chips" id="chips"></div>
+    <div class="spacer"></div>
+    <div class="seg" id="skinseg" role="group" aria-label="스킨">
+      <button data-s="" aria-pressed="true">밤</button>
+      <button data-s="note" aria-pressed="false">노트</button>
+    </div>
+  </div>
+  <nav class="eras" id="eras" aria-label="시대 바로가기"></nav>
+</header>
+
+<main class="wrap">
+  <p class="lead" id="lead"></p>
+  <div id="stage"></div>
+</main>
+
+<div class="sheet" id="sheet" data-open="0">
+  <div class="sheet-in">
+    <button class="x" id="sheetx" aria-label="닫기">×</button>
+    <h4 id="sh-title"></h4>
+    <div class="meta" id="sh-meta"></div>
+    <div class="photos" id="sh-photo"></div>
+    <p id="sh-src"></p>
+  </div>
+</div>
+
+<script src="js/timeline.js"></script>
+<script>
+(function(){
+  const TL = window.TL, 분야들 = ["정치","대외","경제","사회","문화"];
+  const $ = s => document.querySelector(s);
+  const 색 = f => f ? `var(--f-${f})` : "var(--f-없음)";
+  const 연색 = f => f ? `var(--f-${f}-soft)` : "var(--f-없음-soft)";
+  const 해 = y => y < 0 ? (-y > 9999 ? `${(-y/10000)}만 년 전` : `기원전 ${-y}`) : y;
+
+  const 켬 = new Set(분야들);
+  let 세계사 = false, 사진만 = false;
+
+  /* ── 머리띠: 분야 칩 ── */
+  const 세기 = {};
+  TL.사건.filter(e=>e.계열==="한국사").forEach(e=>{ 세기[e.분야||"미정"]=(세기[e.분야||"미정"]||0)+1; });
+  $("#chips").innerHTML = 분야들.map(f=>
+    `<button class="chip" data-f="${f}" aria-pressed="true" style="--c:${색(f)};--c-soft:${연색(f)}">
+       <i></i>${f}<span class="n">${세기[f]||0}</span></button>`).join("")
+    + `<button class="chip" data-w="1" aria-pressed="false" style="--c:var(--f-세계);--c-soft:rgba(90,97,106,.14)">
+         <i></i>세계사<span class="n">${TL.사건.filter(e=>e.계열!=="한국사").length}</span></button>`
+    + `<button class="chip" data-p="1" aria-pressed="false" style="--c:var(--mint);--c-soft:var(--mint-soft)">
+         <i></i>사진 있는 것만<span class="n">${TL.사건.filter(e=>(e.사진||[]).length).length}</span></button>`;
+
+  $("#chips").addEventListener("click", ev=>{
+    const b = ev.target.closest(".chip"); if(!b) return;
+    const on = b.getAttribute("aria-pressed")==="true";
+    b.setAttribute("aria-pressed", String(!on));
+    if(b.dataset.w) 세계사 = !on;
+    else if(b.dataset.p) 사진만 = !on;
+    else (on ? 켬.delete(b.dataset.f) : 켬.add(b.dataset.f));
+    그리기();
+  });
+  $("#skinseg").addEventListener("click", ev=>{
+    const b = ev.target.closest("button"); if(!b) return;
+    document.documentElement.dataset.skin = b.dataset.s;
+    [...$("#skinseg").children].forEach(x=>x.setAttribute("aria-pressed", String(x===b)));
+  });
+
+  /* ── 시대 바로가기 ── */
+  $("#eras").innerHTML = TL.시대표.map(t=>
+    `<button data-era="${t.이름}">${t.이름}</button>`).join("");
+  $("#eras").addEventListener("click", ev=>{
+    const b = ev.target.closest("button"); if(!b) return;
+    const el = document.getElementById("era-"+b.dataset.era);
+    if(el) window.scrollTo({top: el.getBoundingClientRect().top + scrollY - 128, behavior:"smooth"});
+  });
+
+  function 고른사건(){
+    return TL.사건.filter(e=>{
+      if(e.계열!=="한국사") return 세계사 && !사진만;
+      if(!켬.has(e.분야)) return false;
+      return 사진만 ? (e.사진||[]).length > 0 : true;
+    });
+  }
+  function 시대묶음(list){
+    const m = new Map(TL.시대표.map(t=>[t.이름,{...t, 사건:[]}]));
+    list.forEach(e=>{ const g=m.get(e.시대); if(g) g.사건.push(e); });
+    return [...m.values()].filter(g=>g.사건.length);
+  }
+
+  /* ═══ 세로 강물 ═══
+     ⚠ 시간 비례로 앉히지 않는다. 선사(70만 년)가 화면을 통째로 먹고 같은 해가 겹친다.
+       절대 좌표로 밀어내다 칸이 무너진 것을 2026-09-11 에 밟았다.
+     → **한 해 = 한 줄**. 해 사이 간격만 로그로 살짝 벌려 시간의 성김을 보인다. */
+  function 강물(list){
+    const 묶 = 시대묶음(list);
+    const head = `<div class="riv-head">
+        <div class="yh">연도</div>${분야들.map(f=>`<div style="--c:${색(f)}"><span>${f}</span></div>`).join("")}</div>`;
+    const 몸 = 묶.map(g=>{
+      const 해묶 = [];
+      g.사건.forEach(e=>{
+        const 끝 = 해묶[해묶.length-1];
+        if(끝 && 끝.연===e.연) 끝.사건.push(e); else 해묶.push({연:e.연, 사건:[e]});
+      });
+      const 줄 = 해묶.map((y,i)=>{
+        const 벌림 = i===0 ? 0 : Math.min(22, Math.round(Math.log10(Math.max(1, y.연-해묶[i-1].연))*8));
+        const 칸 = 분야들.map(f=>{
+          const 것 = y.사건.filter(e=>e.분야===f && e.계열==="한국사");
+          return `<div class="cell">${것.map(e=>`
+            <div class="ev${(e.사진||[]).length?" 사진있":""}" data-id="${e.id}" data-f="${f}"
+                 style="--c:${색(f)};--c-soft:${연색(f)}">
+              <b>${e.이름}</b>${e.끝연?`<time>~${e.끝연}</time>`:""}</div>`).join("")}</div>`;
+        }).join("");
+        const 세 = y.사건.filter(e=>e.계열!=="한국사");
+        const 세줄 = 세.length ? `<div class="worldline"><span>세계</span>${세.map(e=>
+            `<i data-id="${e.id}">${e.이름}</i>`).join("")}</div>` : "";
+        const 사진수 = y.사건.reduce((a,e)=>a+((e.사진||[]).length),0);
+        return `<div class="yrow" style="margin-top:${벌림}px">
+            <div class="yr" data-year="${y.연}"${사진수?` data-photos="${사진수}"`:""}>${해(y.연)}${y.사건[0].어림?"<sup>쯤</sup>":""}</div>${칸}</div>${세줄}`;
+      }).join("");
+      const 셈 = {}; g.사건.forEach(e=>{ if(e.분야) 셈[e.분야]=(셈[e.분야]||0)+1; });
+      const 합 = Object.values(셈).reduce((a,b)=>a+b,0)||1;
+      return `<section class="era" id="era-${g.이름}">
+        <h2 class="era-tag">${g.이름}<small>${g.사건.length}건</small>
+          <span class="minibar">${분야들.map(f=>`<i style="width:${(셈[f]||0)/합*100}%;background:${색(f)}"
+             title="${f} ${셈[f]||0}"></i>`).join("")}</span>
+        </h2>${줄}</section>`;
+    }).join("");
+    return `<div class="riv" style="--lanes:${분야들.length}">${head}${몸}</div>`;
+  }
+
+  /* ═══ 사진 미리보기 ═══
+     연도 칸이나 사건에 마우스를 대면 그 자리에 사진이 뜬다.
+     ⚠ 손가락에는 hover 가 없다 — 폰에서는 누르면 아래 상세에 사진이 함께 나온다. */
+  const 미리 = document.createElement("div");
+  미리.className = "peek"; 미리.hidden = true;
+  document.body.appendChild(미리);
+  let 타이머 = null, 지금 = null;
+
+  /* ★ 사진은 두 층이다.
+     ① 이 사건 — 캡션이 사건 이름을 담았거나 같은 지면에서 낱말이 겹친 사진(직결)
+     ② 같은 교과서 지면 — 그 사건을 다루는 소단원 지면에 실린 사진 전부(없으면 같은 시대)
+     직결만 쓰던 때는 1,269장 가운데 129장만 보였다(2026-09-13 대표님 지적). */
+  const 표 = TL.사진표 || {};
+  function 지면자료(e){
+    const 번호 = (e.소단원 && TL.소단원자료 && TL.소단원자료[e.소단원])
+              || (TL.시대자료 && TL.시대자료[e.시대]) || [];
+    const 직결 = new Set((e.사진||[]).map(p=>p.f));
+    return 번호.map(n=>표[n]).filter(p=>p && !직결.has(p.f));
+  }
+  /* ③ 기출에 나온 자료 — 그 문항 해설이 그림이 무엇인지 말한다(엔진/48).
+     사건 직결 → 같은 소단원 → 같은 시대 차례로 찾는다. 시대로 넘어가면 너무 많아 앞 24장만. */
+  const 기표 = TL.기출표 || {};
+  function 기출자료(e){
+    const 직 = (TL.사건기출||{})[e.id];
+    if(직 && 직.length) return {것: 직.map(n=>기표[n]).filter(Boolean), 이름: "이 사건을 물은 기출"};
+    const 소 = e.소단원 && (TL.소단원기출||{})[e.소단원];
+    if(소 && 소.length) return {것: 소.map(n=>기표[n]).filter(Boolean), 이름: "같은 단원 기출"};
+    const 시 = (TL.시대기출||{})[e.시대] || [];
+    return {것: 시.slice(0, 24).map(n=>기표[n]).filter(Boolean), 이름: `${e.시대} 기출`};
+  }
+
+  function 사진들(el){
+    if(el.dataset.id){
+      const e = TL.사건.find(x=>x.id===el.dataset.id);
+      if(!e || e.계열!=="한국사") return null;
+      const 직 = e.사진 || [], 지 = 지면자료(e), 기 = 기출자료(e);
+      if(!직.length && !지.length && !기.것.length) return null;
+      return {제목: e.이름, 밑: `${해(e.연)} · ${e.분야||""}`, 직, 지, 기,
+              지이름: e.소단원 ? `교과서 「${e.소단원}」 지면` : `${e.시대} 자료`};
+    }
+    if(el.dataset.year){
+      const y = Number(el.dataset.year);
+      const 해사건 = 고른사건().filter(e=>e.연===y && e.계열==="한국사");
+      const 직 = 해사건.flatMap(e=>(e.사진||[]).map(p=>({...p, 이름:e.이름})));
+      const 본 = new Set(직.map(p=>p.f)), 지 = [], 기것 = [], 기본 = new Set();
+      해사건.forEach(e=>{
+        지면자료(e).forEach(p=>{ if(!본.has(p.f)){ 본.add(p.f); 지.push(p); } });
+        기출자료(e).것.forEach(p=>{ if(!기본.has(p.f)){ 기본.add(p.f); 기것.push(p); } });
+      });
+      if(!직.length && !지.length && !기것.length) return null;
+      return {제목: 해(y), 밑: `${해사건.length}사건`, 직, 지, 기: {것: 기것, 이름: "기출에 나온 자료"},
+              지이름: "같은 교과서 지면"};
+    }
+    return null;
+  }
+
+  const 기출그림 = (p, 작게) => `<figure${작게?' class="sm"':''}><img src="assets/gichul/${p.f}"
+      alt="${(p.c||"").replace(/"/g,"")}" loading="lazy" onerror="this.closest('figure').hidden=true">
+      ${작게 ? "" : `<figcaption>${p.c || ""}<em>${p.p||""}</em></figcaption>`}</figure>`;
+
+  const 그림 = (p, 작게) => `<figure${작게?' class="sm"':''}><img src="assets/photo/${p.f}"
+      alt="${(p.c||"").replace(/"/g,"")}" loading="lazy" onerror="this.closest('figure').hidden=true">
+      ${작게 ? "" : `<figcaption>${p.c || p.이름 || ""}<em>${p.p||""}</em></figcaption>`}</figure>`;
+
+  function 보이기(el){
+    const 자 = 사진들(el);
+    if(!자){ 숨기기(); return; }
+    const 직보 = 자.직.slice(0, 1), 지보 = 자.지.slice(0, 6), 기보 = 자.기.것.slice(0, 6);
+    미리.innerHTML = `<div class="peek-head"><b>${자.제목}</b><span>${자.밑}</span></div>`
+      + (직보.length ? `<div class="peek-label">이 사건</div><div class="peek-body">${직보.map(p=>그림(p)).join("")}</div>` : "")
+      + (지보.length ? `<div class="peek-label">${자.지이름} <small>${자.지.length}장</small></div>
+                        <div class="peek-grid">${지보.map(p=>그림(p, true)).join("")}</div>` : "")
+      + (기보.length ? `<div class="peek-label gi">${자.기.이름} <small>${자.기.것.length}장</small></div>
+                        <div class="peek-grid">${기보.map(p=>기출그림(p, true)).join("")}</div>` : "")
+      + `<div class="peek-more">눌러서 ${자.직.length + 자.지.length + 자.기.것.length}장 모두 보기</div>`;
+    미리.hidden = false;
+    const r = el.getBoundingClientRect();
+    const w = 미리.offsetWidth, h = 미리.offsetHeight;
+    let x = r.right + 12, y = r.top;
+    if(x + w > innerWidth - 12) x = Math.max(12, r.left - w - 12);
+    if(y + h > innerHeight - 12) y = Math.max(12, innerHeight - h - 12);
+    미리.style.left = x + "px";
+    미리.style.top = y + "px";
+    지금 = el;
+  }
+  function 숨기기(){ 미리.hidden = true; 지금 = null; }
+
+  // ⚠ 손가락으로 눌러도 브라우저가 mouseover 를 흉내 낸다 —
+  //   폰에서 상세를 열면 그 위로 미리보기가 겹쳐 떴다(2026-09-12 실측).
+  //   진짜 마우스가 있는 기기에서만 미리보기를 단다.
+  const 마우스있음 = matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+  document.addEventListener("mouseover", ev=>{
+    if(!마우스있음) return;
+    const el = ev.target.closest(".ev, .yr");
+    if(!el || el===지금) return;
+    clearTimeout(타이머);
+    타이머 = setTimeout(()=>보이기(el), 110);
+  });
+  document.addEventListener("mouseout", ev=>{
+    const el = ev.target.closest(".ev, .yr");
+    if(!el) return;
+    clearTimeout(타이머);
+    타이머 = setTimeout(()=>{ if(!미리.matches(":hover")) 숨기기(); }, 140);
+  });
+  addEventListener("scroll", ()=>{ if(!미리.hidden) 숨기기(); }, {passive:true});
+
+  /* ── 자세히 ── */
+  document.addEventListener("click", ev=>{
+    const t = ev.target.closest("[data-id]"); if(!t) return;
+    const e = TL.사건.find(x=>x.id===t.dataset.id); if(!e) return;
+    $("#sh-title").textContent = e.이름;
+    $("#sh-meta").innerHTML = [
+      `<span style="color:${색(e.분야)};border-color:${색(e.분야)}">${e.분야 || (e.계열==="세계사"?"세계사":"분야 미정")}</span>`,
+      `<span>${e.시대}</span>`,
+      `<span>${해(e.연)}${e.끝연?` ~ ${e.끝연}`:""}</span>`,
+      e.소단원 ? `<span>교과서 · ${e.소단원}</span>` : "",
+    ].join("");
+    $("#sh-src").innerHTML = [
+      e.근거 ? `분야를 이렇게 정했다 — <b>${e.근거}</b>` : "",
+      e.교과서 ? `<br>교과서에서 배우는 자리 — ${e.교과서}` : "",
+      e.출처 ? `<br>사건 출처 — ${e.출처}` : "",
+    ].join("");
+    const 지 = e.계열==="한국사" ? 지면자료(e) : [];
+    const 기 = e.계열==="한국사" ? 기출자료(e) : {것: []};
+    $("#sh-photo").innerHTML =
+        ((e.사진||[]).length ? `<div class="ph-label">이 사건</div>` + e.사진.map(p=>그림(p)).join("") : "")
+      + (지.length ? `<div class="ph-label">${e.소단원 ? `교과서 「${e.소단원}」 지면` : `${e.시대} 자료`} · ${지.length}장</div>`
+                     + 지.map(p=>그림(p)).join("") : "")
+      + (기.것.length ? `<div class="ph-label gi">${기.이름} · ${기.것.length}장</div>`
+                     + 기.것.map(p=>기출그림(p)).join("") : "");
+    $("#sheet").dataset.open = "1";
+    숨기기();                       // 상세가 열리면 미리보기는 접는다(겹쳐 보였다)
+  });
+  $("#sheetx").addEventListener("click", ()=>{ $("#sheet").dataset.open="0"; });
+  document.addEventListener("keydown", e=>{ if(e.key==="Escape") $("#sheet").dataset.open="0"; });
+
+  function 그리기(){
+    const list = 고른사건();
+    const ko = TL.사건.filter(e=>e.계열==="한국사").length;
+    $("#lead").innerHTML =
+      `미래엔 2022개정 <b>한국사1·2</b> 부록 연표와 <b>역사부도</b> 연표에서 뽑은 한국사 <b>${ko}건</b>을 `
+      + `<b>정치·대외·경제·사회·문화</b> 다섯 빛깔로 갈라 한 연대표에 얹었다. `
+      + `분야는 사건 이름의 표지와 <b>교과서가 그 사건을 어느 소단원에서 다루는지</b>로 정했다 — `
+      + `사건을 누르면 근거가 나온다. 지금 보이는 것 <b>${list.filter(e=>e.계열==="한국사").length}건</b>.`;
+    $("#stage").innerHTML = list.length ? 강물(list)
+      : `<div class="empty">고른 분야에 사건이 없다.</div>`;
+  }
+  그리기();
+})();
+</script>
+</body>
+</html>
