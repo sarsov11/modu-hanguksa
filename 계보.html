@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ko" data-skin="white" data-look="paper">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>모두의 한국사 — 왕조 계보</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<script>try{var L=localStorage.getItem("hs-look");if(L)document.documentElement.dataset.look=L}catch(e){}</script>
+<link rel="stylesheet" href="css/base.css?v=4488879af9">
+<link rel="stylesheet" href="css/timeline.css?v=375c6336db">
+<link rel="stylesheet" href="css/gyebo.css?v=a2718e3a7b">
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="index.html"><b>모두의 <em>한국사</em></b><small>왕조 계보</small></a>
+    <nav class="nav">
+      <a href="연표.html">연표</a>
+      <a href="계보.html" aria-current="page">왕조 계보</a>
+      <a href="근현대.html">근현대 지도</a>
+    </nav>
+    <div class="spacer"></div>
+    <div class="look"><span>디자인</span>
+      <div class="seg" id="lookseg" role="group" aria-label="디자인 고르기">
+        <button data-l="paper">종이</button>
+        <button data-l="night">밤</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="intro">
+    <div><h1>왕조 <em>계보</em>와 그때 일어난 일</h1>
+      <p class="lead">역사부도 부록 「우리나라 주요 왕조 계보」(144~146쪽)의 역대 왕을 그대로 옮기고,
+        각 왕의 <b>재위 기간</b>에 일어난 연표 사건과 <b>모의고사에서 그 왕을 물은 횟수</b>를 붙였습니다.
+        막대는 재위 길이를 눈으로 견주라고 그린 것입니다.</p></div>
+    <div class="legend">
+      <span><b>굵고 형광</b>&nbsp;= 기출에 자주 나온 왕</span>
+      <span><span class="qq">기출 7</span>&nbsp;= 출제 횟수(대면 회차)</span>
+    </div>
+  </div>
+
+  <div class="tabs" id="tabs"></div>
+  <div class="gwrap">
+    <div class="gcard" id="board"></div>
+    <aside class="side" id="side"></aside>
+  </div>
+</main>
+
+<script src="js/gyebo.js?v=c0932bc868"></script>
+<script>
+(function(){
+  const GB = window.GB, $ = s => document.querySelector(s);
+  const 해 = y => y == null ? "?" : (y < 0 ? `기원전 ${-y}` : y);
+  const 색 = f => f ? `var(--f-${f})` : "var(--f-없음)";
+  const 에스 = s => (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+  const 왕조색 = {고구려:"var(--f-사회)", 백제:"var(--f-경제)", 신라:"var(--f-대외)",
+                  발해:"var(--f-문화)", 고려:"var(--f-대외)", 조선:"var(--f-정치)"};
+  let 지금 = "조선";
+
+  function 옷(l){
+    document.documentElement.dataset.look = l;
+    document.documentElement.dataset.skin = l==="night" ? "" : "white";
+    [...$("#lookseg").children].forEach(x=>x.setAttribute("aria-pressed", String(x.dataset.l===l)));
+    try{ localStorage.setItem("hs-look", l); }catch(e){}
+    머리높이();
+  }
+  $("#lookseg").addEventListener("click", ev=>{ const b=ev.target.closest("button"); if(b) 옷(b.dataset.l); });
+  function 머리높이(){
+    document.documentElement.style.setProperty("--hh",
+      Math.round(document.querySelector(".top").getBoundingClientRect().height) + "px");
+  }
+  addEventListener("resize", 머리높이);
+  if(document.fonts) document.fonts.ready.then(머리높이);
+
+  $("#tabs").innerHTML = GB.왕조.map(g=>
+    `<button data-g="${g.왕조}" aria-pressed="${g.왕조===지금}">${g.왕조}<small>${g.왕.length}대</small></button>`).join("");
+  $("#tabs").addEventListener("click", ev=>{
+    const b = ev.target.closest("button"); if(!b) return;
+    지금 = b.dataset.g;
+    [...$("#tabs").children].forEach(x=>x.setAttribute("aria-pressed", String(x.dataset.g===지금)));
+    그리기();
+  });
+
+  /* ── 기출 회차 쪽지 ── */
+  const 쪽지 = document.createElement("div");
+  쪽지.className = "qtip"; 쪽지.hidden = true; document.body.appendChild(쪽지);
+  document.addEventListener("mouseover", ev=>{
+    const el = ev.target.closest(".qn[data-k]");
+    if(!el){ if(!ev.target.closest(".qtip")) 쪽지.hidden = true; return; }
+    const g = GB.왕조.find(x=>x.왕조===지금);
+    const w = g.왕.find(x=>String(x.대)===el.dataset.k);
+    if(!w || !w.ㄱ) return;
+    쪽지.innerHTML = `<h5>${지금} ${w.이름}<em>${w.ㄱ.근}회 / 전체 ${w.ㄱ.n}회</em></h5>`
+      + `<ul>${w.ㄱ.회.map(x=>`<li><b>${x.y} 고${x.g}${x.j?" "+x.j:""} ${x.b}번</b><span>${에스(x.t)}</span></li>`).join("")}</ul>`
+      + `<div class="more">2015~2026 학력평가·모의평가·수능 133회분, 문항 해설의 출제의도 기준</div>`;
+    쪽지.hidden = false;
+    const r = el.getBoundingClientRect(), wd = 쪽지.offsetWidth, h = 쪽지.offsetHeight;
+    쪽지.style.left = Math.min(Math.max(8, r.left - wd + 40), innerWidth - wd - 8) + "px";
+    쪽지.style.top = (r.bottom + 8 + h > innerHeight ? Math.max(8, r.top - h - 8) : r.bottom + 8) + "px";
+  });
+  addEventListener("scroll", ()=>{ 쪽지.hidden = true; }, {passive:true});
+
+  function 그리기(){
+    const g = GB.왕조.find(x=>x.왕조===지금);
+    const 왕 = g.왕.filter(w=>w.부터 != null);
+    const a0 = Math.min(...왕.map(w=>w.부터)), a1 = Math.max(...왕.map(w=>w.까지 ?? w.부터));
+    const 폭 = y => ((y - a0) / (a1 - a0)) * 100;
+    const c = 왕조색[지금] || "var(--ink-3)";
+
+    $("#board").innerHTML =
+      `<div class="ghead"><div>대 · 왕</div><div>재위 ${해(a0)} – ${해(a1)}</div><div>재위 중 일어난 일</div><div style="text-align:right">기출</div></div>`
+      + g.왕.map(w=>{
+      const 길 = (w.까지 ?? w.부터) - w.부터;
+      const 뜨 = w.ㄱ && w.ㄱ.근 >= 5;
+      const 막 = w.부터 == null ? "" :
+        `<i style="left:${폭(w.부터)}%;width:${Math.max(1.6, 폭(w.까지 ?? w.부터) - 폭(w.부터))}%"></i>`
+        + (w.다시 ? `<i class="re" style="left:${폭(w.다시[0])}%;width:${Math.max(1.6, 폭(w.다시[1]) - 폭(w.다시[0]))}%"></i>` : "");
+      const 사건 = w.사건.slice(0, 7).map(e=>
+        `<a class="${e.ㄱ>=4?"hot":""}" style="--c:${색(e.분야)}" href="연표.html?ev=${e.id}" data-ev="${e.id}"
+            title="${에스(e.이름)} (${해(e.연)})">${에스(e.이름.length>18?e.이름.slice(0,17)+"…":e.이름)}</a>`).join("")
+        + (w.사건.length > 7 ? `<span class="none">+${w.사건.length-7}</span>` : "");
+      return `<div class="grow">
+        <div class="kname${뜨?" hot":""}"><span class="no">${w.대}</span><b>${w.이름}</b>
+          <em>${해(w.부터)}~${해(w.까지)}${w.다시?` · ${w.다시[0]}~${w.다시[1]}`:""}</em></div>
+        <div class="bar" style="--c:${c}">${막}<span>${길>0?길+"년":""}</span></div>
+        <div class="evs">${사건 || `<span class="none">연표에 실린 사건 없음</span>`}</div>
+        <div class="gq">${w.ㄱ ? `<span class="qn" data-k="${w.대}">${w.ㄱ.근||w.ㄱ.n}</span>`
+                               : `<span class="zero">–</span>`}</div>
+      </div>`;
+    }).join("");
+
+    const 긴 = [...왕].sort((x,y)=>((y.까지??y.부터)-y.부터)-((x.까지??x.부터)-x.부터))[0];
+    const 톱 = g.왕.filter(w=>w.ㄱ).sort((x,y)=>y.ㄱ.근-x.ㄱ.근).slice(0,6);
+    $("#side").innerHTML = `
+      <div class="box"><h3>${지금}</h3>
+        <dl><dt>기간</dt><dd>${해(a0)} ~ ${해(a1)} · ${a1-a0}년</dd>
+            <dt>왕</dt><dd>${g.왕.length}대</dd>
+            <dt>가장 긴 재위</dt><dd>${긴.이름} ${((긴.까지??긴.부터)-긴.부터)}년</dd>
+            <dt>사건이 붙은 왕</dt><dd>${g.왕.filter(w=>w.사건.length).length}명</dd></dl></div>
+      <div class="box"><h3>모의고사가 자주 묻는 왕</h3>
+        <ol>${톱.map((w,i)=>`<li><i>${i+1}</i><b>${w.이름}</b><em>${w.ㄱ.근}회</em></li>`).join("") || "<li>기출에 나온 왕이 없습니다.</li>"}</ol></div>
+      <div class="box"><p>계보는 <b>미래엔 역사부도 144~146쪽</b>을 그대로 옮겼습니다. 사건은 교과서 부록 연표,
+        기출은 2015~2026 학력평가·모의평가·수능 133회분의 문항 해설에서 셌습니다.</p></div>`;
+  }
+
+  그리기();
+  옷(document.documentElement.dataset.look || "paper");
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+/* 왕조 계보 화면 — 연표(timeline.css)의 색·글꼴을 그대로 쓰고, 여기서는 배치만 더한다. */
+
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 16px}
+.tabs button{appearance:none;border:1px solid var(--line-2);background:var(--surface);color:var(--ink-2);
+  border-radius:8px;padding:9px 15px;font:700 14px/1 var(--sans);cursor:pointer;display:inline-flex;gap:8px;align-items:center}
+.tabs button small{font:500 11px/1 var(--sans);color:var(--ink-4);font-variant-numeric:tabular-nums}
+.tabs button:hover{border-color:var(--line-3)}
+.tabs button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:transparent}
+.tabs button[aria-pressed="true"] small{color:rgba(255,255,255,.7)}
+:root[data-look="night"] .tabs button[aria-pressed="true"] small{color:rgba(0,0,0,.55)}
+
+.gwrap{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;align-items:start}
+.gcard{background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r2);box-shadow:var(--shadow)}
+.ghead{display:grid;grid-template-columns:168px 200px minmax(0,1fr) 74px;gap:12px;padding:11px 16px;
+  background:var(--surface-2);border-bottom:1px solid var(--line-2);font:600 11.5px/1 var(--sans);color:var(--ink-3)}
+.grow{display:grid;grid-template-columns:168px 200px minmax(0,1fr) 74px;gap:12px;padding:10px 16px;
+  border-top:1px solid var(--line);align-items:center}
+.gcard .grow:first-of-type{border-top:0}
+.grow:nth-child(even){background:var(--surface-3)}
+.grow:hover{background:var(--cta-soft)}
+:root[data-look="night"] .grow:hover{background:var(--surface-2)}
+.grow.on{background:var(--cta-soft);box-shadow:inset 3px 0 0 var(--cta)}
+
+.kname{display:flex;align-items:baseline;gap:8px;min-width:0}
+.kname .no{flex:none;width:26px;height:20px;border-radius:5px;background:var(--surface-2);border:1px solid var(--line-2);
+  font:700 11px/19px var(--sans);color:var(--ink-3);text-align:center;font-variant-numeric:tabular-nums}
+.kname b{font:600 15px/1.3 var(--sans);color:var(--ink);letter-spacing:-.02em}
+.kname.hot b{font-weight:800;background:linear-gradient(transparent 58%,var(--hl) 58%)}
+.kname em{font-style:normal;font:500 11.5px/1 var(--sans);color:var(--ink-4);font-variant-numeric:tabular-nums}
+
+.bar{position:relative;height:22px;background:var(--surface-2);border:1px solid var(--line);border-radius:5px;overflow:hidden}
+.bar i{position:absolute;top:0;bottom:0;background:var(--c);opacity:.85;border-radius:3px}
+.bar i.re{opacity:.45}
+.bar span{position:absolute;right:6px;top:0;line-height:20px;font:600 10.5px/20px var(--sans);color:var(--ink-3);
+  font-variant-numeric:tabular-nums}
+
+.evs{display:flex;gap:5px;flex-wrap:wrap;min-width:0}
+.evs a{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);
+  border-radius:6px;padding:5px 9px;font:500 12px/1 var(--sans);color:var(--ink-2);cursor:pointer}
+.evs a::before{content:"";width:7px;height:7px;border-radius:2px;background:var(--c);flex:none}
+.evs a:hover{border-color:var(--c);color:var(--ink)}
+.evs a.hot{font-weight:700;background:linear-gradient(transparent 60%,var(--hl-2) 60%)}
+.evs .none{font:400 12px/1 var(--sans);color:var(--ink-4)}
+
+.gq{justify-self:end}
+.gq .qn{margin:0}
+.gq .zero{font:500 11px/1 var(--sans);color:var(--ink-4)}
+
+/* 오른쪽 요약 */
+.side{position:sticky;top:calc(var(--hh) + 16px);display:grid;gap:12px}
+.box{background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r2);padding:14px 16px;box-shadow:var(--shadow)}
+.box h3{margin:0 0 10px;font:800 15px/1.3 var(--sans);letter-spacing:-.03em;color:var(--ink)}
+.box dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:7px 12px;font:500 12.5px/1.5 var(--sans)}
+.box dt{color:var(--ink-4)}
+.box dd{margin:0;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.box ol{margin:0;padding:0 0 0 2px;list-style:none;display:grid;gap:7px}
+.box ol li{display:grid;grid-template-columns:auto 1fr auto;gap:9px;align-items:center;font:500 12.5px/1.4 var(--sans);color:var(--ink-2)}
+.box ol li i{width:20px;height:20px;border-radius:5px;background:var(--surface-2);border:1px solid var(--line-2);
+  font:700 10.5px/19px var(--sans);color:var(--ink-3);text-align:center;font-style:normal}
+.box ol li b{font-weight:600}
+.box ol li em{font-style:normal;color:var(--red);font-weight:700;font-variant-numeric:tabular-nums}
+.box p{margin:0;font:400 11.5px/1.6 var(--sans);color:var(--ink-4)}
+
+@media (max-width:980px){
+  .gwrap{grid-template-columns:1fr}
+  .side{position:static}
+}
+@media (max-width:760px){
+  .ghead{display:none}
+  .grow{grid-template-columns:1fr auto;gap:8px 10px;padding:12px 14px}
+  .kname{grid-column:1}
+  .gq{grid-column:2;grid-row:1}
+  .bar{grid-column:1/-1}
+  .evs{grid-column:1/-1}
+}

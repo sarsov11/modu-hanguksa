@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="ko" data-skin="white" data-look="paper">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>모두의 한국사 — 근현대 지도</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<script>try{var L=localStorage.getItem("hs-look");if(L)document.documentElement.dataset.look=L}catch(e){}</script>
+<link rel="stylesheet" href="css/base.css?v=4488879af9">
+<link rel="stylesheet" href="css/timeline.css?v=375c6336db">
+<link rel="stylesheet" href="css/geundae.css?v=4336d4e03e">
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="index.html"><b>모두의 <em>한국사</em></b><small>근현대 지도</small></a>
+    <nav class="nav">
+      <a href="연표.html">연표</a>
+      <a href="계보.html">왕조 계보</a>
+      <a href="근현대.html" aria-current="page">근현대 지도</a>
+    </nav>
+    <div class="spacer"></div>
+    <div class="look"><span>디자인</span>
+      <div class="seg" id="lookseg" role="group" aria-label="디자인 고르기">
+        <button data-l="paper">종이</button>
+        <button data-l="night">밤</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="intro">
+    <div><h1>근현대 — <em>어디서 누가</em> 무엇을 했나</h1>
+      <p class="lead">독립운동 단체를 <b>지도 위 지명</b>에 얹고, <b>이끈 사람</b>과 이어 놓았습니다.
+        시기를 고르면 그 시기의 단체만 남습니다. 단체를 누르면 교과서 어디에 나오는지, 모의고사에서 몇 번 물었는지 함께 보입니다.</p></div>
+    <div class="legend">
+      <span><span class="qq">기출 7</span>&nbsp;= 출제 횟수(대면 회차)</span>
+      <span>지도 바탕 Natural Earth(공공 영역)</span>
+    </div>
+  </div>
+
+  <div class="gd-bar">
+    <div class="ages" id="ages"></div>
+    <div class="kinds" id="kinds"></div>
+  </div>
+
+  <div class="gd-wrap">
+    <div>
+      <div class="mapbox" id="mapbox"></div>
+      <div class="oversea" id="oversea"></div>
+    </div>
+    <aside class="gd-side"><div class="orgs" id="orgs"></div></aside>
+  </div>
+
+  <section class="net">
+    <h3>누가 어디를 이끌었나</h3>
+    <p class="sub">왼쪽이 사람, 오른쪽이 단체입니다. 하나에 마우스를 대면 이어진 줄만 남습니다.</p>
+    <div id="net"></div>
+  </section>
+</main>
+
+<script src="js/geundae.js?v=4e4ca0c476"></script>
+<script>
+(function(){
+  const GD = window.GD, $ = s => document.querySelector(s);
+  const 에스 = s => (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+  const 갈래색 = {"무장 투쟁":"var(--f-정치)", "의열":"var(--f-정치)", "임시 정부":"var(--f-대외)",
+    "외교":"var(--f-대외)", "외교·자금":"var(--f-대외)", "실력 양성":"var(--f-경제)",
+    "사회 운동":"var(--f-사회)", "민족 유일당":"var(--f-사회)", "학술·문화":"var(--f-문화)",
+    "기지 건설":"var(--f-경제)", "의병 계열":"var(--f-정치)", "의열·무장":"var(--f-정치)", "건국 준비":"var(--f-대외)"};
+  const 색 = k => 갈래색[k] || "var(--ink-3)";
+  let 시기 = "1920", 갈래끔 = new Set(), 고른곳 = null, 고른단체 = null;
+
+  function 옷(l){
+    document.documentElement.dataset.look = l;
+    document.documentElement.dataset.skin = l==="night" ? "" : "white";
+    [...$("#lookseg").children].forEach(x=>x.setAttribute("aria-pressed", String(x.dataset.l===l)));
+    try{ localStorage.setItem("hs-look", l); }catch(e){}
+    머리높이();
+  }
+  $("#lookseg").addEventListener("click", ev=>{ const b=ev.target.closest("button"); if(b) 옷(b.dataset.l); });
+  function 머리높이(){
+    document.documentElement.style.setProperty("--hh",
+      Math.round(document.querySelector(".top").getBoundingClientRect().height) + "px");
+  }
+  addEventListener("resize", 머리높이);
+  if(document.fonts) document.fonts.ready.then(머리높이);
+
+  /* ── 시기 · 갈래 고르개 ── */
+  $("#ages").innerHTML = GD.시기.map(t=>
+    `<button data-a="${t.키}" aria-pressed="${t.키===시기}">${t.이름}<small>${t.설명}</small></button>`).join("");
+  $("#ages").addEventListener("click", ev=>{
+    const b = ev.target.closest("button"); if(!b) return;
+    시기 = b.dataset.a; 고른곳 = null; 고른단체 = null;
+    [...$("#ages").children].forEach(x=>x.setAttribute("aria-pressed", String(x.dataset.a===시기)));
+    그리기();
+  });
+  const 갈래들 = [...new Set(GD.단체.map(t=>t.갈래))];
+  $("#kinds").innerHTML = 갈래들.map(k=>
+    `<button data-k="${k}" aria-pressed="true" style="--c:${색(k)};--c-soft:color-mix(in srgb,${색(k)} 12%,transparent)"><i></i>${k}</button>`).join("");
+  $("#kinds").addEventListener("click", ev=>{
+    const b = ev.target.closest("button"); if(!b) return;
+    const on = b.getAttribute("aria-pressed")==="true";
+    b.setAttribute("aria-pressed", String(!on));
+    on ? 갈래끔.add(b.dataset.k) : 갈래끔.delete(b.dataset.k);
+    그리기();
+  });
+
+  const 시기표 = Object.fromEntries(GD.시기.map(t=>[t.키,t]));
+  function 이시기(){
+    return GD.단체.filter(t=>t.시기===시기 && !갈래끔.has(t.갈래));
+  }
+
+  /* ── 지도 ── */
+  function 지도그리기(단체들){
+    const M = GD.지도, [W,H] = M.뷰;
+    const 곳셈 = {};
+    단체들.forEach(t=>t.곳.forEach(z=>{ (곳셈[z] = 곳셈[z] || []).push(t); }));
+    const 핀 = GD.지역.filter(z=>!z.지도밖 && 곳셈[z.이름]);
+    const 표시 = z => {
+      const 것 = 곳셈[z.이름] || [];
+      const c = 색(것[0] ? 것[0].갈래 : "");
+      const on = 고른곳===z.이름;
+      const 흐림 = 고른곳 && !on;
+      return `<g class="pin${on?" on":""}${흐림?" dim":""}" data-z="${z.이름}" style="--c:${c}" transform="translate(${z.x},${z.y})">
+        <circle r="11"></circle><text class="cnt" text-anchor="middle" dy="4">${것.length}</text>
+        <text class="nm" x="${(z.라벨||[16,5])[0]}" dy="${(z.라벨||[16,5])[1]}">${z.이름}${
+          z.곁?`<tspan class="sub" font-size="10.5" fill="var(--ink-4)"> ${z.곁}</tspan>`:""}</text></g>`;
+    };
+    $("#mapbox").innerHTML =
+      `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="근현대 독립운동 지도">
+        <g>${M.육지.map(d=>`<path class="land" d="${d}Z"/>`).join("")}</g>
+        <g>${M.국경.map(d=>`<path class="border" d="${d}"/>`).join("")}</g>
+        <g>${M.해안.map(d=>`<path class="coast" d="${d}"/>`).join("")}</g>
+        <g>${핀.map(표시).join("")}</g>
+      </svg>
+      <div class="legend-m">동그라미 안 숫자 = 이 시기 이 고장의 단체 수<br>지도 바탕: Natural Earth 50m</div>`;
+
+    const 밖 = GD.지역.filter(z=>z.지도밖 && 곳셈[z.이름]);
+    $("#oversea").innerHTML = 밖.length
+      ? `<span style="font:600 12px/1 var(--sans);color:var(--ink-4);align-self:center">바다 건너</span>`
+        + 밖.map(z=>`<button data-z="${z.이름}">${z.이름}<small>${z.곁||""} · ${곳셈[z.이름].length}곳</small></button>`).join("")
+      : "";
+  }
+
+  /* ── 오른쪽 단체 카드 ── */
+  function 단체그리기(단체들){
+    const 볼 = 고른곳 ? 단체들.filter(t=>t.곳.includes(고른곳)) : 단체들;
+    const 머리 = `<div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:2px">
+        <b style="font:800 15px/1.3 var(--sans);color:var(--ink)">${고른곳 ? 고른곳+" 의 단체" : 시기표[시기].이름+" 단체"} ${볼.length}</b>
+        ${고른곳 ? `<button id="allz" style="appearance:none;border:0;background:transparent;color:var(--red);font:600 12px/1 var(--sans);cursor:pointer">전체 보기</button>` : ""}
+      </div>`;
+    $("#orgs").innerHTML = 머리 + 볼.map(t=>{
+      const q = t.ㄱ;
+      return `<article class="org${고른단체===t.이름?" on":""}" data-t="${에스(t.이름)}" style="--c:${색(t.갈래)}">
+        <h4>${에스(t.이름)}<em>${t.해}${t.끝&&t.끝!==t.해?`~${t.끝}`:""}</em>
+          ${q?`<span class="qn" data-q="${에스(t.이름)}">${q.근||q.n}</span>`:""}
+          ${t.교과서밖?`<span class="out">교과서 밖</span>`:""}</h4>
+        <p class="why">${에스(t.한일)}</p>
+        ${t.사람.length?`<div class="who">${t.사람.map(p=>`<span data-p="${에스(p)}">${에스(p)}</span>`).join("")}</div>`:""}
+        <div class="src"><b>곳</b> ${t.곳.join(" · ")}${
+          t.근거.쪽수?` &nbsp;·&nbsp; <b>교과서</b> ${t.근거.쪽.slice(0,3).join(" · ")}${t.근거.쪽수>3?` 외 ${t.근거.쪽수-3}곳`:""}`:""}
+          ${t.사건.length?`<br><b>연표</b> ${t.사건.slice(0,4).map(e=>`<a href="연표.html?ev=${e.id}" style="color:var(--cta)">${에스(e.이름)}</a>`).join(" · ")}`:""}
+          ${t.근거.문장.length?`<br><span style="color:var(--ink-3)">“${에스(t.근거.문장[0].글)}” <em style="font-style:normal;color:var(--ink-4)">— ${t.근거.문장[0].쪽}</em></span>`:""}
+        </div>
+      </article>`;
+    }).join("");
+  }
+
+  /* ── 인물 ↔ 단체 관계도 ── */
+  function 관계도(단체들){
+    const 차례 = Object.fromEntries(단체들.map((t,i)=>[t.이름,i]));
+    // 사람은 **이어진 단체의 자리 평균** 으로 세운다 — 사전 순서대로 두면 줄이 심하게 꼬인다
+    const 쓸사람 = GD.사람.filter(p=>p.단체.some(o=>차례[o]!=null))
+      .map(p=>({...p, 키: p.단체.filter(o=>차례[o]!=null).reduce((a,o)=>a+차례[o],0)
+                        / p.단체.filter(o=>차례[o]!=null).length}))
+      .sort((a,b)=>a.키-b.키);
+    const L = 42, 행 = 46, 왼 = 210, 오 = 250, 폭 = 900;
+    const H = Math.max(쓸사람.length, 단체들.length) * 행 + 30;
+    const px = 20, ox = 폭 - 오 - 20;
+    const py = i => 24 + i*행, oy = i => 24 + i*행;
+    const 자리사람 = Object.fromEntries(쓸사람.map((p,i)=>[p.이름, py(i)]));
+    const 자리단체 = Object.fromEntries(단체들.map((t,i)=>[t.이름, oy(i)]));
+    const 줄 = [];
+    쓸사람.forEach(p=>p.단체.forEach(o=>{
+      if(자리단체[o]==null) return;
+      const y1 = 자리사람[p.이름]+14, y2 = 자리단체[o]+14;
+      const x1 = px+왼, x2 = ox;
+      줄.push(`<path class="link" data-p="${에스(p.이름)}" data-o="${에스(o)}"
+        d="M${x1},${y1} C${x1+70},${y1} ${x2-70},${y2} ${x2},${y2}"/>`);
+    }));
+    const 사람노드 = 쓸사람.map(p=>`<g class="node p" data-p="${에스(p.이름)}" transform="translate(${px},${자리사람[p.이름]})">
+        <rect width="${왼}" height="30"/><text x="10" y="14">${에스(p.이름)}</text>
+        <text class="sub" x="10" y="25">${에스((p.한줄||"").slice(0,26))}</text></g>`).join("");
+    const 단체노드 = 단체들.map(t=>`<g class="node o" data-o="${에스(t.이름)}" style="--c:${색(t.갈래)}" transform="translate(${ox},${자리단체[t.이름]})">
+        <rect width="${오}" height="30"/><rect width="3" height="30" style="fill:${색(t.갈래)};stroke:none"/>
+        <text x="12" y="14">${에스(t.이름)}</text>
+        <text class="sub" x="12" y="25">${t.해} · ${t.곳[0]||""} · ${t.갈래}</text></g>`).join("");
+    $("#net").innerHTML = `<svg viewBox="0 0 ${폭} ${H}">${줄.join("")}${사람노드}${단체노드}</svg>`;
+  }
+
+  /* ── 손짓 ── */
+  document.addEventListener("click", ev=>{
+    const z = ev.target.closest("[data-z]");
+    if(z){ 고른곳 = (고른곳===z.dataset.z ? null : z.dataset.z); 고른단체 = null; 그리기(); return; }
+    if(ev.target.id === "allz"){ 고른곳 = null; 그리기(); return; }
+    const t = ev.target.closest(".org");
+    if(t){ 고른단체 = (고른단체===t.dataset.t ? null : t.dataset.t); 그리기();
+      const el = document.querySelector(`.org[data-t="${CSS.escape(고른단체||"")}"]`);
+      if(el) el.scrollIntoView({block:"nearest"}); return; }
+  });
+  // 관계도 — 마우스를 댄 것과 이어진 줄만 남긴다
+  document.addEventListener("mouseover", ev=>{
+    const n = ev.target.closest(".net .node");
+    const svg = $("#net").querySelector("svg"); if(!svg) return;
+    svg.querySelectorAll(".link").forEach(l=>l.classList.remove("on"));
+    svg.querySelectorAll(".node").forEach(l=>l.classList.remove("dim","on"));
+    if(!n) return;
+    const p = n.dataset.p, o = n.dataset.o;
+    const 산 = new Set([p||o]);
+    svg.querySelectorAll(".link").forEach(l=>{
+      const 맞 = (p && l.dataset.p===p) || (o && l.dataset.o===o);
+      if(맞){ l.classList.add("on"); 산.add(l.dataset.p); 산.add(l.dataset.o); }
+    });
+    svg.querySelectorAll(".node").forEach(x=>{
+      const 이 = x.dataset.p || x.dataset.o;
+      x.classList.toggle("dim", !산.has(이));
+      x.classList.toggle("on", 산.has(이));
+    });
+  });
+
+  /* ── 기출 쪽지 ── */
+  const 쪽지 = document.createElement("div");
+  쪽지.className = "qtip"; 쪽지.hidden = true; document.body.appendChild(쪽지);
+  document.addEventListener("mouseover", ev=>{
+    const el = ev.target.closest(".qn[data-q]");
+    if(!el){ if(!ev.target.closest(".qtip")) 쪽지.hidden = true; return; }
+    const t = GD.단체.concat(GD.사람).find(x=>x.이름===el.dataset.q);
+    if(!t || !t.ㄱ) return;
+    쪽지.innerHTML = `<h5>${에스(t.이름)}<em>${t.ㄱ.근}회 / 전체 ${t.ㄱ.n}회</em></h5>`
+      + `<ul>${t.ㄱ.회.map(x=>`<li><b>${x.y} 고${x.g}${x.j?" "+x.j:""} ${x.b}번</b><span>${에스(x.t)}</span></li>`).join("")}</ul>`
+      + `<div class="more">2015~2026 학력평가·모의평가·수능 133회분, 문항 해설의 출제의도 기준</div>`;
+    쪽지.hidden = false;
+    const r = el.getBoundingClientRect(), w = 쪽지.offsetWidth, h = 쪽지.offsetHeight;
+    쪽지.style.left = Math.min(Math.max(8, r.left - w + 60), innerWidth - w - 8) + "px";
+    쪽지.style.top = (r.bottom + 8 + h > innerHeight ? Math.max(8, r.top - h - 8) : r.bottom + 8) + "px";
+  });
+  addEventListener("scroll", ()=>{ 쪽지.hidden = true; }, {passive:true});
+
+  function 그리기(){
+    const 것 = 이시기();
+    지도그리기(것); 단체그리기(것); 관계도(것);
+  }
+  그리기();
+  옷(document.documentElement.dataset.look || "paper");
+})();
+</script>
+</body>
+</html>
