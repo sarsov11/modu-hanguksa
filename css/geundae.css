@@ -1,20 +1,39 @@
-/* 근현대 지도·관계도 — 색·글꼴은 timeline.css 를 그대로 쓴다 */
+/* 근현대 — 장(章)으로 나눈 지도·줄기·인물.  색·글꼴은 timeline.css 를 그대로 쓴다. */
 
+/* ── 장 고르개 ── */
+.chaps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0 0 16px}
+.chaps button{appearance:none;text-align:left;border:1px solid var(--line-2);background:var(--surface);
+  color:var(--ink-2);border-radius:var(--r1);padding:12px 14px;cursor:pointer;display:grid;gap:3px;transition:all .12s}
+.chaps button em{font-style:normal;font:700 11px/1 var(--sans);color:var(--ink-4);letter-spacing:.06em}
+.chaps button b{font:800 16px/1.2 var(--sans);letter-spacing:-.03em;color:var(--ink)}
+.chaps button small{font:500 11.5px/1.35 var(--sans);color:var(--ink-4)}
+.chaps button:hover{border-color:var(--line-3)}
+.chaps button[aria-pressed="true"]{background:var(--ink);border-color:transparent}
+.chaps button[aria-pressed="true"] b,.chaps button[aria-pressed="true"] em{color:var(--bg)}
+.chaps button[aria-pressed="true"] small{color:rgba(255,255,255,.72)}
+:root[data-look="night"] .chaps button[aria-pressed="true"] small{color:rgba(0,0,0,.6)}
+
+/* ── 장 표지 ── */
+.cover{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:18px;align-items:center;
+  background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r2);padding:16px 20px;
+  box-shadow:var(--shadow);margin:0 0 14px}
+.cover .no{font:800 40px/1 var(--sans);color:var(--red);letter-spacing:-.05em}
+.cover h2{margin:0 0 5px;font:800 22px/1.2 var(--sans);letter-spacing:-.035em;color:var(--ink)}
+.cover p{margin:0;font:400 13px/1.6 var(--sans);color:var(--ink-3)}
+.cover .nums{display:flex;gap:16px}
+.cover .nums div{text-align:right}
+.cover .nums b{display:block;font:800 20px/1 var(--sans);color:var(--ink);font-variant-numeric:tabular-nums}
+.cover .nums small{font:500 11px/1 var(--sans);color:var(--ink-4)}
+
+/* ── 보기 토글 · 갈래 칩 ── */
 .gd-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:0 0 14px}
-.ages{display:flex;gap:6px;flex-wrap:wrap}
-.ages button{appearance:none;border:1px solid var(--line-2);background:var(--surface);color:var(--ink-2);
-  border-radius:9px;padding:9px 14px;cursor:pointer;font:600 13.5px/1.25 var(--sans);text-align:left}
-.ages button small{display:block;font:500 11px/1.3 var(--sans);color:var(--ink-4);margin-top:3px}
-.ages button:hover{border-color:var(--line-3)}
-.ages button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:transparent}
-.ages button[aria-pressed="true"] small{color:rgba(255,255,255,.72)}
-:root[data-look="night"] .ages button[aria-pressed="true"] small{color:rgba(0,0,0,.6)}
 .kinds{display:flex;gap:5px;flex-wrap:wrap}
 .kinds button{appearance:none;border:1px solid var(--line-2);background:var(--surface);color:var(--ink-3);
   border-radius:999px;padding:6px 11px;cursor:pointer;font:600 12px/1 var(--sans)}
 .kinds button[aria-pressed="true"]{color:var(--ink);background:var(--c-soft);border-color:color-mix(in srgb,var(--c) 45%,var(--line-2))}
 .kinds button i{display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--c);margin-right:6px}
 
+/* ── 지도 ── */
 .gd-wrap{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:18px;align-items:start}
 .mapbox{background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r2);box-shadow:var(--shadow);
   padding:8px;position:relative}
@@ -39,7 +58,7 @@
   padding:9px 12px;cursor:pointer;font:600 12.5px/1 var(--sans);color:var(--ink-2);display:inline-flex;gap:8px;align-items:center}
 .oversea button small{font:500 11px/1 var(--sans);color:var(--ink-4)}
 
-/* 오른쪽 패널 */
+/* ── 단체 카드 ── */
 .gd-side{position:sticky;top:calc(var(--hh) + 14px);display:grid;gap:12px;max-height:calc(100vh - var(--hh) - 30px);overflow:auto}
 .orgs{display:grid;gap:8px}
 .org{background:var(--surface);border:1px solid var(--line-2);border-left:3px solid var(--c);border-radius:var(--r1);
@@ -49,38 +68,93 @@
 .org h4{margin:0;font:700 14.5px/1.3 var(--sans);color:var(--ink);display:flex;align-items:center;gap:7px;flex-wrap:wrap}
 .org h4 em{font-style:normal;font:600 11.5px/1 var(--sans);color:var(--ink-4);font-variant-numeric:tabular-nums}
 .org .why{margin:6px 0 0;font:400 12.5px/1.65 var(--sans);color:var(--ink-3)}
-.org .who{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
-.org .who span{font:600 11.5px/1 var(--sans);color:var(--ink-2);background:var(--surface-2);border:1px solid var(--line);
-  border-radius:999px;padding:5px 9px}
+.org .who{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px;align-items:center}
 .org .src{margin-top:8px;font:400 11.5px/1.6 var(--sans);color:var(--ink-4);border-top:1px dashed var(--line);padding-top:7px}
 .org .src b{color:var(--ink-3);font-weight:600}
 .org .out{font:600 11px/1 var(--sans);color:var(--amber);border:1px solid color-mix(in srgb,var(--amber) 40%,transparent);
   border-radius:5px;padding:3px 6px}
 
-/* 인물 ↔ 단체 관계도 */
-.net{background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r2);box-shadow:var(--shadow);
-  padding:16px 18px;margin-top:18px}
-.net h3{margin:0 0 4px;font:800 17px/1.3 var(--sans);letter-spacing:-.03em;color:var(--ink)}
-.net p.sub{margin:0 0 12px;font:400 12.5px/1.6 var(--sans);color:var(--ink-3)}
-.net svg{display:block;width:100%;height:auto}
-.net .link{fill:none;stroke:var(--line-2);stroke-width:1.2}
-.net .link.on{stroke:var(--red);stroke-width:2}
-.net .node rect{fill:var(--surface);stroke:var(--line-2);stroke-width:1.2;rx:7}
-.net .node.p rect{fill:var(--surface-2)}
-.net .node.o rect{stroke:var(--c);border-left:3px solid var(--c)}
-.net .node text{font:600 12.5px var(--sans);fill:var(--ink-2)}
-.net .node text.sub{font:500 10.5px var(--sans);fill:var(--ink-4)}
-.net .node.on rect{stroke:var(--red);stroke-width:2}
-.net .node.on text{fill:var(--ink);font-weight:700}
-.net .node.dim{opacity:.3}
-.net .node{cursor:pointer}
+/* ── 사람 조각(얼굴 + 이름) ── */
+.face{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface-2);
+  border-radius:999px;padding:3px 10px 3px 3px;font:600 11.5px/1 var(--sans);color:var(--ink-2);cursor:pointer}
+.face:hover{border-color:var(--red);color:var(--ink)}
+.face .im{width:26px;height:26px;border-radius:50%;overflow:hidden;background:var(--surface-3);flex:none;
+  display:grid;place-items:center;border:1px solid var(--line)}
+.face .im img{width:100%;height:100%;object-fit:cover;display:block}
+.face .im svg{width:16px;height:16px;fill:var(--ink-4)}
+
+/* ── 줄기 보기 ── */
+.stems{display:grid;gap:14px}
+.stem{background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r2);box-shadow:var(--shadow);padding:14px 16px}
+.stem h3{margin:0 0 3px;font:800 16px/1.3 var(--sans);letter-spacing:-.03em;color:var(--ink);display:flex;gap:9px;align-items:center}
+.stem h3 i{width:10px;height:10px;border-radius:3px;background:var(--c)}
+.stem h3 small{font:500 11.5px/1 var(--sans);color:var(--ink-4)}
+.flow{display:flex;gap:0;flex-wrap:wrap;align-items:stretch;margin-top:10px}
+.flow .node{min-width:190px;max-width:250px;flex:1 1 190px;border:1px solid var(--line-2);border-left:3px solid var(--c);
+  border-radius:var(--r1);padding:10px 12px;background:var(--surface);cursor:pointer}
+.flow .node:hover{border-color:var(--c)}
+.flow .node.ghost{opacity:.5;border-style:dashed;background:var(--surface-2);cursor:default}
+.flow .node b{display:block;font:700 13.5px/1.35 var(--sans);color:var(--ink)}
+.flow .node .meta{font:500 11.5px/1.5 var(--sans);color:var(--ink-4);margin-top:2px}
+.flow .node .faces{display:flex;gap:4px;margin-top:8px;flex-wrap:wrap}
+.flow .node .faces .im{width:24px;height:24px;border-radius:50%;overflow:hidden;border:1px solid var(--line);
+  background:var(--surface-3);display:grid;place-items:center}
+.flow .node .faces .im img{width:100%;height:100%;object-fit:cover}
+.flow .node .faces .im svg{width:14px;height:14px;fill:var(--ink-4)}
+.flow .arrow{align-self:center;padding:0 9px;color:var(--ink-4);font:700 16px/1 var(--sans)}
+.stem .tail{margin-top:9px;font:500 12px/1.5 var(--sans);color:var(--ink-4)}
+.stem .tail b{color:var(--red);font-weight:700}
+
+/* ── 인물 보기 ── */
+.people{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.person{background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r2);padding:14px;
+  box-shadow:var(--shadow);display:grid;gap:9px}
+.person .top{display:flex;gap:11px;align-items:center}
+.person .ph{width:62px;height:62px;border-radius:12px;overflow:hidden;background:var(--surface-2);border:1px solid var(--line);
+  display:grid;place-items:center;flex:none}
+.person .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.person .ph svg{width:32px;height:32px;fill:var(--ink-4)}
+.person h4{margin:0;font:800 16px/1.2 var(--sans);letter-spacing:-.03em;color:var(--ink)}
+.person .one{font:400 12px/1.55 var(--sans);color:var(--ink-3);margin-top:3px}
+.person .orgs2{display:flex;gap:5px;flex-wrap:wrap}
+.person .orgs2 span{font:600 11px/1 var(--sans);color:var(--ink-2);background:var(--surface-2);
+  border:1px solid var(--line);border-left:3px solid var(--c);border-radius:5px;padding:5px 8px}
+.person .cap{font:400 11px/1.5 var(--sans);color:var(--ink-4);border-top:1px dashed var(--line);padding-top:7px}
+
+/* ── 기출 쪽지(연표와 같은 모양) ── */
+.qtip{position:fixed;z-index:80;width:300px;max-height:56vh;overflow:auto;background:var(--surface);
+  border:1px solid var(--line-2);border-radius:var(--r1);box-shadow:var(--shadow);padding:10px 12px}
+
+.chapnav{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
+.chapnav button{appearance:none;border:1px solid var(--line-2);background:var(--surface);color:var(--ink-2);
+  border-radius:var(--r1);padding:11px 16px;cursor:pointer;font:600 13px/1 var(--sans)}
+.chapnav button:hover{border-color:var(--red);color:var(--ink)}
+.chapnav button[disabled]{opacity:.35;cursor:default}
 
 @media (max-width:1100px){
   .gd-wrap{grid-template-columns:1fr}
   .gd-side{position:static;max-height:none}
 }
 @media (max-width:760px){
-  .ages{width:100%}
-  .ages button{flex:1 1 44%}
-  .net{padding:12px}
+  .chaps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cover{grid-template-columns:auto minmax(0,1fr);gap:12px;padding:13px 14px}
+  .cover .nums{grid-column:1/-1;justify-content:space-between}
+  .cover h2{font-size:18px}
+  .flow .node{min-width:100%;max-width:none}
+  .flow .arrow{transform:rotate(90deg);padding:6px 0;align-self:center}
+  .people{grid-template-columns:1fr 1fr;gap:8px}
+  .person{padding:10px}
+  .person .ph{width:52px;height:52px}
 }
+
+/* ── 갈래 그림 ── */
+.kico{width:15px;height:15px;vertical-align:-2px;margin-right:6px;color:var(--c);flex:none}
+.org h4 .kico{width:16px;height:16px}
+.flow .node b{display:flex;align-items:center;gap:0}
+.flow .arrow.sep{color:var(--line-3);font-weight:400}
+.person .ph .noface{position:relative;display:grid;place-items:center;width:100%;height:100%}
+.person .ph .noface svg:first-child{width:30px;height:30px;fill:var(--ink-4);opacity:.45}
+.person .ph .noface .kico{position:absolute;right:5px;bottom:5px;width:16px;height:16px;margin:0;
+  color:var(--c);background:var(--surface);border-radius:4px;padding:1px}
+.person .orgs2 span{display:inline-flex;align-items:center}
+.person .orgs2 .kico{width:13px;height:13px;margin-right:5px}
