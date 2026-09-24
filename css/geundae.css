@@ -158,3 +158,55 @@
   color:var(--c);background:var(--surface);border-radius:4px;padding:1px}
 .person .orgs2 span{display:inline-flex;align-items:center}
 .person .orgs2 .kico{width:13px;height:13px;margin-right:5px}
+
+/* ── 얼굴이 없을 때 첫 글자 아바타(윤리 사상가 카드와 같은 방식) ── */
+.av{display:grid;place-items:center;width:100%;height:100%;font:800 15px/1 var(--sans);
+  color:var(--ink-2);background:var(--surface-2);letter-spacing:-.02em}
+.av.big{font-size:26px;color:var(--ink)}
+
+/* ── 겨루기 ── */
+.quiz{background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r2);box-shadow:var(--shadow);
+  padding:20px 22px;max-width:880px;margin:0 auto}
+.qhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:12px}
+.qhead b{font:800 18px/1.3 var(--sans);letter-spacing:-.03em;color:var(--ink)}
+.qhead .score{font:600 12.5px/1 var(--sans);color:var(--ink-4);font-variant-numeric:tabular-nums}
+.qsay{border:1px solid var(--line-2);border-left:3px solid var(--red);background:var(--surface-2);
+  border-radius:var(--r1);padding:18px 20px;font:500 17px/1.7 var(--sans);color:var(--ink);word-break:keep-all}
+.hintrow{display:flex;gap:6px;align-items:center;margin:14px 0 4px;flex-wrap:wrap}
+.hintrow .lab{font:600 11.5px/1 var(--sans);color:var(--ink-4);margin-right:2px}
+.hint{appearance:none;border:1px dashed var(--line-2);background:var(--surface);color:var(--ink-3);
+  border-radius:999px;padding:7px 12px;font:600 12px/1 var(--sans);cursor:pointer}
+.hint[data-open="1"]{border-style:solid;color:var(--ink-2);background:var(--surface-2);cursor:default}
+.qopts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.qopt{appearance:none;border:1px solid var(--line-2);background:var(--surface);color:var(--ink);
+  border-radius:var(--r1);padding:16px 14px;font:700 16px/1 var(--sans);cursor:pointer}
+.qopt:hover{border-color:var(--red)}
+.qopt[data-s="ok"]{border-color:var(--mint);background:var(--mint-soft)}
+.qopt[data-s="no"]{border-color:var(--red);background:var(--red-soft)}
+.qopt[disabled]{cursor:default}
+.why{margin-top:16px;border-top:1px solid var(--line);padding-top:14px}
+.wholine{font:700 13px/1 var(--sans);color:var(--ink-2);margin-bottom:10px}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.vs .col{border:1px solid var(--line-2);border-radius:var(--r1);padding:12px 13px;background:var(--surface-2)}
+.vs .col.me{border-color:color-mix(in srgb,var(--mint) 45%,var(--line-2));background:var(--mint-soft)}
+.vs .vhead{display:flex;gap:10px;align-items:center}
+.vs .vhead .ph{width:46px;height:46px;border-radius:10px;overflow:hidden;border:1px solid var(--line);
+  background:var(--surface);display:grid;place-items:center;flex:none}
+.vs .vhead .ph img{width:100%;height:100%;object-fit:cover}
+.vs h5{margin:0;font:800 15px/1.2 var(--sans);color:var(--ink)}
+.vs small{font:500 11px/1.4 var(--sans);color:var(--ink-4)}
+.vs .vhead .qn{margin-left:auto}
+.vs p{margin:9px 0 0;font:400 12.5px/1.6 var(--sans);color:var(--ink-2)}
+.vorgs{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}
+.vorgs span{font:600 11px/1 var(--sans);color:var(--ink-2);background:var(--surface);border:1px solid var(--line);
+  border-left:3px solid var(--c);border-radius:5px;padding:5px 8px}
+.src2{display:block;margin-top:8px;font:500 10.5px/1.4 var(--sans);color:var(--ink-4)}
+.btn-next{appearance:none;margin-top:14px;border:0;background:var(--ink);color:var(--bg);border-radius:var(--r1);
+  padding:13px 20px;font:700 14px/1 var(--sans);cursor:pointer}
+.btn-next:hover{background:var(--red)}
+@media (max-width:760px){
+  .quiz{padding:14px}
+  .qsay{font-size:15px;padding:14px}
+  .qopts{grid-template-columns:1fr}
+  .vs{grid-template-columns:1fr}
+}

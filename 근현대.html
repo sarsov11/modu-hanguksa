@@ -8,7 +8,7 @@
 <script>try{var L=localStorage.getItem("hs-look");if(L)document.documentElement.dataset.look=L}catch(e){}</script>
 <link rel="stylesheet" href="css/base.css?v=4488879af9">
 <link rel="stylesheet" href="css/timeline.css?v=375c6336db">
-<link rel="stylesheet" href="css/geundae.css?v=e5957fcd5c">
+<link rel="stylesheet" href="css/geundae.css?v=1bb458509a">
 </head>
 <body>
 
@@ -50,6 +50,7 @@
       <button data-v="map">지도</button>
       <button data-v="stem">줄기</button>
       <button data-v="people">인물</button>
+      <button data-v="quiz">겨루기</button>
     </div>
     <div class="kinds" id="kinds"></div>
   </div>
@@ -62,7 +63,7 @@
   </div>
 </main>
 
-<script src="js/geundae.js?v=443097d743"></script>
+<script src="js/geundae.js?v=7d8e83bdec"></script>
 <script>
 (function(){
   const GD = window.GD, $ = s => document.querySelector(s);
@@ -98,13 +99,14 @@
 
   /* 얼굴 — 사진이 없으면 얼굴 없는 실루엣 기호를 쓴다(초상을 지어내지 않는다) */
   const 실루엣 = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12c2.7 0 4.9-2.2 4.9-4.9S14.7 2.2 12 2.2 7.1 4.4 7.1 7.1 9.3 12 12 12zm0 2.2c-3.3 0-9.8 1.7-9.8 4.9v2.7h19.6v-2.7c0-3.2-6.5-4.9-9.8-4.9z"/></svg>`;
+  /* 얼굴 사진이 없으면 **이름 첫 글자 아바타** — 통사 윤리 사상가 카드와 같은 방식(초상을 지어내지 않는다) */
+  const 얼굴칸 = (n, 큰) => { const p = 사람표[n];
+    if(p && p.얼굴 && p.얼굴.length)
+      return `<img src="assets/person/${p.얼굴[0].f}" alt="${에스(n)}" loading="lazy">`;
+    return `<span class="av${큰?" big":""}">${에스((n||"?").charAt(0))}</span>`; };
   const 얼굴칩 = n => { const p = 사람표[n];
-    const 안 = p && p.얼굴 && p.얼굴.length ? `<img src="assets/person/${p.얼굴[0].f}" alt="${에스(n)}" loading="lazy"
-        onerror="this.parentNode.innerHTML='${실루엣.replace(/'/g,"&#39;")}'">` : 실루엣;
-    return `<span class="face" data-p="${에스(n)}"><span class="im">${안}</span>${에스(n)}</span>`; };
-  const 얼굴알 = n => { const p = 사람표[n];
-    const 안 = p && p.얼굴 && p.얼굴.length ? `<img src="assets/person/${p.얼굴[0].f}" alt="${에스(n)}" loading="lazy">` : 실루엣;
-    return `<span class="im" title="${에스(n)}">${안}</span>`; };
+    return `<span class="face" data-p="${에스(n)}"><span class="im">${얼굴칸(n)}</span>${에스(n)}</span>`; };
+  const 얼굴알 = n => `<span class="im" title="${에스(n)}">${얼굴칸(n)}</span>`;
 
   function 옷(l){
     document.documentElement.dataset.look = l;
@@ -255,9 +257,8 @@
     return `<div class="people">${사람.map(p=>{
       const 속 = p.단체.filter(o=>단체들.find(t=>t.이름===o));
       const 첫단체 = 속.length ? GD.단체.find(x=>x.이름===속[0]) : null;
-      const 얼 = p.얼굴 && p.얼굴.length
-        ? `<img src="assets/person/${p.얼굴[0].f}" alt="${에스(p.이름)}" loading="lazy">`
-        : `<span class="noface" style="--c:${첫단체?색(첫단체.갈래):"var(--ink-4)"}">${실루엣}${첫단체?그림(첫단체.갈래):""}</span>`;
+      const 얼 = `<span class="noface" style="--c:${첫단체?색(첫단체.갈래):"var(--ink-4)"}">${얼굴칸(p.이름, true)}${
+        첫단체 && !(p.얼굴 && p.얼굴.length) ? 그림(첫단체.갈래) : ""}</span>`;
       return `<article class="person">
         <div class="top"><div class="ph">${얼}</div>
           <div><h4>${에스(p.이름)}${p.ㄱ?` <span class="qn" data-q="${에스(p.이름)}">${p.ㄱ.근||p.ㄱ.n}</span>`:""}</h4>
@@ -268,6 +269,77 @@
           :`<div class="cap">교과서에 얼굴 사진이 없어 기호로 둡니다.</div>`}
       </article>`;}).join("")}</div>`;
   }
+
+  /* ── 겨루기 — "이 일을 한 사람은?" (통사 윤리 사상가 판별과 같은 틀) ── */
+  let 문제 = null, 푼수 = 0, 맞수 = 0, 본사람 = [];
+  const 뽑기 = a => a[Math.floor(Math.random()*a.length)];
+  function 문제내기(사람들){
+    const 뭉치 = 사람들.filter(p=>p.한줄 && (p.짝||[]).length);
+    if(!뭉치.length) return null;
+    let 남 = 뭉치.filter(p=>!본사람.includes(p.이름));
+    if(!남.length){ 본사람 = []; 남 = 뭉치; }
+    const 나 = 뽑기(남); 본사람.push(나.이름);
+    const 짝후보 = (나.짝||[]).filter(n=>사람표[n] && 사람표[n].한줄);
+    const 적 = 짝후보.length ? 뽑기(짝후보)
+             : (뽑기(뭉치.filter(p=>p.이름!==나.이름)) || {이름:"?"}).이름;
+    const 보기 = Math.random() < 0.5 ? [나.이름, 적] : [적, 나.이름];
+    return {나, 적, 보기, 답: 보기.indexOf(나.이름), 힌트: 0, 끝: false, 연: {}};
+  }
+  function 겨루기보기(사람들){
+    if(!문제 || !사람들.find(p=>p.이름===문제.나.이름)) 문제 = 문제내기(사람들);
+    if(!문제) return `<div class="empty">이 장에는 겨룰 인물이 모자랍니다.</div>`;
+    const t = 문제;
+    return `<div class="quiz">
+      <div class="qhead"><b>이 일을 한 사람은?</b>
+        <span class="score">${푼수 ? `${맞수}/${푼수} 맞음` : "첫 문제"}</span></div>
+      <div class="qsay">${에스(t.나.한줄)}</div>
+      <div class="hintrow"><span class="lab">막히면</span>
+        ${[["곳","어디서"],["때","언제"],["갈래","무슨 일"]].map(([k,라])=>
+          `<button class="hint" data-h="${k}"${t.연[k]?` data-open="1"`:""}>${에스(t.연[k]||라)}</button>`).join("")}</div>
+      <div class="qopts">${t.보기.map((n,i)=>
+        `<button class="qopt" data-v="${i}"${t.끝?" disabled":""}${
+          t.끝 ? ` data-s="${i===t.답?"ok":(i===t.고른?"no":"")}"` : ""}>${에스(n)}</button>`).join("")}</div>
+      ${t.끝 ? 풀이(t) : ""}</div>`;
+  }
+  function 풀이(t){
+    const 두 = [t.나.이름, t.적].map(n=>사람표[n]).filter(Boolean);
+    return `<div class="why">
+      <div class="wholine">${t.맞음 ? "맞았습니다" : "다시 봅시다"}${t.힌트 ? ` · 힌트 ${t.힌트}개` : ""}</div>
+      <div class="vs">${두.map((p,i)=>`
+        <div class="col${i===0?" me":""}">
+          <div class="vhead"><span class="ph">${얼굴칸(p.이름, true)}</span>
+            <div><h5>${에스(p.이름)}</h5>
+              <small>${[시기표[p.시기]?시기표[p.시기].이름:"", (p.곳||[]).slice(0,2).join("·"), p.갈래].filter(Boolean).join(" · ")}</small></div>
+            ${p.ㄱ?`<span class="qn" data-q="${에스(p.이름)}">${p.ㄱ.근||p.ㄱ.n}</span>`:""}</div>
+          <p>${에스(p.한줄||"")}</p>
+          <div class="vorgs">${(p.단체||[]).map(o=>{const x=GD.단체.find(y=>y.이름===o);
+            return x?`<span style="--c:${색(x.갈래)}">${에스(o)}</span>`:"";}).join("")}</div>
+          ${p.근거 && p.근거.쪽수 ? `<small class="src2">교과서 ${p.근거.쪽.slice(0,2).join(" · ")}</small>` : ""}
+        </div>`).join("")}</div>
+      <button class="btn-next" id="qnext">다음 문제 →</button></div>`;
+  }
+  document.addEventListener("click", ev=>{
+    const h = ev.target.closest(".hint");
+    if(h && 문제 && !문제.끝 && h.dataset.open!=="1"){
+      const 나 = 문제.나, 적 = 사람표[문제.적] || {}, 키 = h.dataset.h;
+      let 글 = "";
+      if(키==="곳"){ const a=(나.곳||[]).join("·")||"—", b=(적.곳||[]).join("·")||"—";
+        글 = a===b ? `둘 다 ${a}` : `${a}에서 활동`; }
+      if(키==="때"){ const a=시기표[나.시기]?시기표[나.시기].이름:"?", b=시기표[적.시기]?시기표[적.시기].이름:"?";
+        글 = a===b ? `둘 다 ${a}` : a; }
+      if(키==="갈래"){ 글 = (나.갈래===적.갈래) ? `둘 다 ${나.갈래}` : (나.갈래||"—"); }
+      h.textContent = 글; h.dataset.open = "1"; 문제.힌트++; 문제.연[키] = 글;   // 채점 뒤에도 남는다
+      return;
+    }
+    const o = ev.target.closest(".qopt");
+    if(o && 문제 && !문제.끝){
+      문제.고른 = +o.dataset.v;
+      문제.맞음 = 문제.고른 === 문제.답;
+      문제.끝 = true; 푼수++; if(문제.맞음) 맞수++;
+      그리기(); return;
+    }
+    if(ev.target.id === "qnext"){ 문제 = null; 그리기(); return; }
+  });
 
   /* ── 기출 쪽지 ── */
   const 쪽지 = document.createElement("div");
@@ -299,7 +371,10 @@
   function 그리기(){
     const 것 = 이장();
     표지(것);
-    $("#stage").innerHTML = 보기==="map" ? 지도보기(것) : 보기==="stem" ? 줄기보기(것) : 인물보기(것);
+    const 이장사람 = [...new Set([...것.flatMap(t=>t.사람), ...GD.사람.filter(p=>p.시기===장).map(p=>p.이름)])]
+        .map(n=>사람표[n]).filter(Boolean);
+    $("#stage").innerHTML = 보기==="map" ? 지도보기(것) : 보기==="stem" ? 줄기보기(것)
+        : 보기==="quiz" ? 겨루기보기(이장사람) : 인물보기(것);
   }
   그리기();
   옷(document.documentElement.dataset.look || "paper");
