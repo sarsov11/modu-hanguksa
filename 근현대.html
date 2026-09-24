@@ -62,7 +62,7 @@
   </div>
 </main>
 
-<script src="js/geundae.js?v=84d9a59efd"></script>
+<script src="js/geundae.js?v=9c17778130"></script>
 <script>
 (function(){
   const GD = window.GD, $ = s => document.querySelector(s);
@@ -246,7 +246,9 @@
 
   /* ── 인물 보기 ── */
   function 인물보기(단체들){
-    const 이름들 = [...new Set(단체들.flatMap(t=>t.사람))];
+    // 단체에 속한 사람 + 단체 없이 그 시기에 활동한 사람(안중근·서상돈처럼 혼자 한 이들)
+    const 이름들 = [...new Set([...단체들.flatMap(t=>t.사람),
+                                ...GD.사람.filter(p=>p.시기===장).map(p=>p.이름)])];
     const 사람 = 이름들.map(n=>사람표[n]).filter(Boolean)
       .sort((a,b)=>((b.ㄱ?b.ㄱ.근:0)-(a.ㄱ?a.ㄱ.근:0)) || (b.얼굴?1:0)-(a.얼굴?1:0));
     if(!사람.length) return `<div class="empty">이 장에는 이름이 붙은 인물이 없습니다.</div>`;
