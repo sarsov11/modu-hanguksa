@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="ko" data-skin="white">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>개념 흐름 — 모두의 한국사</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<script>try{var s=localStorage.getItem("hs-skin")||"white";document.documentElement.dataset.skin=s;document.documentElement.dataset.look=s==="night"?"night":"paper"}catch(e){}</script>
+<link rel="stylesheet" href="css/modu.css?v=5a6203a6d5">
+<link rel="stylesheet" href="css/concept.css?v=0366e182a1">
+</head>
+<body>
+<header class="nav" id="nav"></header>
+<script src="js/shell.js?v=cb9857063f"></script>
+
+<main class="wrap">
+  <div class="phead">
+    <div>
+      <span class="kicker"><i></i>개념 흐름</span>
+      <h1>사건을 <em>원인과 결과</em>로 잇는다</h1>
+      <p class="sub" id="lead"></p>
+    </div>
+  </div>
+
+  <div class="cwrap">
+    <nav class="toc" id="toc" data-fold="1" aria-label="단원 차례">
+      <button class="btn ghost sm tocbtn" id="tocbtn">단원 차례 <span>▾</span></button>
+      <label class="find"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+        <input id="find" type="search" placeholder="단원·핵심어 찾기" autocomplete="off"></label>
+      <div class="eraf" id="eraf"></div>
+      <div class="list" id="toclist"></div>
+    </nav>
+    <article class="unit" id="unit"></article>
+  </div>
+</main>
+
+<script src="js/timeline.js?v=38395e474f"></script>
+<script src="js/concept.js?v=62e308a68f"></script>
+<script>
+(function(){
+  const CN = window.CN, TL = window.TL;
+  const 해시 = () => decodeURIComponent(location.hash.slice(1));
+  const $ = s => document.querySelector(s);
+  const 에스 = s => (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+  const 사건 = Object.fromEntries(TL.사건.map(e=>[e.id,e]));
+  const 단원 = CN.단원, 표 = Object.fromEntries(단원.map(u=>[u.키,u]));
+  const 해 = y => y < 0 ? (-y > 9999 ? `${-y/10000}만 년 전` : `기원전 ${-y}`) : y;
+  const 시대순 = TL.시대표.map(t=>t.이름);
+  let 시대 = new URLSearchParams(location.search).get("era") || "", 찾기 = "";
+
+  const 원고수 = 단원.filter(u=>u.흐름.length).length;
+  $("#lead").innerHTML = `교과서 소단원 <b>${단원.length}개</b>를 <b>배경 → 전개 → 결과</b>의 줄기로 다시 썼습니다. 마디마다 연표 사건이 걸려 있고, 단원 끝에서 그 단원 기출로 바로 넘어갑니다.`;
+
+  /* ── 차례 ── */
+  $("#eraf").innerHTML = `<button data-e="" aria-pressed="${!시대}">전체</button>` + 시대순.filter(e=>단원.some(u=>u.시대.includes(e)))
+    .map(e=>`<button data-e="${e}" aria-pressed="${시대===e}">${e}</button>`).join("");
+  $("#eraf").addEventListener("click", ev=>{ const b = ev.target.closest("button"); if(!b) return; 시대 = b.dataset.e;
+    [...$("#eraf").children].forEach(x=>x.setAttribute("aria-pressed", String(x===b))); 차례();
+    const 첫 = 보이는단원()[0]; if(첫) location.hash = 첫.키; });
+  $("#find").addEventListener("input", ev=>{ 찾기 = ev.target.value.trim(); 차례(); });
+  $("#tocbtn").addEventListener("click", ()=>{ const t = $("#toc"); t.dataset.fold = t.dataset.fold==="1" ? "0" : "1"; });
+
+  function 맞음(u){
+    if(시대 && !u.시대.includes(시대)) return false;
+    if(!찾기) return true;
+    const 글 = [u.소단원, u.중단원, u.한줄, ...u.핵심어.map(k=>k.말), ...u.흐름.map(s=>s.제목)].join(" ");
+    return 글.includes(찾기);
+  }
+  const 보이는단원 = () => 단원.filter(맞음);
+  function 차례(){
+    let 대 = null, 중 = null, h = "";
+    보이는단원().forEach(u=>{
+      if(u.대단원 !== 대){ 대 = u.대단원; h += `<h5>${에스(u.책)} · ${에스(대 || "")}</h5>`; 중 = null; }
+      if(u.중단원 !== 중){ 중 = u.중단원; h += `<h6>${에스((중||"").replace(/^\d+\s*/,""))}</h6>`; }
+      h += `<a href="#${u.키}" data-k="${u.키}" class="${u.흐름.length?"":"nodoc"}">${에스(u.소단원)}${u.문항 && u.문항.length ? `<span class="n">${u.문항.length}</span>` : ""}</a>`;
+    });
+    $("#toclist").innerHTML = h || `<div class="empty">맞는 단원이 없습니다.</div>`;
+    표시();
+  }
+  function 표시(){ const k = 해시(); document.querySelectorAll("#toclist a").forEach(a=>a.classList.toggle("on", a.dataset.k===k)); }
+
+  /* ── 단원 ── */
+  function 사건칩(id){
+    const e = 사건[id]; if(!e) return "";
+    const n = (CN.사건문항||{})[id];
+    return `<a class="evchip" href="연표.html?ev=${id}" style="--c:var(--f-${e.분야||"없음"})"><i></i><time>${해(e.연)}</time>${에스(e.이름)}${n?`<span class="q">${n}</span>`:""}</a>`;
+  }
+  function 그리기(k){
+    const u = 표[k] || 보이는단원()[0] || 단원[0];
+    const i = 단원.indexOf(u), 앞 = 단원[i-1], 뒤 = 단원[i+1];
+    const 문항수 = (u.문항||[]).length;
+    let h = `<header class="uhead">
+      <div class="path"><span>${에스(u.책)}</span><span>${에스(u.대단원||"")}</span><span>${에스(u.중단원||"")}</span><span>교과서 ${에스(u.쪽)}쪽</span></div>
+      <h2>${에스(u.소단원)}</h2>
+      ${u.한줄 ? `<p class="one">${에스(u.한줄)}</p>` : ""}
+      <div class="acts">${문항수 ? `<a class="btn" href="풀이.html?unit=${u.키}">이 단원 기출 ${문항수}문항 풀기</a>` : ""}
+        ${u.시대[0] ? `<a class="btn ghost" href="연표.html#era-${encodeURIComponent(u.시대[0])}">연표에서 ${에스(u.시대.join("·"))} 보기</a>` : ""}</div>
+    </header>`;
+    if(!u.흐름.length){
+      h += `<div class="notice wait">이 단원 원고는 정리 중입니다. 아래 사건은 연표에서 볼 수 있습니다.</div>
+        <div class="story"><div class="evs" style="margin-top:12px">${u.사건목록.map(사건칩).join("")}</div></div>`;
+    } else {
+      h += `<section class="blk"><h3>흐름 <small>배경 → 전개 → 결과</small></h3><ol class="story">${u.흐름.map(s=>`
+        <li data-k="${에스(s.갈래)}"><span class="knot">${에스(s.갈래)}</span><div class="body">
+          <h4>${에스(s.제목)}${s.때?`<time>${에스(s.때)}</time>`:""}</h4><p>${에스(s.내용)}</p>
+          ${s.사건.length ? `<div class="evs">${s.사건.map(사건칩).join("")}</div>` : ""}</div></li>`).join("")}</ol></section>`;
+      if(u.인과.length) h += `<section class="blk"><h3>원인과 결과</h3><div class="cause">${u.인과.map(c=>
+        `<div><p><b>원인</b>${에스(c.원인)}</p><span>→</span><p class="r"><b>결과</b>${에스(c.결과)}</p></div>`).join("")}</div></section>`;
+      if(u.비교.length) h += `<section class="blk"><h3>견주어 보기</h3>${u.비교.map(c=>`<div class="cmp"><h4>${에스(c.주제)}</h4><dl>${
+        (c.항목||[]).map(x=>`<dt>${에스(x.이름)}</dt><dd>${에스(x.내용)}</dd>`).join("")}</dl></div>`).join("")}</section>`;
+      if(u.핵심어.length) h += `<section class="blk"><h3>핵심어</h3><div class="keys">${u.핵심어.map(x=>`<div><b>${에스(x.말)}</b><p>${에스(x.뜻)}</p></div>`).join("")}</div></section>`;
+      if(u.기출포인트.length) h += `<section class="blk"><h3>시험에서 가르는 것</h3><ul class="pts">${u.기출포인트.map(x=>`<li>${에스(x)}</li>`).join("")}</ul>
+        ${문항수 ? `<div style="margin-top:14px"><a class="btn" href="풀이.html?unit=${u.키}">이 단원 기출 ${문항수}문항 풀기</a></div>` : ""}</section>`;
+    }
+    h += `<nav class="unav">${앞?`<a href="#${앞.키}"><small>← 앞 단원</small><b>${에스(앞.소단원)}</b></a>`:"<span></span>"}${뒤?`<a class="nx" href="#${뒤.키}"><small>다음 단원 →</small><b>${에스(뒤.소단원)}</b></a>`:""}</nav>`;
+    $("#unit").innerHTML = h;
+    document.title = `${u.소단원} — 개념 흐름 — 모두의 한국사`;
+    try{ localStorage.setItem("hs-lastunit", u.키); }catch(e){}
+    표시();
+  }
+  addEventListener("hashchange", ()=>{ 그리기(해시()); scrollTo({top: $(".cwrap").offsetTop - 80}); });
+  차례();
+  그리기(해시() || (보이는단원()[0]||{}).키);
+})();
+</script>
+</body>
+</html>

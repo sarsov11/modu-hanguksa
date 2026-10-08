@@ -1,87 +1,110 @@
 <!doctype html>
-<html lang="ko" data-skin="white" data-look="paper">
+<html lang="ko" data-skin="white">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>모두의 한국사</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<script>try{var L=localStorage.getItem("hs-look");if(L)document.documentElement.dataset.look=L}catch(e){}</script>
-<link rel="stylesheet" href="css/base.css?v=4488879af9">
-<link rel="stylesheet" href="css/timeline.css?v=375c6336db">
+<script>try{var s=localStorage.getItem("hs-skin")||"white";document.documentElement.dataset.skin=s;document.documentElement.dataset.look=s==="night"?"night":"paper"}catch(e){}</script>
+<link rel="stylesheet" href="css/modu.css?v=5a6203a6d5">
 <style>
-  .hero{max-width:var(--wrap);margin:0 auto;padding:68px 22px 26px}
-  .hero h1{font:800 46px/1.18 var(--sans);letter-spacing:-.045em;margin:0 0 18px;color:var(--ink)}
-  .hero h1 em{color:var(--red);font-style:normal}
-  .hero p{color:var(--ink-3);font:400 16px/1.85 var(--sans);max-width:740px;margin:0 0 26px}
-  .hero p b{color:var(--ink-2);font-weight:600}
-  .keys{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 30px}
-  .keys span{display:inline-flex;align-items:center;gap:8px;border:1px solid color-mix(in srgb,var(--c) 45%,var(--line-2));
-    background:var(--c-soft);color:var(--ink);border-radius:8px;padding:9px 14px;font:600 14px/1 var(--sans)}
-  .keys span::before{content:"";width:9px;height:9px;border-radius:2px;background:var(--c)}
-  .doors{max-width:var(--wrap);margin:0 auto;padding:0 22px 40px;display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
-  .door{display:block;background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r2);
-    padding:20px 22px;box-shadow:var(--shadow);transition:border-color .12s,transform .12s}
-  .door:hover{border-color:var(--red);transform:translateY(-2px)}
-  .door h2{margin:0 0 8px;font:800 20px/1.3 var(--sans);letter-spacing:-.03em;color:var(--ink)}
-  .door p{margin:0;color:var(--ink-3);font:400 13.5px/1.7 var(--sans)}
-  .door .go{display:inline-block;margin-top:14px;font:700 13px/1 var(--sans);color:var(--red)}
-  .stat{max-width:var(--wrap);margin:0 auto;padding:0 22px 90px;display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
-  .stat div{border:1px solid var(--line-2);border-radius:var(--r2);background:var(--surface);padding:16px 18px}
-  .stat b{display:block;font:800 28px/1 var(--sans);color:var(--ink);font-variant-numeric:tabular-nums}
-  .stat small{display:block;margin-top:9px;color:var(--ink-3);font:500 12.5px/1.5 var(--sans)}
-  @media (max-width:760px){ .hero{padding:40px 14px 20px} .hero h1{font-size:30px} .hero p{font-size:14.5px}
-    .doors,.stat{padding-left:14px;padding-right:14px} }
+  .go2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;margin-top:26px}
+  @media(max-width:760px){.go2{grid-template-columns:1fr}}
+  .resume{display:flex;align-items:center;gap:14px;border:1px solid var(--line);border-radius:var(--r2);background:var(--surface);padding:16px 18px}
+  .resume .ix{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:0 0 40px;
+    background:var(--red-soft);color:var(--red);font-weight:900;font-size:15px}
+  .resume b{display:block;font-size:16px;color:var(--ink);font-weight:800}
+  .resume span{display:block;font-size:14px;color:var(--ink-4);font-weight:600;margin-top:2px}
+  .resume .act{margin-left:auto}
+  .doors{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-top:6px}
+  .door{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:var(--r2);background:var(--surface);padding:18px 18px 16px;transition:border-color .12s}
+  .door:hover{border-color:var(--ink)}
+  .door .k{font-size:13.5px;font-weight:800;color:var(--red)}
+  .door h3{font-size:20px;margin-top:6px}
+  .door p{font-size:14.5px;line-height:1.65;color:var(--ink-3);margin-top:8px;flex:1}
+  .door .n{font-family:var(--mono);font-size:14px;font-weight:800;color:var(--ink-2);margin-top:12px}
+  .fkeys{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
 </style>
 </head>
 <body>
-<header class="top"><div class="top-in">
-  <div class="brand"><b>모두의 <em>한국사</em></b></div>
-  <nav class="nav">
-    <a href="연표.html">연표</a><a href="계보.html">왕조 계보</a><a href="근현대.html">근현대 지도</a>
-  </nav>
-</div></header>
+<header class="nav" id="nav"></header>
+<script src="js/shell.js?v=cb9857063f"></script>
 
-<section class="hero">
-  <h1>한국사를 <em>한 장의 연표</em>로</h1>
-  <p>정치·대외·경제·사회·문화를 따로 외우지 마세요. <b>다섯 빛깔로 갈라 한 연표에 얹어</b>
-     같은 해에 무엇이 함께 일어났는지 눈으로 잡습니다.
-     사건은 <b>미래엔 2022개정 한국사1·한국사2 부록 연표와 역사부도</b>를 지면과 한 줄씩 맞대어 옮겼고,
-     <b>학력평가·모의평가·수능 133회분(2015~2026)</b>에서 실제 출제된 것을 굵기와 형광펜으로 표시했습니다.</p>
-  <div class="keys">
-    <span style="--c:var(--f-정치);--c-soft:var(--f-정치-soft)">정치</span>
-    <span style="--c:var(--f-대외);--c-soft:var(--f-대외-soft)">대외</span>
-    <span style="--c:var(--f-경제);--c-soft:var(--f-경제-soft)">경제</span>
-    <span style="--c:var(--f-사회);--c-soft:var(--f-사회-soft)">사회</span>
-    <span style="--c:var(--f-문화);--c-soft:var(--f-문화-soft)">문화</span>
+<main class="wrap">
+  <div class="phead">
+    <div>
+      <span class="kicker"><i></i>고등 한국사 · 미래엔 2022 개정</span>
+      <h1>사건을 <em>흐름</em>으로 잇고, <em>기출</em>로 확인한다</h1>
+      <p class="sub">교과서 소단원 86개를 배경·전개·결과로 다시 쓰고, 연표 사건 335건과 학력평가·모의평가 기출을 서로 이었습니다.
+        개념에서 사건으로, 사건에서 그 사건을 물은 문항으로 바로 넘어갑니다.</p>
+      <div class="fkeys">
+        <span class="tag f" style="--c:var(--f-정치);--c-soft:var(--f-정치-soft)">정치</span>
+        <span class="tag f" style="--c:var(--f-대외);--c-soft:var(--f-대외-soft)">대외</span>
+        <span class="tag f" style="--c:var(--f-경제);--c-soft:var(--f-경제-soft)">경제</span>
+        <span class="tag f" style="--c:var(--f-사회);--c-soft:var(--f-사회-soft)">사회</span>
+        <span class="tag f" style="--c:var(--f-문화);--c-soft:var(--f-문화-soft)">문화</span>
+      </div>
+    </div>
+    <div class="pheadact">
+      <a class="btn" href="개념.html">개념 흐름부터</a>
+      <a class="btn ghost" href="풀이.html">기출 풀기</a>
+    </div>
   </div>
-</section>
 
-<section class="doors">
-  <a class="door" href="연표.html"><h2>연표</h2>
-    <p>선사부터 오늘까지 한 줄에. 분야 다섯 빛깔로 갈라 보고, 기출 빈출은 굵게·형광으로 표시했습니다.</p>
-    <span class="go">연표 보기 →</span></a>
-  <a class="door" href="계보.html"><h2>왕조 계보</h2>
-    <p>고구려·백제·신라·발해·고려·조선의 역대 왕과 재위 기간, 그 왕 때 일어난 일과 기출 횟수.</p>
-    <span class="go">계보 보기 →</span></a>
-  <a class="door" href="근현대.html"><h2>근현대 지도</h2>
-    <p>독립운동 단체를 지도 위 지명에 얹고 이끈 사람과 이어 놓았습니다. 시기별로 골라 보세요.</p>
-    <span class="go">지도 보기 →</span></a>
-</section>
+  <div class="go2" id="resume"></div>
 
-<div class="stat" id="stat"></div>
+  <div class="sec"><h2>무엇을 할까</h2></div>
+  <div class="doors" id="doors"></div>
+
+  <div class="sec"><h2>들어 있는 것</h2></div>
+  <div class="stats" id="stats"></div>
+
+  <footer class="foot">
+    사건은 <b>미래엔 2022개정 한국사1·2 부록 연표와 역사부도</b>에서 옮겼고, 문항은 <b>2015~2026 학력평가·모의평가</b> 시험지와 해설지를 썼습니다.
+    문항 저작권은 출제 기관(시도교육청·한국교육과정평가원)에 있습니다.
+  </footer>
+</main>
 
 <script src="js/timeline.js?v=38395e474f"></script>
 <script src="js/gyebo.js?v=c0932bc868"></script>
+<script src="js/concept.js?v=62e308a68f" onerror="window.CN=null"></script>
+<script src="js/qbank.js?v=303e9b7155" onerror="window.QB=null"></script>
 <script>
+(function(){
+  const TL = window.TL, CN = window.CN || {단원:[],사건:{}}, QB = window.QB || {회차:[],문항:[]};
   const ko = TL.사건.filter(e=>e.계열==="한국사");
-  const 기출 = ko.filter(e=>e.ㄱ).length;
-  const 왕 = (window.GB ? GB.왕조.reduce((a,g)=>a+g.왕.length,0) : 0);
-  document.getElementById("stat").innerHTML = [
-    [ko.length, "한국사 사건"], [기출, "기출에 나온 사건"], [왕, "역대 왕(6개 왕조)"],
-    [133, "분석한 모의고사 회차"], [5, "분야 빛깔"],
-  ].map(([n,t])=>`<div><b>${n}</b><small>${t}</small></div>`).join("");
+  const 왕 = window.GB ? GB.왕조.reduce((a,g)=>a+g.왕.length,0) : 0;
+  const 읽기 = k => { try{ return JSON.parse(localStorage.getItem(k)) || null; }catch(e){ return null; } };
+  const 에스 = s => (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;");
+
+  // 이어서 — 마지막에 본 단원 · 틀린 문항
+  const 끝단원 = (()=>{ try{ return localStorage.getItem("hs-lastunit"); }catch(e){ return null; } })();
+  const u = CN.단원.find(x=>x.키===끝단원);
+  const 기록 = 읽기("hs-qlog") || {};
+  const 틀린 = Object.values(기록).filter(v=>!v[0]).length, 푼 = Object.keys(기록).length;
+  const 칸 = [];
+  칸.push(u ? `<div class="resume"><span class="ix">개념</span><div><b>${에스(u.소단원)}</b><span>마지막으로 본 단원</span></div><a class="btn sm act" href="개념.html#${u.키}">이어 읽기</a></div>`
+            : `<div class="resume"><span class="ix">개념</span><div><b>선사 시대의 전개와 국가의 형성</b><span>첫 단원부터</span></div><a class="btn sm act" href="개념.html">읽기</a></div>`);
+  칸.push(푼 ? `<div class="resume"><span class="ix">오답</span><div><b>틀린 문항 ${틀린}개</b><span>지금까지 ${푼}문항 풀었음</span></div><a class="btn sm act" href="풀이.html">오답 노트</a></div>`
+             : `<div class="resume"><span class="ix">기출</span><div><b>최근 회차 하나 풀어 보기</b><span>20문항 · 30분 · 채점과 등급</span></div><a class="btn sm act" href="풀이.html${QB.회차[0]?`?p=${QB.회차[0].p}`:""}">시작</a></div>`);
+  document.getElementById("resume").innerHTML = 칸.join("");
+
+  const 문 = [
+    ["개념.html","읽기","개념 흐름",`소단원마다 배경 → 전개 → 결과를 이어 쓴 원고. 원인과 결과, 견주어 볼 것, 시험에서 가르는 것까지.`,`${CN.단원.filter(x=>x.흐름.length).length}개 단원`],
+    ["연표.html","보기","연표",`선사부터 오늘까지 한 줄. 분야 다섯 빛깔로 칸을 나누고, 사건을 누르면 배경·전개·결과가 열립니다.`,`${ko.length}건 · 기출 ${ko.filter(e=>e.ㄱ).length}건 표시`],
+    ["풀이.html","풀기","기출 풀이",`회차 실전(30분·채점·등급), 시대별·사건별 연습, 오답 노트. 해설 옆에 그 사건의 흐름이 붙습니다.`,`${QB.회차.length}회분 · ${QB.문항.length.toLocaleString()}문항`],
+    ["계보.html","보기","왕조 계보",`여섯 왕조 역대 왕의 재위 기간과 그때 일어난 일, 시험이 그 왕을 물은 횟수.`,`${왕}명`],
+    ["근현대.html","보기","근현대",`독립운동 단체와 인물을 지도·줄기·인물 세 가지로. 네 시기로 끊어 봅니다.`,`네 장`],
+  ];
+  document.getElementById("doors").innerHTML = 문.map(([h,k,t,p,n])=>`<a class="door" href="${h}"><span class="k">${k}</span><h3>${t}</h3><p>${p}</p><span class="n">${n}</span></a>`).join("");
+  document.getElementById("stats").innerHTML = [
+    [CN.단원.length, "교과서 소단원"], [Object.keys(CN.사건||{}).length, "배경·결과를 붙인 사건"], [ko.length, "한국사 연표 사건"],
+    [QB.문항.length.toLocaleString(), "풀 수 있는 기출 문항"], [QB.회차.length, "학평·모평 회차"], [왕, "역대 왕"],
+  ].map(([n,t])=>`<div class="stat"><b>${n}</b><span>${t}</span></div>`).join("");
+})();
 </script>
 </body>
 </html>

@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="ko" data-skin="white">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>기출 풀이 — 모두의 한국사</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<script>try{var s=localStorage.getItem("hs-skin")||"white";document.documentElement.dataset.skin=s;document.documentElement.dataset.look=s==="night"?"night":"paper"}catch(e){}</script>
+<link rel="stylesheet" href="css/modu.css?v=5a6203a6d5">
+<style>
+  /* ── 고르기 ── */
+  .modes{margin-top:22px}
+  .pick{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;margin-top:22px;align-items:start}
+  @media(max-width:980px){.pick{grid-template-columns:1fr}}
+  .filt{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+  .filt .lab{font-size:14px;font-weight:800;color:var(--ink-4);margin-right:2px}
+  .papers{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+  .paper{display:block;text-align:left;border:1px solid var(--line);border-radius:var(--r2);background:var(--surface);padding:14px 16px;cursor:pointer;transition:border-color .12s}
+  .paper:hover{border-color:var(--ink)}
+  .paper b{display:block;font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.03em}
+  .paper span{display:block;font-size:13.5px;color:var(--ink-4);font-weight:600;margin-top:4px}
+  .paper .res{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:13.5px;font-weight:700;color:var(--ink-3)}
+  .paper .res .g{font-family:var(--mono);font-weight:800;color:#fff;background:var(--ink);border-radius:4px;padding:1px 6px}
+  .yearh{grid-column:1/-1;font-size:15px;font-weight:900;color:var(--ink);margin:14px 0 2px}
+  .yearh:first-child{margin-top:0}
+  .eragrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+  .erab{display:block;text-align:left;border:1px solid var(--line);border-radius:var(--r2);background:var(--surface);padding:14px 16px;cursor:pointer}
+  .erab:hover{border-color:var(--ink)}
+  .erab b{font-size:17px;font-weight:900;color:var(--ink)}
+  .erab span{display:block;font-size:13.5px;color:var(--ink-4);font-weight:600;margin:3px 0 9px}
+  .side .card+.card{margin-top:14px}
+  .rate{display:grid;grid-template-columns:72px 1fr 64px;gap:10px;align-items:center;font-size:14px;font-weight:700;padding:5px 0}
+  .rate em{font-style:normal;font-family:var(--mono);font-weight:800;text-align:right;color:var(--ink-3)}
+  .evlist{display:grid;gap:6px}
+  .evrow{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:var(--r1);background:var(--surface);padding:9px 12px;cursor:pointer;text-align:left;width:100%}
+  .evrow:hover{border-color:var(--ink)}
+  .evrow b{flex:1;font-size:15px;font-weight:700;color:var(--ink)}
+  .evrow .y{font-family:var(--mono);font-size:13.5px;font-weight:800;color:var(--ink-4);width:64px}
+  .evrow .n{font-family:var(--mono);font-size:13.5px;font-weight:800;color:var(--red)}
+
+  /* ── 풀기 ── */
+  .solve{max-width:860px;margin:0 auto}
+  .exbar{position:sticky;top:var(--hh);z-index:40;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 0;margin-bottom:18px}
+  .exbar .in{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .exbar .ttl{font-size:15px;font-weight:800;color:var(--ink)}
+  .exbar .tm{font-family:var(--mono);font-size:22px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
+  .exbar .tm.warn{color:var(--red)}
+  .exbar .pg{margin-left:auto;font-size:14.5px;color:var(--ink-3);font-weight:700}
+  .exbar .pg b{font-family:var(--mono);color:var(--ink)}
+  .omr{display:grid;grid-template-columns:repeat(20,1fr);gap:4px;margin-top:10px}
+  .omr button{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--ink-4);border-radius:5px;padding:5px 0;cursor:pointer;
+    font-family:var(--mono);font-size:13.5px;font-weight:800;line-height:1.2}
+  .omr button[data-done="1"]{background:var(--surface-3);color:var(--ink);border-color:var(--line-3)}
+  .omr button[data-s="ok"]{background:var(--ok-soft);border-color:var(--ok);color:var(--ok)}
+  .omr button[data-s="no"]{background:var(--red-soft);border-color:var(--red);color:var(--red)}
+  .omr button.cur{outline:2px solid var(--ink);outline-offset:1px}
+  @media(max-width:700px){.omr{grid-template-columns:repeat(10,1fr)}}
+  .qc{background:var(--surface);border:1px solid var(--line);border-radius:var(--r2);overflow:hidden;scroll-margin-top:calc(var(--hh) + 120px)}
+  .qc+.qc{margin-top:18px}
+  .qh{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:11px 18px;border-bottom:1px solid var(--line)}
+  .qh .no{font-family:var(--mono);font-size:16px;font-weight:800;color:var(--ink)}
+  .qh .src{font-size:13.5px;color:var(--ink-4);font-weight:700}
+  .qh .sp{flex:1}
+  .qimg{padding:18px 18px 8px;background:#fff}
+  .qimg img{display:block;width:100%;max-width:600px;height:auto;margin:0 auto}
+  :root[data-skin="night"] .qimg{border-bottom:1px solid var(--line)}
+  .ans{display:flex;gap:8px;padding:14px 18px;flex-wrap:wrap;border-top:1px solid var(--line)}
+  .ans button{appearance:none;flex:1;min-width:52px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink);border-radius:var(--r1);
+    padding:10px 6px;font-size:18px;font-weight:800;cursor:pointer;transition:.12s}
+  .ans button:hover{border-color:var(--ink)}
+  .ans button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+  .ans button.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+  .ans button.no{background:var(--red);border-color:var(--red);color:#fff}
+  .ans button[disabled]{cursor:default}
+  .exp{padding:16px 18px 18px;border-top:1px solid var(--line);background:var(--surface-2)}
+  .exp .verdict{font-size:16px;font-weight:900;margin-bottom:8px}
+  .exp .verdict.ok{color:var(--ok)} .exp .verdict.no{color:var(--red)}
+  .exp .intent{font-size:14.5px;font-weight:800;color:var(--ink);margin-bottom:6px}
+  .exp p{font-size:15px;line-height:1.75;color:var(--ink-2);white-space:pre-line}
+  .exp .links{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .exp .ctx{margin-top:12px;border:1px solid var(--line);border-radius:var(--r1);background:var(--surface);padding:12px 14px}
+  .exp .ctx h6{margin:0 0 6px;font-size:14px;font-weight:900;color:var(--ink)}
+  .exp .ctx p{font-size:14.5px;color:var(--ink-3)}
+  .exp .ctx p em{font-style:normal;font-weight:800;color:var(--ink-2);margin-right:4px}
+  .nextrow{display:flex;gap:10px;justify-content:space-between;margin:18px 0 120px;flex-wrap:wrap}
+  .result{border:1px solid var(--line);border-radius:var(--r2);background:var(--surface);padding:22px 24px;margin-bottom:22px}
+  .result .big{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+  .result .big b{font-family:var(--mono);font-size:48px;font-weight:800;color:var(--ink);letter-spacing:-.04em}
+  .result .big span{font-size:16px;font-weight:800;color:var(--ink-3)}
+  .result .big span.grade,.result .grade{font-family:var(--mono);font-size:20px;font-weight:800;color:#fff;background:var(--red);border-radius:6px;padding:3px 10px}
+  .result .by{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px 18px;margin-top:16px}
+  .hide{display:none!important}
+  .qimg img{cursor:zoom-in}
+  @media(max-width:700px){.qimg{padding:10px 4px 4px}.qh{padding:10px 12px}.ans{padding:12px}.exp{padding:14px 14px 16px}}
+  .zoom{position:fixed;inset:0;z-index:90;background:rgba(10,12,16,.86);overflow:auto;display:flex;align-items:flex-start;justify-content:center;padding:56px 0 40px}
+  .zoom img{display:block;width:auto;max-width:none;height:auto;background:#fff;border-radius:6px}
+  @media(min-width:701px){.zoom img{width:min(900px,92vw)}}
+  .zoom button{position:fixed;top:12px;right:12px;width:40px;height:40px;border-radius:8px;border:0;background:#fff;color:#111;font-size:20px;font-weight:800;cursor:pointer}
+</style>
+</head>
+<body>
+<header class="nav" id="nav"></header>
+<script src="js/shell.js?v=cb9857063f"></script>
+
+<main class="wrap">
+  <section id="home">
+    <div class="phead">
+      <div>
+        <span class="kicker"><i></i>기출 풀이</span>
+        <h1>실제 시험지로 <em>풀고</em>, 틀린 건 흐름으로</h1>
+        <p class="sub" id="lead"></p>
+      </div>
+      <div class="pheadact"><button class="btn" id="quick">아무 시대 10문항</button></div>
+    </div>
+    <div class="segs modes" id="modes" role="tablist">
+      <button data-m="paper" aria-selected="true">회차 실전</button>
+      <button data-m="era" aria-selected="false">시대별</button>
+      <button data-m="ev" aria-selected="false">자주 나온 사건</button>
+      <button data-m="wrong" aria-selected="false">오답 노트</button>
+    </div>
+    <div class="pick">
+      <div id="pickbody"></div>
+      <aside class="side">
+        <div class="card"><div class="hd"><h3>내 기록</h3><span class="note" id="mytot" style="font-size:14px;color:var(--ink-4);font-weight:700"></span></div>
+          <div class="bd" id="myrate"></div></div>
+        <div class="card"><div class="bd" style="font-size:14px;color:var(--ink-3);line-height:1.7">
+          한국사는 절대평가입니다. 50점 만점에 <b>40점 이상 1등급</b>, 그 아래로 5점마다 한 등급씩 내려갑니다.
+          문항은 시험지를 그대로 잘라 실었고, 정답과 해설은 각 회차 정답표·해설지를 따랐습니다.</div></div>
+      </aside>
+    </div>
+  </section>
+
+  <section id="solve" class="solve hide">
+    <div class="exbar"><div class="in">
+      <button class="btn ghost sm" id="back">← 목록</button>
+      <span class="ttl" id="sv-title"></span>
+      <span class="tm hide" id="timer">30:00</span>
+      <span class="pg" id="sv-pg"></span>
+      <button class="btn sm hide" id="submit">채점하기</button>
+    </div><div class="omr" id="omr"></div></div>
+    <div id="result"></div>
+    <div id="qs"></div>
+    <div class="nextrow" id="nextrow"></div>
+  </section>
+</main>
+
+<script src="js/timeline.js?v=38395e474f"></script>
+<script src="js/concept.js?v=62e308a68f" onerror="window.CN=null"></script>
+<script src="js/qbank.js?v=303e9b7155"></script>
+<script>
+(function(){
+  const QB = window.QB, TL = window.TL, CN = window.CN || {단원:[], 사건:{}};
+  const $ = s => document.querySelector(s);
+  const 원 = "①②③④⑤";
+  const 에스 = s => (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+  const 사건 = Object.fromEntries(TL.사건.map(e=>[e.id,e]));
+  const 단원 = Object.fromEntries((CN.단원||[]).map(u=>[u.키,u]));
+  const 문항 = QB.문항, 문항표 = Object.fromEntries(문항.map(q=>[q.id,q]));
+  const 회차표 = Object.fromEntries(QB.회차.map(p=>[p.p,p]));
+  const 시대순 = TL.시대표.map(t=>t.이름);
+  const 해 = y => y < 0 ? (-y > 9999 ? `${-y/10000}만 년 전` : `기원전 ${-y}`) : y;
+
+  /* ── 기록: hs-qlog {문항id: [맞음0/1, 고른 번호, 때]} · hs-plog {회차: [점수, 등급, 때]} ── */
+  const 읽기 = k => { try{ return JSON.parse(localStorage.getItem(k)) || {}; }catch(e){ return {}; } };
+  const 쓰기 = (k,v) => { try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} };
+  let 기록 = 읽기("hs-qlog"), 회기록 = 읽기("hs-plog");
+  function 적기(q, 고름){ 기록[q.id] = [고름===q.a?1:0, 고름, Date.now()]; 쓰기("hs-qlog", 기록); }
+
+  const 등급 = s => s>=40?1:s>=35?2:s>=30?3:s>=25?4:s>=20?5:s>=15?6:s>=10?7:s>=5?8:9;
+  const 회이름 = p => { const r = 회차표[p]; return r ? `${r.연} ${r.이름}` : p; };
+
+  $("#lead").innerHTML = `학력평가·모의평가 <b>${QB.회차.length}회분 ${문항.length.toLocaleString()}문항</b>. 문항마다 해설과, 그 문항이 묻는 사건의 배경·결과, 교과서 흐름으로 이어집니다.`;
+
+  /* ═══ 내 기록 ═══ */
+  function 내기록(){
+    const 푼 = Object.keys(기록).filter(id=>문항표[id]);
+    const 맞 = 푼.filter(id=>기록[id][0]).length;
+    $("#mytot").textContent = 푼.length ? `${푼.length}문항 · ${Math.round(맞/푼.length*100)}%` : "아직 없음";
+    const 셈 = {};
+    푼.forEach(id=>{ const e = 문항표[id].era || "기타"; 셈[e] = 셈[e] || [0,0]; 셈[e][0]++; 셈[e][1] += 기록[id][0]; });
+    $("#myrate").innerHTML = 시대순.map(e=>{
+      const c = 셈[e]; if(!c) return `<div class="rate"><span>${e}</span><span class="track"><i style="width:0"></i></span><em>—</em></div>`;
+      const p = Math.round(c[1]/c[0]*100);
+      return `<div class="rate"><span>${e}</span><span class="track"><i style="width:${p}%;background:${p<60?"var(--red)":"var(--ok)"}"></i></span><em>${p}% · ${c[0]}</em></div>`;
+    }).join("");
+  }
+
+  /* ═══ 고르기 화면 ═══ */
+  let 고르기 = "paper", 학년 = "all", 개정만 = false;
+  function 목록(){
+    [...$("#modes").children].forEach(b=>b.setAttribute("aria-selected", String(b.dataset.m===고르기)));
+    const 거름 = `<div class="filt"><span class="lab">학년</span><div class="segs" id="gseg">${[["all","전체"],["2","고2"],["3","고3"]].map(x=>
+        `<button data-g="${x[0]}" aria-pressed="${학년===x[0]}">${x[1]}</button>`).join("")}</div>
+        <button class="chip" id="rev" aria-pressed="${개정만}" style="--c:var(--red);--c-soft:var(--red-soft)"><i></i>2018년 이후만</button></div>`;
+    const 맞는회 = p => (학년==="all" || String(p.학년)===학년) && (!개정만 || p.연 >= 2018);
+    const 맞는문항 = q => 맞는회(회차표[q.p]);
+    let h = "";
+    if(고르기==="paper"){
+      let 연 = null;
+      h = 거름 + `<div class="papers">${QB.회차.filter(맞는회).map(p=>{
+        const 머리 = p.연!==연 ? `<div class="yearh">${p.연}</div>` : ""; 연 = p.연;
+        const r = 회기록[p.p];
+        return 머리 + `<button class="paper" data-p="${p.p}"><b>${에스(p.이름.replace(/ 한국사$/,""))}</b><span>${p.연}년 · 고${p.학년} · ${p.수}문항</span>${
+          r ? `<span class="res"><span class="g">${r[1]}등급</span>${r[0]}점</span>` : ""}</button>`;
+      }).join("")}</div>`;
+    } else if(고르기==="era"){
+      h = 거름 + `<div class="eragrid">${시대순.map(e=>{
+        const qs = 문항.filter(q=>q.era===e && 맞는문항(q)); if(!qs.length) return "";
+        const 푼 = qs.filter(q=>기록[q.id]).length, 틀 = qs.filter(q=>기록[q.id] && !기록[q.id][0]).length;
+        return `<button class="erab" data-era="${e}"><b>${e}</b><span>${qs.length}문항 · 푼 ${푼} · 틀린 ${틀}</span><span class="track"><i style="width:${qs.length?푼/qs.length*100:0}%"></i></span></button>`;
+      }).join("")}</div>`;
+    } else if(고르기==="ev"){
+      const 셈 = {};
+      문항.filter(맞는문항).forEach(q=>(q.ev||[]).forEach(id=>{ 셈[id] = (셈[id]||0) + 1; }));
+      const 줄 = Object.entries(셈).filter(([id])=>사건[id]).sort((a,b)=>b[1]-a[1]);
+      h = 거름 + `<div class="evlist">${줄.map(([id,n])=>{ const e = 사건[id];
+        return `<button class="evrow" data-ev="${id}"><span class="y">${해(e.연)}</span><b>${에스(e.이름)}</b><span class="tag f" style="--c:var(--f-${e.분야});--c-soft:var(--f-${e.분야}-soft)">${e.분야||""}</span><span class="n">${n}문항</span></button>`;
+      }).join("")}</div>`;
+    } else {
+      const 틀린 = Object.keys(기록).filter(id=>문항표[id] && !기록[id][0]).sort((a,b)=>기록[b][2]-기록[a][2]);
+      h = 틀린.length ? `<div class="filt"><span class="lab">틀린 문항 ${틀린.length}개</span><button class="btn sm" id="wrongall">다시 풀기</button></div>
+        <div class="evlist">${틀린.map(id=>{ const q = 문항표[id];
+          return `<button class="evrow" data-q="${id}"><span class="y">${q.era||""}</span><b>${에스(q.t || q.q || "")}</b><span class="tag">${에스(회이름(q.p))} ${q.n}번</span></button>`; }).join("")}</div>`
+        : `<div class="empty">틀린 문항이 아직 없습니다. 풀다가 틀린 문항이 여기 모입니다.</div>`;
+    }
+    $("#pickbody").innerHTML = h;
+    내기록();
+  }
+  $("#modes").addEventListener("click", ev=>{ const b = ev.target.closest("button"); if(!b) return; 고르기 = b.dataset.m; 목록(); });
+  $("#pickbody").addEventListener("click", ev=>{
+    const g = ev.target.closest("[data-g]"); if(g){ 학년 = g.dataset.g; 목록(); return; }
+    if(ev.target.closest("#rev")){ 개정만 = !개정만; 목록(); return; }
+    const p = ev.target.closest("[data-p]"); if(p){ 실전(p.dataset.p); return; }
+    const e = ev.target.closest("[data-era]"); if(e){ 연습(문항.filter(q=>q.era===e.dataset.era), `${e.dataset.era} 기출`, true); return; }
+    const v = ev.target.closest("[data-ev]"); if(v){ 연습(문항.filter(q=>(q.ev||[]).includes(v.dataset.ev)), `${사건[v.dataset.ev].이름} 기출`, false); return; }
+    const w = ev.target.closest("[data-q]"); if(w){ 연습([문항표[w.dataset.q]], "오답 다시 풀기", false); return; }
+    if(ev.target.closest("#wrongall")){ 연습(Object.keys(기록).filter(id=>문항표[id] && !기록[id][0]).map(id=>문항표[id]), "오답 다시 풀기", false); }
+  });
+  $("#quick").addEventListener("click", ()=>연습(섞기(문항.filter(q=>q.연>=2018 || 회차표[q.p].연>=2018)).slice(0,10), "섞어 푼 10문항", false));
+  function 섞기(a){ a = a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+  /* ═══ 문항 한 장 ═══ */
+  function 맥락칸(q){
+    const 줄 = [];
+    (q.ev||[]).slice(0,2).forEach(id=>{
+      const e = 사건[id], m = (CN.사건||{})[id]; if(!e) return;
+      줄.push(`<div class="ctx"><h6>${에스(e.이름)} <span class="tag">${해(e.연)}</span></h6>${
+        m ? `<p><em>배경</em>${에스(m.배경)}</p><p><em>결과</em>${에스(m.결과)}</p>` : ""}</div>`);
+    });
+    return 줄.join("");
+  }
+  function 이어가기(q){
+    const 링 = [];
+    const 키들 = new Set();
+    (q.ev||[]).forEach(id=>{ const m = (CN.사건||{})[id]; if(m && m.단원) 키들.add(m.단원); });
+    [...키들].slice(0,2).forEach(k=>{ const u = 단원[k]; if(u) 링.push(`<a class="btn ghost sm" href="개념.html#${k}">개념 흐름 · ${에스(u.소단원)}</a>`); });
+    (q.ev||[]).slice(0,2).forEach(id=>{ if(사건[id]) 링.push(`<a class="btn ghost sm" href="연표.html?ev=${id}">연표에서 ${에스(사건[id].이름)}</a>`); });
+    return 링.length ? `<div class="links">${링.join("")}</div>` : "";
+  }
+  // 해설 첫머리의 출제의도 제목은 위에 따로 보이므로 뗀다
+  const 본문 = q => (q.e||"").startsWith(q.t||" ") ? q.e.slice(q.t.length).trim() : (q.e||"");
+  function 해설칸(q, 고름){
+    const 맞 = 고름===q.a;
+    return `<div class="exp"><div class="verdict ${맞?"ok":"no"}">${맞?"맞았습니다 · ":!고름?"고르지 않음 — ":`틀렸습니다 — 고른 답 ${원[고름-1]}, `}정답 ${원[q.a-1]}</div>
+      ${q.t?`<div class="intent">${에스(q.t)}</div>`:""}<p>${에스(본문(q) || "이 회차는 해설지에서 문항별 해설을 읽지 못했습니다.")}</p>${맥락칸(q)}${이어가기(q)}</div>`;
+  }
+  function 문항카드(q, i, 보기){
+    const 회 = 회차표[q.p];
+    return `<article class="qc" id="q${i}" data-i="${i}">
+      <div class="qh"><span class="no">${보기.번호 ? q.n : i+1}</span><span class="tag">${q.pt}점</span>${q.era?`<span class="tag">${q.era}</span>`:""}<span class="sp"></span>
+        <span class="src">${에스(회 ? 회.연+" "+회.이름.replace(/ 한국사$/,"") : "")} ${q.n}번</span></div>
+      <div class="qimg"><img src="assets/q/${q.img}" width="${q.w}" height="${q.h}" alt="${에스(q.q)}" loading="lazy"></div>
+      <div class="ans">${[1,2,3,4,5].map(k=>`<button data-k="${k}">${원[k-1]}</button>`).join("")}</div>
+      <div class="expbox"></div></article>`;
+  }
+
+  /* ═══ 연습 — 한 문항씩, 고르면 바로 해설 ═══ */
+  let 판 = null;
+  function 열기(제목){
+    $("#home").classList.add("hide"); $("#solve").classList.remove("hide");
+    $("#sv-title").textContent = 제목; $("#result").innerHTML = ""; scrollTo(0,0);
+  }
+  function 연습(qs, 제목, 안푼먼저){
+    qs = qs.filter(Boolean);
+    if(안푼먼저) qs = [...qs.filter(q=>!기록[q.id]), ...qs.filter(q=>기록[q.id] && !기록[q.id][0]), ...qs.filter(q=>기록[q.id] && 기록[q.id][0])];
+    if(!qs.length){ alert("풀 문항이 없습니다."); return; }
+    판 = {종류:"연습", qs, i:0, 고름:{}};
+    열기(제목);
+    $("#timer").classList.add("hide"); $("#submit").classList.add("hide");
+    한문항();
+  }
+  function 한문항(){
+    const q = 판.qs[판.i];
+    $("#sv-pg").innerHTML = `<b>${판.i+1}</b> / ${판.qs.length}`;
+    $("#omr").innerHTML = 판.qs.length <= 40 ? 판.qs.map((x,k)=>`<button data-j="${k}" class="${k===판.i?"cur":""}" data-s="${판.고름[k]==null?"":판.고름[k]===x.a?"ok":"no"}">${k+1}</button>`).join("") : "";
+    $("#qs").innerHTML = 문항카드(q, 판.i, {});
+    $("#nextrow").innerHTML = `<button class="btn ghost" id="prev"${판.i?"":" disabled"}>← 앞 문항</button><button class="btn" id="next">${판.i+1<판.qs.length?"다음 문항 →":"끝내기"}</button>`;
+    if(판.고름[판.i]!=null) 매기기(판.i, 판.고름[판.i], false);
+  }
+  function 매기기(i, k, 새로){
+    const q = 판.qs[i], card = $(`#q${i}`); if(!card) return;
+    card.querySelectorAll(".ans button").forEach(b=>{ const n = +b.dataset.k; b.disabled = true;
+      b.className = n===q.a ? "ok" : n===k ? "no" : ""; });
+    card.querySelector(".expbox").innerHTML = 해설칸(q, k);
+    if(새로) 적기(q, k);
+  }
+  $("#qs").addEventListener("click", ev=>{
+    const b = ev.target.closest(".ans button"); if(!b || b.disabled) return;
+    const i = +b.closest(".qc").dataset.i, k = +b.dataset.k;
+    if(판.종류==="연습"){
+      판.고름[i] = k; 매기기(i, k, true);
+      const o = $(`#omr [data-j="${i}"]`); if(o) o.dataset.s = k===판.qs[i].a ? "ok" : "no";
+    } else {
+      판.고름[i] = k;
+      b.parentNode.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed", String(x===b)));
+      $(`#omr [data-j="${i}"]`).dataset.done = "1";
+      $("#sv-pg").innerHTML = `푼 문항 <b>${Object.keys(판.고름).length}</b> / ${판.qs.length}`;
+    }
+  });
+  $("#nextrow").addEventListener("click", ev=>{
+    if(!판 || 판.종류!=="연습") return;
+    if(ev.target.closest("#prev") && 판.i>0){ 판.i--; 한문항(); scrollTo(0,0); }
+    if(ev.target.closest("#next")){ if(판.i+1<판.qs.length){ 판.i++; 한문항(); scrollTo(0,0); } else 연습끝(); }
+  });
+  function 연습끝(){
+    const 푼 = Object.keys(판.고름).length, 맞 = Object.entries(판.고름).filter(([i,k])=>판.qs[i].a===k).length;
+    $("#result").innerHTML = `<div class="result"><div class="big"><b>${맞} / ${푼}</b><span>맞힌 문항</span></div>
+      <p style="margin-top:10px;color:var(--ink-3)">틀린 문항은 오답 노트에 모였습니다.</p>
+      <div class="links" style="display:flex;gap:8px;margin-top:14px"><button class="btn" id="tohome">목록으로</button></div></div>`;
+    $("#qs").innerHTML = ""; $("#nextrow").innerHTML = ""; $("#omr").innerHTML = ""; scrollTo(0,0);
+  }
+  $("#omr").addEventListener("click", ev=>{
+    const b = ev.target.closest("button"); if(!b || !판) return;
+    const j = +b.dataset.j;
+    if(판.종류==="연습"){ 판.i = j; 한문항(); scrollTo(0,0); }
+    else { const c = $(`#q${j}`); if(c) c.scrollIntoView({behavior:"smooth"}); }
+  });
+
+  /* ═══ 회차 실전 — 20문항, 30분, 채점 ═══ */
+  let 시계 = null;
+  function 실전(pid){
+    const qs = 문항.filter(q=>q.p===pid).sort((a,b)=>a.n-b.n);
+    판 = {종류:"실전", pid, qs, 고름:{}, 끝:false, 남은:30*60};
+    열기(회이름(pid));
+    $("#timer").classList.remove("hide","warn"); $("#submit").classList.remove("hide");
+    $("#sv-pg").innerHTML = `푼 문항 <b>0</b> / ${qs.length}`;
+    $("#omr").innerHTML = qs.map((q,k)=>`<button data-j="${k}">${q.n}</button>`).join("");
+    $("#qs").innerHTML = qs.map((q,k)=>문항카드(q,k,{번호:true})).join("");
+    $("#nextrow").innerHTML = `<span></span><button class="btn" id="submit2">채점하기</button>`;
+    clearInterval(시계);
+    const 그림 = ()=>{ const m = Math.floor(판.남은/60), s = 판.남은%60;
+      $("#timer").textContent = `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`; $("#timer").classList.toggle("warn", 판.남은<300); };
+    그림();
+    시계 = setInterval(()=>{ if(판.끝){ clearInterval(시계); return; } 판.남은--; 그림(); if(판.남은<=0){ clearInterval(시계); 채점(); } }, 1000);
+  }
+  function 채점(){
+    if(!판 || 판.종류!=="실전" || 판.끝) return;
+    const 빈 = 판.qs.length - Object.keys(판.고름).length;
+    if(빈 && 판.남은>0 && !confirm(`${빈}문항이 비어 있습니다. 채점할까요?`)) return;
+    판.끝 = true; clearInterval(시계);
+    let 점 = 0;
+    판.qs.forEach((q,k)=>{ const g = 판.고름[k];
+      if(g===q.a) 점 += q.pt;
+      if(g!=null) 적기(q, g);
+      $(`#omr [data-j="${k}"]`).dataset.s = g===q.a ? "ok" : "no";
+      매기기(k, g==null?0:g, false);
+    });
+    const 만점 = 판.qs.reduce((a,q)=>a+q.pt,0), 등 = 등급(Math.round(점*50/만점));
+    회기록[판.pid] = [점, 등, Date.now()]; 쓰기("hs-plog", 회기록);
+    const 틀린시대 = {};
+    판.qs.forEach((q,k)=>{ if(판.고름[k]!==q.a){ const e = q.era||"기타"; 틀린시대[e] = (틀린시대[e]||0)+1; } });
+    $("#result").innerHTML = `<div class="result"><div class="big"><b>${점}점</b><span>/ ${만점}</span><span class="grade">${등}등급</span></div>
+      <div class="by">${Object.entries(틀린시대).sort((a,b)=>b[1]-a[1]).map(([e,n])=>`<div><b>${e}</b> ${n}문항 틀림</div>`).join("") || "<div>모두 맞았습니다.</div>"}</div>
+      <p style="margin-top:12px;color:var(--ink-3);font-size:14.5px">문항마다 정답·해설과 그 사건의 배경·결과가 아래에 펼쳐져 있습니다. 틀린 문항은 오답 노트에 모였습니다.</p></div>`;
+    $("#submit").classList.add("hide"); $("#nextrow").innerHTML = `<span></span><button class="btn" id="tohome">목록으로</button>`;
+    scrollTo({top:0, behavior:"smooth"});
+  }
+  $("#submit").addEventListener("click", 채점);
+  document.addEventListener("click", ev=>{
+    if(ev.target.closest("#submit2")) 채점();
+    if(ev.target.closest("#tohome")) 홈();
+  });
+  $("#back").addEventListener("click", ()=>{
+    if(판 && 판.종류==="실전" && !판.끝 && Object.keys(판.고름).length && !confirm("채점하지 않고 나갈까요? 고른 답은 사라집니다.")) return;
+    홈();
+  });
+  function 홈(){ clearInterval(시계); 판 = null; $("#solve").classList.add("hide"); $("#home").classList.remove("hide");
+    history.replaceState(null, "", "풀이.html"); 목록(); scrollTo(0,0); }
+
+  // 문항 그림 크게 — 폰에서 글씨가 작다. 원래 크기(배율 2)로 띄우고 가로로 밀어 본다
+  $("#qs").addEventListener("click", ev=>{
+    const im = ev.target.closest(".qimg img"); if(!im) return;
+    const z = document.createElement("div"); z.className = "zoom";
+    z.innerHTML = `<img src="${im.getAttribute("src")}" alt=""><button aria-label="닫기">×</button>`;
+    z.addEventListener("click", e=>{ if(e.target===z || e.target.tagName==="BUTTON") z.remove(); });
+    document.body.appendChild(z);
+  });
+  // 키보드 1~5
+  document.addEventListener("keydown", ev=>{
+    if(!판 || !/^[1-5]$/.test(ev.key) || ev.target.closest("input,textarea")) return;
+    if(판.종류==="연습"){ const b = document.querySelector(`#q${판.i} .ans button[data-k="${ev.key}"]`); if(b) b.click(); }
+  });
+
+  /* ── 다른 화면에서 넘어온 경우 ── */
+  const P = new URLSearchParams(location.search);
+  목록();
+  if(P.get("ev") && 사건[P.get("ev")]) 연습(문항.filter(q=>(q.ev||[]).includes(P.get("ev"))), `${사건[P.get("ev")].이름} 기출`, false);
+  else if(P.get("era")) 연습(문항.filter(q=>q.era===P.get("era")), `${P.get("era")} 기출`, true);
+  else if(P.get("unit") && 단원[P.get("unit")]) 연습((단원[P.get("unit")].문항||[]).map(id=>문항표[id]), `${단원[P.get("unit")].소단원} 기출`, true);
+  else if(P.get("p") && 회차표[P.get("p")]) 실전(P.get("p"));
+})();
+</script>
+</body>
+</html>

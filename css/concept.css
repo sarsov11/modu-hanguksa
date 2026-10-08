@@ -1,0 +1,103 @@
+/* 모두의 한국사 — 개념 흐름 화면 (2026-10-08). 틀은 modu.css */
+.cwrap{display:grid;grid-template-columns:290px minmax(0,1fr);gap:36px;margin-top:26px;align-items:start;padding-bottom:120px}
+@media(max-width:980px){.cwrap{grid-template-columns:1fr;gap:18px}}
+
+/* ── 차례 ── */
+.toc{position:sticky;top:calc(var(--hh) + 18px);max-height:calc(100vh - var(--hh) - 36px);overflow:auto;padding-right:6px;scrollbar-width:thin}
+.toc .find{display:flex;align-items:center;gap:6px;border:1px solid var(--line-2);border-radius:var(--r1);background:var(--surface);height:36px;padding:0 10px;margin-bottom:10px}
+.toc .find input{border:0;outline:0;background:transparent;font-size:14.5px;font-weight:600;width:100%;color:var(--ink)}
+.toc .eraf{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px}
+.toc .eraf button{appearance:none;border:1px solid var(--line);background:var(--surface);border-radius:5px;font-size:13px;font-weight:700;color:var(--ink-3);padding:3px 8px;cursor:pointer}
+.toc .eraf button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.toc h5{font-size:13px;font-weight:800;color:var(--ink-4);margin:16px 0 4px;letter-spacing:-.01em}
+.toc h5:first-of-type{margin-top:4px}
+.toc h6{font-size:14px;font-weight:800;color:var(--ink-2);margin:8px 0 2px}
+.toc a{display:block;font-size:14.5px;font-weight:600;color:var(--ink-3);padding:5px 10px;border-radius:var(--r1);border-left:2px solid transparent;line-height:1.45}
+.toc a:hover{color:var(--ink);background:var(--surface-2)}
+.toc a.on{color:var(--ink);font-weight:800;background:var(--surface-2);border-left-color:var(--red)}
+.toc a .n{font-family:var(--mono);font-size:12px;font-weight:800;color:var(--red);margin-left:5px}
+.toc a.nodoc{opacity:.5}
+@media(max-width:980px){
+  .toc{position:static;max-height:none;border:1px solid var(--line);border-radius:var(--r2);padding:12px;background:var(--surface)}
+  .toc .list{max-height:260px;overflow:auto}
+  .toc[data-fold="1"] .list,.toc[data-fold="1"] .eraf{display:none}
+}
+.tocbtn{display:none}
+@media(max-width:980px){.tocbtn{display:flex;width:100%;justify-content:space-between}}
+
+/* ── 단원 본문 ── */
+.unit{min-width:0}
+.uhead{padding-bottom:20px;border-bottom:1px solid var(--line)}
+.uhead .path{font-size:14px;font-weight:700;color:var(--ink-4);display:flex;gap:6px;flex-wrap:wrap}
+.uhead .path span+span::before{content:"›";margin-right:6px;color:var(--line-3)}
+.uhead h2{font-size:clamp(26px,3vw,36px);letter-spacing:-.05em;margin-top:10px}
+.uhead .one{margin-top:14px;font-size:17px;line-height:1.75;color:var(--ink);font-weight:600;padding:14px 18px;border-left:3px solid var(--red);background:var(--surface-2);border-radius:0 var(--r1) var(--r1) 0}
+.uhead .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+
+.blk{margin-top:34px}
+.blk>h3{font-size:19px;letter-spacing:-.04em;display:flex;align-items:baseline;gap:10px}
+.blk>h3 small{font-size:14px;font-weight:700;color:var(--ink-4);letter-spacing:-.01em}
+
+/* 흐름 — 세로 줄기 */
+.story{list-style:none;margin:16px 0 0;padding:0;counter-reset:st}
+.story>li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:0 14px;position:relative}
+.story>li::before{content:"";position:absolute;left:21px;top:0;bottom:0;width:2px;background:var(--line)}
+.story>li:first-child::before{top:22px}
+.story>li:last-child::before{bottom:auto;height:22px}
+.story .knot{position:relative;z-index:1;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:12.5px;font-weight:900;letter-spacing:-.03em;background:var(--surface);border:2px solid var(--k);color:var(--k)}
+.story>li[data-k="배경"]{--k:var(--ink-3)}
+.story>li[data-k="전개"]{--k:var(--f-대외)}
+.story>li[data-k="결과"]{--k:var(--red)}
+.story>li[data-k="의의"]{--k:var(--f-문화)}
+.story .body{padding:8px 0 26px}
+.story .body h4{font-size:18px;letter-spacing:-.035em;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.story .body h4 time{font-family:var(--mono);font-size:14px;font-weight:800;color:var(--ink-4);letter-spacing:-.01em}
+.story .body p{margin-top:8px;font-size:16px;line-height:1.85;color:var(--ink-2);font-weight:500}
+.story .evs{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.evchip{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:700;color:var(--ink-2);border:1px solid var(--line-2);
+  border-radius:var(--r1);background:var(--surface);padding:4px 9px;cursor:pointer}
+.evchip:hover{border-color:var(--c);color:var(--ink)}
+.evchip i{width:7px;height:7px;border-radius:2px;background:var(--c)}
+.evchip time{font-family:var(--mono);font-size:12.5px;font-weight:800;color:var(--ink-4)}
+.evchip .q{font-family:var(--mono);font-size:11.5px;font-weight:800;color:#fff;background:var(--red);border-radius:3px;padding:0 4px}
+
+/* 인과 */
+.cause{display:grid;gap:10px;margin-top:14px}
+.cause div{display:grid;grid-template-columns:minmax(0,1fr) 34px minmax(0,1fr);align-items:stretch;gap:0}
+.cause p{border:1px solid var(--line);background:var(--surface);padding:12px 14px;font-size:15px;line-height:1.65;color:var(--ink-2);border-radius:var(--r1)}
+.cause p b{display:block;font-size:12.5px;font-weight:900;color:var(--ink-4);margin-bottom:3px}
+.cause p.r{border-color:var(--red-line);background:var(--red-soft)}
+.cause p.r b{color:var(--red)}
+.cause span{display:flex;align-items:center;justify-content:center;color:var(--ink-4);font-size:20px;font-weight:900}
+@media(max-width:640px){.cause div{grid-template-columns:1fr}.cause span{transform:rotate(90deg);height:26px}}
+
+/* 비교 */
+.cmp{margin-top:14px;border:1px solid var(--line);border-radius:var(--r2);overflow:hidden;background:var(--surface)}
+.cmp h4{font-size:15.5px;padding:11px 16px;background:var(--surface-2);border-bottom:1px solid var(--line)}
+.cmp dl{margin:0;display:grid;grid-template-columns:150px minmax(0,1fr)}
+.cmp dt,.cmp dd{margin:0;padding:11px 16px;border-top:1px solid var(--line);font-size:15px;line-height:1.65}
+.cmp dt{font-weight:800;color:var(--ink);background:var(--bg-2)}
+.cmp dd{color:var(--ink-2)}
+.cmp dl>dt:first-child,.cmp dl>dt:first-child+dd{border-top:0}
+@media(max-width:640px){.cmp dl{grid-template-columns:1fr}.cmp dd{border-top:0;padding-top:0}}
+.cmp+.cmp{margin-top:12px}
+
+/* 핵심어 */
+.keys{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-top:14px}
+.keys div{border:1px solid var(--line);border-radius:var(--r1);background:var(--surface);padding:12px 14px}
+.keys b{display:block;font-size:15.5px;font-weight:900;color:var(--ink);letter-spacing:-.03em}
+.keys p{font-size:14.5px;line-height:1.65;color:var(--ink-3);margin-top:4px}
+
+/* 시험 포인트 */
+.pts{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px}
+.pts li{display:grid;grid-template-columns:26px 1fr;gap:8px;font-size:15.5px;line-height:1.7;color:var(--ink-2);padding:10px 14px;border:1px solid var(--line);border-radius:var(--r1);background:var(--surface)}
+.pts li::before{content:"✓";font-weight:900;color:var(--red)}
+
+.unav{display:flex;justify-content:space-between;gap:10px;margin-top:40px;padding-top:20px;border-top:1px solid var(--line);flex-wrap:wrap}
+.unav a{display:block;max-width:48%;border:1px solid var(--line);border-radius:var(--r2);padding:12px 16px;background:var(--surface)}
+.unav a:hover{border-color:var(--ink)}
+.unav a small{display:block;font-size:13px;font-weight:700;color:var(--ink-4)}
+.unav a b{font-size:15.5px;color:var(--ink)}
+.unav a.nx{text-align:right;margin-left:auto}
+.wait{margin-top:30px}

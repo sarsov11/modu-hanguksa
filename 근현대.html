@@ -1,46 +1,35 @@
 <!doctype html>
-<html lang="ko" data-skin="white" data-look="paper">
+<html lang="ko" data-skin="white">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>모두의 한국사 — 근현대</title>
+<title>근현대 — 모두의 한국사</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<script>try{var L=localStorage.getItem("hs-look");if(L)document.documentElement.dataset.look=L}catch(e){}</script>
-<link rel="stylesheet" href="css/base.css?v=4488879af9">
-<link rel="stylesheet" href="css/timeline.css?v=375c6336db">
+<script>try{var s=localStorage.getItem("hs-skin")||"white";document.documentElement.dataset.skin=s;document.documentElement.dataset.look=s==="night"?"night":"paper"}catch(e){}</script>
+<link rel="stylesheet" href="css/modu.css?v=5a6203a6d5">
+<link rel="stylesheet" href="css/timeline.css?v=e28d432e40">
 <link rel="stylesheet" href="css/geundae.css?v=1bb458509a">
 </head>
 <body>
 
-<header class="top">
-  <div class="top-in">
-    <a class="brand" href="index.html"><b>모두의 <em>한국사</em></b><small>근현대</small></a>
-    <nav class="nav">
-      <a href="연표.html">연표</a>
-      <a href="계보.html">왕조 계보</a>
-      <a href="근현대.html" aria-current="page">근현대</a>
-    </nav>
-    <div class="spacer"></div>
-    <div class="look"><span>디자인</span>
-      <div class="seg" id="lookseg" role="group" aria-label="디자인 고르기">
-        <button data-l="paper">종이</button>
-        <button data-l="night">밤</button>
-      </div>
-    </div>
-  </div>
-</header>
+<header class="nav" id="nav"></header>
+<script src="js/shell.js?v=cb9857063f"></script>
 
 <main class="wrap">
-  <div class="intro">
-    <div><h1>근현대 — <em>네 장</em>으로 끊어 보기</h1>
-      <p class="lead">한 장에 다 담지 않았습니다. <b>시기마다 한 장</b>씩 넘겨 보고, 장마다
+  <div class="phead">
+    <div><span class="kicker"><i></i>근현대</span>
+      <h1>근현대 — <em>네 장</em>으로 끊어 보기</h1>
+      <p class="sub">한 장에 다 담지 않았습니다. <b>시기마다 한 장</b>씩 넘겨 보고, 장마다
         <b>지도(어디서) · 줄기(어떻게 이어졌나) · 인물(누가)</b> 세 가지로 볼 수 있습니다.
         얼굴 사진은 교과서에 실린 것만 씁니다.</p></div>
-    <div class="legend">
+  </div>
+  <div class="legend">
       <span><span class="qq">기출 7</span>&nbsp;= 출제 횟수(대면 회차)</span>
       <span>지도 바탕 Natural Earth(공공 영역)</span>
     </div>
-  </div>
 
   <div class="chaps" id="chaps"></div>
   <div class="cover" id="cover"></div>
@@ -108,20 +97,7 @@
     return `<span class="face" data-p="${에스(n)}"><span class="im">${얼굴칸(n)}</span>${에스(n)}</span>`; };
   const 얼굴알 = n => `<span class="im" title="${에스(n)}">${얼굴칸(n)}</span>`;
 
-  function 옷(l){
-    document.documentElement.dataset.look = l;
-    document.documentElement.dataset.skin = l==="night" ? "" : "white";
-    [...$("#lookseg").children].forEach(x=>x.setAttribute("aria-pressed", String(x.dataset.l===l)));
-    try{ localStorage.setItem("hs-look", l); }catch(e){}
-    머리높이();
-  }
-  $("#lookseg").addEventListener("click", ev=>{ const b=ev.target.closest("button"); if(b) 옷(b.dataset.l); });
-  function 머리높이(){
-    document.documentElement.style.setProperty("--hh",
-      Math.round(document.querySelector(".top").getBoundingClientRect().height) + "px");
-  }
-  addEventListener("resize", 머리높이);
-  if(document.fonts) document.fonts.ready.then(머리높이);
+  function 옷(){}   // 옷은 공통 머리띠(shell.js)가 맡는다
 
   /* ── 장 고르개 ── */
   $("#chaps").innerHTML = GD.시기.map((t,i)=>
