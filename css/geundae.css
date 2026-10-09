@@ -204,6 +204,8 @@
 .btn-next{appearance:none;margin-top:14px;border:0;background:var(--ink);color:var(--bg);border-radius:var(--r1);
   padding:13px 20px;font:700 14px/1 var(--sans);cursor:pointer}
 .btn-next:hover{background:var(--red)}
+.btn-next{position:sticky;bottom:12px;width:100%;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+@media (max-width:900px){.btn-next{bottom:calc(68px + env(safe-area-inset-bottom,0px))}}
 @media (max-width:760px){
   .quiz{padding:14px}
   .qsay{font-size:15px;padding:14px}

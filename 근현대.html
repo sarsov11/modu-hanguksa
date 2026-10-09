@@ -11,7 +11,7 @@
 <script>try{var s=localStorage.getItem("hs-skin")||"white";document.documentElement.dataset.skin=s;document.documentElement.dataset.look=s==="night"?"night":"paper"}catch(e){}</script>
 <link rel="stylesheet" href="css/modu.css?v=5a6203a6d5">
 <link rel="stylesheet" href="css/timeline.css?v=be07603ba6">
-<link rel="stylesheet" href="css/geundae.css?v=6ddc9e46fb">
+<link rel="stylesheet" href="css/geundae.css?v=8a6150c7c0">
 </head>
 <body>
 
@@ -109,6 +109,7 @@
   $("#views").addEventListener("click", ev=>{
     const b = ev.target.closest("button"); if(!b) return;
     보기 = b.dataset.v; 그리기();
+    if(보기==="quiz"){ const qz = document.querySelector(".quiz"); if(qz){ const r = qz.getBoundingClientRect(); if(r.top > innerHeight*0.45) scrollBy({top: r.top - 90, behavior:"smooth"}); } }
   });
   $("#prev").addEventListener("click", ()=>{ const i = 장들.indexOf(장); if(i>0) 장바꾸기(장들[i-1]); });
   $("#next").addEventListener("click", ()=>{ const i = 장들.indexOf(장); if(i<장들.length-1) 장바꾸기(장들[i+1]); });
@@ -312,9 +313,15 @@
       문제.고른 = +o.dataset.v;
       문제.맞음 = 문제.고른 === 문제.답;
       문제.끝 = true; 푼수++; if(문제.맞음) 맞수++;
-      그리기(); return;
+      window.ZZ && ZZ.quiet && ZZ.quiet(700);
+      그리기();
+      const 단추 = document.querySelector(문제.맞음 ? '.qopt[data-s="ok"]' : '.qopt[data-s="no"]');
+      if(window.ZZ) (문제.맞음 ? ZZ.ok : ZZ.no)(단추);
+      const 줄 = document.querySelector(".wholine");
+      if(줄){ const r = 줄.getBoundingClientRect(); if(r.top > innerHeight*0.6) scrollBy({top: r.top - innerHeight*0.4, behavior:"smooth"}); }
+      return;
     }
-    if(ev.target.id === "qnext"){ 문제 = null; 그리기(); return; }
+    if(ev.target.id === "qnext"){ 문제 = null; window.ZZ && ZZ.quiet && ZZ.quiet(700); 그리기(); { const qz = document.querySelector(".quiz"); if(qz){ const r = qz.getBoundingClientRect(); if(r.top < 60 || r.top > innerHeight*0.6) scrollBy({top: r.top - 80, behavior:"smooth"}); } } return; }
   });
 
   /* ── 기출 쪽지 ── */
@@ -356,5 +363,6 @@
   옷(document.documentElement.dataset.look || "paper");
 })();
 </script>
+<script src="js/zzsfx.js?v=1009a" defer></script><script src="js/zzajan.js?v=1009a" defer></script>
 </body>
 </html>

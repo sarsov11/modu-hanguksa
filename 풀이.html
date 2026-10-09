@@ -86,6 +86,10 @@
   .exp .ctx p{font-size:14.5px;color:var(--ink-3)}
   .exp .ctx p em{font-style:normal;font-weight:800;color:var(--ink-2);margin-right:4px}
   .nextrow{display:flex;gap:10px;justify-content:space-between;margin:18px 0 120px;flex-wrap:wrap}
+  .nextrow.stick{position:sticky;bottom:0;z-index:30;margin:14px 0 0;padding:10px 0 calc(10px + env(safe-area-inset-bottom));background:linear-gradient(to top,var(--bg) 78%,transparent);flex-wrap:nowrap}
+  .nextrow.stick .btn{flex:1;justify-content:center}
+  .nextrow.stick #prev{flex:0 0 auto}
+  @media(max-width:900px){.nextrow.stick{bottom:calc(57px + env(safe-area-inset-bottom,0px));padding-bottom:10px}}
   .result{border:1px solid var(--line);border-radius:var(--r2);background:var(--surface);padding:22px 24px;margin-bottom:22px}
   .result .big{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
   .result .big b{font-family:var(--mono);font-size:48px;font-weight:800;color:var(--ink);letter-spacing:-.04em}
@@ -309,27 +313,32 @@
     한문항();
   }
   function 한문항(){
+    window.ZZ && ZZ.quiet && ZZ.quiet(700);
     const q = 판.qs[판.i];
     $("#sv-pg").innerHTML = `<b>${판.i+1}</b> / ${판.qs.length}`;
     $("#omr").innerHTML = 판.qs.length <= 40 ? 판.qs.map((x,k)=>`<button data-j="${k}" class="${k===판.i?"cur":""}" data-s="${판.고름[k]==null?"":판.고름[k]===x.a?"ok":"no"}">${k+1}</button>`).join("") : "";
     $("#qs").innerHTML = 문항카드(q, 판.i, {});
+    $("#nextrow").classList.add("stick");
     $("#nextrow").innerHTML = `<button class="btn ghost" id="prev"${판.i?"":" disabled"}>← 앞 문항</button><button class="btn" id="next">${판.i+1<판.qs.length?"다음 문항 →":"끝내기"}</button>`;
     if(판.고름[판.i]!=null) 매기기(판.i, 판.고름[판.i], false);
   }
   async function 매기기(i, k, 새로){
     const q = 판.qs[i], card = $(`#q${i}`); if(!card) return;
     if(새로) 적기(q, k);
+    const 보임 = 새로 && 판.종류==="연습";
     새로 = false;
     await 해설준비(q.p);
     card.querySelectorAll(".ans button").forEach(b=>{ const n = +b.dataset.k; b.disabled = true;
       b.className = n===q.a ? "ok" : n===k ? "no" : ""; });
     card.querySelector(".expbox").innerHTML = 해설칸(q, k);
     if(새로) 적기(q, k);
+    if(보임){ const v = card.querySelector(".exp"); if(v){ const r = v.getBoundingClientRect(); if(r.top > innerHeight*0.55) scrollBy({top: r.top - innerHeight*0.38, behavior:"smooth"}); } }
   }
   $("#qs").addEventListener("click", ev=>{
     const b = ev.target.closest(".ans button"); if(!b || b.disabled) return;
     const i = +b.closest(".qc").dataset.i, k = +b.dataset.k;
     if(판.종류==="연습"){
+      if(window.ZZ) (k===판.qs[i].a ? ZZ.ok : ZZ.no)(b);
       판.고름[i] = k; 매기기(i, k, true);
       const o = $(`#omr [data-j="${i}"]`); if(o) o.dataset.s = k===판.qs[i].a ? "ok" : "no";
     } else {
@@ -346,10 +355,13 @@
   });
   function 연습끝(){
     const 푼 = Object.keys(판.고름).length, 맞 = Object.entries(판.고름).filter(([i,k])=>판.qs[i].a===k).length;
+    const 틀 = 푼 - 맞;
     $("#result").innerHTML = `<div class="result"><div class="big"><b>${맞} / ${푼}</b><span>맞힌 문항</span></div>
       <p style="margin-top:10px;color:var(--ink-3)">틀린 문항은 오답 노트에 모였습니다.</p>
-      <div class="links" style="display:flex;gap:8px;margin-top:14px"><button class="btn" id="tohome">목록으로</button></div></div>`;
-    $("#qs").innerHTML = ""; $("#nextrow").innerHTML = ""; $("#omr").innerHTML = ""; scrollTo(0,0);
+      <div class="links" style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">${틀 ? `<button class="btn" id="redo">틀린 ${틀}문항 다시 풀기</button><button class="btn ghost" id="tohome">목록으로</button>` : `<button class="btn" id="tohome">목록으로</button>`}</div></div>`;
+    판.틀린 = Object.entries(판.고름).filter(([i,k])=>판.qs[i].a!==k).map(([i])=>판.qs[i]);
+    $("#qs").innerHTML = ""; $("#nextrow").classList.remove("stick"); $("#nextrow").innerHTML = ""; $("#omr").innerHTML = ""; scrollTo(0,0);
+    if(window.ZZ && 푼){ ZZ.quiet && ZZ.quiet(800); const r = 맞/푼; if(r>=1) ZZ.stars(3); else if(r>=0.7) ZZ.stars(2); else if(r>=0.4) ZZ.stars(1); }
   }
   $("#omr").addEventListener("click", ev=>{
     const b = ev.target.closest("button"); if(!b || !판) return;
@@ -380,6 +392,8 @@
     const 빈 = 판.qs.length - Object.keys(판.고름).length;
     if(빈 && 판.남은>0 && !confirm(`${빈}문항이 비어 있습니다. 채점할까요?`)) return;
     판.끝 = true; clearInterval(시계);
+    window.ZZ && ZZ.quiet && ZZ.quiet(1500);
+    const 전등급 = (회기록[판.pid]||[])[1];
     let 점 = 0;
     판.qs.forEach((q,k)=>{ const g = 판.고름[k];
       if(g===q.a) 점 += q.pt;
@@ -396,11 +410,14 @@
       <p style="margin-top:12px;color:var(--ink-3);font-size:14.5px">문항마다 정답·해설과 그 사건의 배경·결과가 아래에 펼쳐져 있습니다. 틀린 문항은 오답 노트에 모였습니다.</p></div>`;
     $("#submit").classList.add("hide"); $("#nextrow").innerHTML = `<span></span><button class="btn" id="tohome">목록으로</button>`;
     scrollTo({top:0, behavior:"smooth"});
+    if(window.ZZ){ const r = 점/만점; if(r>=1) ZZ.stars(3); else if(r>=0.7) ZZ.stars(2); else if(r>=0.4) ZZ.stars(1);
+      if(전등급 && 등 < 전등급) setTimeout(()=>ZZ.promote(String(전등급), String(등)), 200); }
   }
   $("#submit").addEventListener("click", 채점);
   document.addEventListener("click", ev=>{
     if(ev.target.closest("#submit2")) 채점();
     if(ev.target.closest("#tohome")) 홈();
+    if(ev.target.closest("#redo") && 판 && 판.틀린 && 판.틀린.length){ const 다시 = 판.틀린; 연습(다시, "틀린 문항 다시 풀기", false); }
   });
   $("#back").addEventListener("click", ()=>{
     if(판 && 판.종류==="실전" && !판.끝 && Object.keys(판.고름).length && !confirm("채점하지 않고 나갈까요? 고른 답은 사라집니다.")) return;
@@ -432,5 +449,6 @@
   else if(P.get("p") && 회차표[P.get("p")]) 실전(P.get("p"));
 })();
 </script>
+<script src="js/zzsfx.js?v=1009a" defer></script><script src="js/zzajan.js?v=1009a" defer></script>
 </body>
 </html>
