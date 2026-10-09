@@ -21,8 +21,8 @@
 <main class="wrap">
   <div class="phead">
     <div><span class="kicker"><i></i>근현대</span>
-      <h1>근현대 — <em>네 장</em>으로 끊어 보기</h1>
-      <p class="sub">한 장에 다 담지 않았습니다. <b>시기마다 한 장</b>씩 넘겨 보고, 장마다
+      <h1>근현대를 <em>네 장</em>으로 끊어 보기</h1>
+      <p class="sub">한 장에 다 담지 않았습니다. <b>시기마다 한 장</b>씩 넘겨 보고 장마다
         <b>지도(어디서) · 줄기(어떻게 이어졌나) · 인물(누가)</b> 세 가지로 볼 수 있습니다.
         얼굴 사진은 교과서에 실린 것만 씁니다.</p></div>
   </div>
@@ -213,7 +213,7 @@
         </div>`).join("");
       // 이 장을 넘어 이어지는 곳
       const 다음 = [...new Set(것.flatMap(t=>t.다음||[]))].filter(n=>전부[n] && !것.find(x=>x.이름===n));
-      const 꼬리 = 다음.length ? `<div class="tail">이 뒤로 이어짐 — ${다음.map(n=>
+      const 꼬리 = 다음.length ? `<div class="tail">이 뒤로 이어짐: ${다음.map(n=>
           `<b>${에스(n)}</b>(${시기표[전부[n].시기].이름})`).join(" · ")}</div>` : "";
       return `<section class="stem" style="--c:${줄기색[이름]||"var(--ink-3)"}">
         <h3><i></i>${에스(이름)}<small>${것.length}곳</small></h3>
@@ -241,7 +241,7 @@
             <div class="one">${에스(p.한줄||"")}</div></div></div>
         <div class="orgs2">${속.map(o=>{const t=GD.단체.find(x=>x.이름===o);
           return `<span style="--c:${색(t.갈래)}" data-t="${에스(o)}">${그림(t.갈래)}${에스(o)}</span>`;}).join("")}</div>
-        ${p.얼굴&&p.얼굴.length?`<div class="cap">사진 — ${에스(p.얼굴[0].p)}</div>`
+        ${p.얼굴&&p.얼굴.length?`<div class="cap">사진: ${에스(p.얼굴[0].p)}</div>`
           :`<div class="cap">교과서에 얼굴 사진이 없어 기호로 둡니다.</div>`}
       </article>`;}).join("")}</div>`;
   }

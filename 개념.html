@@ -38,7 +38,7 @@
 </main>
 
 <script src="js/timeline.js?v=fdabe87a49"></script>
-<script src="js/concept.js?v=b66e033c0f"></script>
+<script src="js/concept.js?v=61dc6dc36c"></script>
 <script>
 (function(){
   const CN = window.CN, TL = window.TL;
@@ -52,7 +52,7 @@
   let 시대 = new URLSearchParams(location.search).get("era") || "", 찾기 = "";
 
   const 원고수 = 단원.filter(u=>u.흐름.length).length;
-  $("#lead").innerHTML = `교과서 소단원 <b>${단원.length}개</b>를 <b>배경 → 전개 → 결과</b>의 줄기로 다시 썼습니다. 마디마다 연표 사건이 걸려 있고, 단원 끝에서 그 단원 기출로 바로 넘어갑니다.`;
+  $("#lead").innerHTML = `교과서 소단원 <b>${단원.length}개</b>를 <b>배경 → 전개 → 결과</b>의 줄기로 다시 썼습니다. 마디마다 연표 사건이 걸려 있고 단원 끝에서 그 단원 기출로 바로 넘어갑니다.`;
 
   /* ── 차례 ── */
   $("#eraf").innerHTML = `<button data-e="" aria-pressed="${!시대}">전체</button>` + 시대순.filter(e=>단원.some(u=>u.시대.includes(e)))
@@ -64,9 +64,8 @@
   $("#tocbtn").addEventListener("click", ()=>{ const t = $("#toc"); t.dataset.fold = t.dataset.fold==="1" ? "0" : "1"; });
 
   function 맞음(u){
-    if(시대 && !u.시대.includes(시대)) return false;
-    if(!찾기) return true;
-    const 글 = [u.소단원, u.중단원, u.한줄, ...u.핵심어.map(k=>k.말), ...u.흐름.map(s=>s.제목)].join(" ");
+    if(!찾기) return !시대 || u.시대.includes(시대);     // 찾을 때는 시대 필터와 상관없이 전 단원에서
+    const 글 = [u.소단원, u.중단원, u.한줄, ...u.핵심어.map(k=>k.말+" "+k.뜻), ...u.흐름.map(s=>s.제목+" "+s.내용)].join(" ");
     return 글.includes(찾기);
   }
   const 보이는단원 = () => 단원.filter(맞음);

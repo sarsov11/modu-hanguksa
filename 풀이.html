@@ -111,7 +111,7 @@
     <div class="phead">
       <div>
         <span class="kicker"><i></i>기출 풀이</span>
-        <h1>실제 시험지로 <em>풀고</em>, 틀린 건 흐름으로</h1>
+        <h1>실제 시험지로 <em>풀고</em> 틀린 건 흐름으로</h1>
         <p class="sub" id="lead"></p>
       </div>
       <div class="pheadact"><button class="btn" id="quick">아무 시대 10문항</button></div>
@@ -129,7 +129,7 @@
           <div class="bd" id="myrate"></div></div>
         <div class="card"><div class="bd" style="font-size:14px;color:var(--ink-3);line-height:1.7">
           한국사는 절대평가입니다. 50점 만점에 <b>40점 이상 1등급</b>, 그 아래로 5점마다 한 등급씩 내려갑니다.
-          문항은 시험지를 그대로 잘라 실었고, 정답과 해설은 각 회차 정답표·해설지를 따랐습니다.</div></div>
+          문항은 시험지를 그대로 잘라 실었고 정답과 해설은 각 회차 정답표·해설지를 따랐습니다.</div></div>
       </aside>
     </div>
   </section>
@@ -148,8 +148,8 @@
   </section>
 </main>
 
-<script src="js/qctx.js?v=26082ab4fc"></script>
-<script src="js/qbank.js?v=e1b4cf2824"></script>
+<script src="js/qctx.js?v=1cb5e73e66"></script>
+<script src="js/qbank.js?v=a14ec513d3"></script>
 <script>
 (function(){
   const QB = window.QB, QC = window.QC;
@@ -280,7 +280,7 @@
   const 본문 = q => { const e = 해설(q); return q.t && e.startsWith(q.t) ? e.slice(q.t.length).trim() : e; };
   function 해설칸(q, 고름){
     const 맞 = 고름===q.a;
-    return `<div class="exp"><div class="verdict ${맞?"ok":"no"}">${맞?"맞았습니다 · ":!고름?"고르지 않음 — ":`틀렸습니다 — 고른 답 ${원[고름-1]}, `}정답 ${원[q.a-1]}</div>
+    return `<div class="exp"><div class="verdict ${맞?"ok":"no"}">${맞?"맞았습니다 · ":!고름?"고르지 않았습니다. ":`틀렸습니다. 고른 답 ${원[고름-1]}, `}정답 ${원[q.a-1]}</div>
       ${q.t?`<div class="intent">${에스(q.t)}</div>`:""}<p>${에스(본문(q) || "이 회차는 해설지에서 문항별 해설을 읽지 못했습니다.")}</p>${맥락칸(q)}${이어가기(q)}</div>`;
   }
   function 문항카드(q, i, 보기){
