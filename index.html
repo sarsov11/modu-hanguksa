@@ -49,7 +49,7 @@
       </div>
     </div>
     <div class="pheadact">
-      <a class="btn" href="개념.html">개념 흐름부터</a>
+      <a class="btn ghost" href="개념.html">개념 흐름부터</a>
       <a class="btn ghost" href="풀이.html">기출 풀기</a>
     </div>
   </div>
@@ -82,8 +82,9 @@
   const 칸 = [];
   칸.push(이름 ? `<div class="resume"><span class="ix">개념</span><div><b>${에스(이름)}</b><span>마지막으로 본 단원</span></div><a class="btn sm act" href="개념.html#${끝단원}">이어 읽기</a></div>`
               : `<div class="resume"><span class="ix">개념</span><div><b>선사 시대의 전개와 국가의 형성</b><span>첫 단원부터</span></div><a class="btn sm act" href="개념.html">읽기</a></div>`);
-  칸.push(푼 ? `<div class="resume"><span class="ix">오답</span><div><b>틀린 문항 ${틀린}개</b><span>지금까지 ${푼}문항 풀었음</span></div><a class="btn sm act" href="풀이.html">오답 노트</a></div>`
-             : `<div class="resume"><span class="ix">기출</span><div><b>최근 회차 하나 풀어 보기</b><span>20문항 · 30분 · 채점과 등급</span></div><a class="btn sm act" href="풀이.html${S.첫회차?`?p=${S.첫회차}`:""}">시작</a></div>`);
+  칸.push(푼 ? `<div class="resume"><span class="ix">오답</span><div><b>틀린 문항 ${틀린}개</b><span>지금까지 ${푼}문항 풀었음</span></div><a class="btn sm act" href="풀이.html" style="background:var(--surface,#fff);color:var(--ink,#111);border:1px solid var(--line-2,#ddd)">오답 노트</a></div>`
+             : `<div class="resume"><span class="ix">기출</span><div><b>최근 회차 하나 풀어 보기</b><span>20문항 · 30분 · 채점과 등급</span></div><a class="btn sm act" href="풀이.html${S.첫회차?`?p=${S.첫회차}`:""}" style="background:var(--surface,#fff);color:var(--ink,#111);border:1px solid var(--line-2,#ddd)">시작</a></div>`);
+  /* 빨간 주 단추는 이어 읽기 하나만 — 홈에 빨간 단추가 넷이라 다음에 누를 것이 흩어졌다(2026-10-09 흐름 점검) */
   document.getElementById("resume").innerHTML = 칸.join("");
   const 수 = n => (n||0).toLocaleString();
   const 문 = [
