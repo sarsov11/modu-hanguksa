@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script>try{var s=localStorage.getItem("hs-skin")||"white";document.documentElement.dataset.skin=s;document.documentElement.dataset.look=s==="night"?"night":"paper"}catch(e){}</script>
 <link rel="stylesheet" href="css/modu.css?v=5a6203a6d5">
-<link rel="stylesheet" href="css/timeline.css?v=e28d432e40">
+<link rel="stylesheet" href="css/timeline.css?v=be07603ba6">
 </head>
 <body>
 <header class="nav" id="nav"></header>
@@ -25,7 +25,9 @@
     </div>
     <div class="pheadact">
       <div class="segs" id="viewseg" role="tablist" aria-label="보기">
-        <button role="tab" data-v="grid" aria-selected="true">분야 칸</button>
+        <button role="tab" data-v="lane" aria-selected="true">분야 줄기</button>
+        <button role="tab" data-v="bucket" aria-selected="false">연대 격자</button>
+        <button role="tab" data-v="grid" aria-selected="false">한 해 한 줄</button>
         <button role="tab" data-v="flow" aria-selected="false">흐름</button>
       </div>
     </div>
@@ -59,7 +61,7 @@
 </aside>
 
 <script src="js/timeline.js?v=38395e474f"></script>
-<script src="js/concept.js?v=62e308a68f" onerror="window.CN=null"></script>
+<script src="js/concept.js?v=dd5b81142e" onerror="window.CN=null"></script>
 <script>
 (function(){
   const TL = window.TL, CN = window.CN || {단원:[], 사건:{}, 사건문항:{}};
@@ -77,7 +79,7 @@
 
   const 켬 = new Set(분야들);
   let 세계사 = false, 빈출만 = false, 찾기 = "", 보기 = "grid";
-  try{ 보기 = localStorage.getItem("hs-tlview") || "grid"; }catch(e){}
+  try{ 보기 = localStorage.getItem("hs-tlview2") || "lane"; }catch(e){}
 
   /* 기출 빈출 층 — 개정(2015 개정, 2018 시행) 이후 횟수 */
   const 층 = e => { const q = e.ㄱ; if(!q) return 0; return q.근 >= 10 ? 3 : q.근 >= 4 ? 2 : 1; };
@@ -105,7 +107,8 @@
   $("#eras").addEventListener("click", ev=>{
     const b = ev.target.closest("button"); if(!b) return;
     const el = document.getElementById("era-"+b.dataset.era); if(!el) return;
-    const 위 = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--hh")) + $("#tbar").offsetHeight + (보기==="grid" ? 40 : 12);
+    const 폰 = matchMedia("(max-width:900px)").matches;   // 폰은 도구줄이 따라오지 않는다
+    const 위 = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--hh")) + (폰 ? 8 : $("#tbar").offsetHeight + (보기==="grid" ? 40 : 12));
     scrollTo({top: el.getBoundingClientRect().top + scrollY - 위, behavior:"smooth"});
   });
   function 도구높이(){ document.documentElement.style.setProperty("--tb", $("#tbar").offsetHeight + "px"); }
@@ -114,7 +117,7 @@
   /* 보기 전환 */
   $("#viewseg").addEventListener("click", ev=>{
     const b = ev.target.closest("button"); if(!b) return;
-    보기 = b.dataset.v; try{ localStorage.setItem("hs-tlview", 보기); }catch(e){}
+    보기 = b.dataset.v; try{ localStorage.setItem("hs-tlview2", 보기); }catch(e){}
     그리기();
   });
 
@@ -175,6 +178,39 @@
           <span class="fx"><b>${e.이름}</b>${한?`<span class="tag f" style="--c:${색(e.분야)};--c-soft:${연색(e.분야)}">${e.분야||""}</span>`:`<span class="tag">세계사</span>`}${
           e.ㄱ?`<span class="tag hot">기출 ${e.ㄱ.근||e.ㄱ.n}</span>`:""}${줄}</span></li>`;
       }).join("")}</ol></section>`).join("")}</div>`;
+  }
+  /* ═══ A안 분야 줄기 — 시대마다 분야 다섯 줄기, 사건을 위에서부터 쌓는다(빈칸이 없다) ═══ */
+  const 작은해 = y => y < 0 ? (-y > 9999 ? `${-y/10000}만 년 전` : `기원전 ${-y}`) : y;
+  const 사건칸 = (e, f) => `<div class="ev ev2${e.ㄱ?" q"+층(e):""}${(e.사진||[]).length?" 사진있":""}" data-id="${e.id}" style="--c:${색(f)};--c-soft:${연색(f)}">
+      <time>${작은해(e.연)}${e.끝연?` ~ ${작은해(e.끝연)}`:""}</time><b><span class="nm">${e.이름}</span>${기출배지(e)}</b></div>`;
+  function 줄기보기(list){
+    const 묶 = 시대묶음(list);
+    const 칸들 = 세계사 ? [...분야들, "세계"] : 분야들;
+    return `<div class="lanes" style="--n:${칸들.length}">${묶.map(g=>`<section class="era" id="era-${g.이름}">${시대머리(g)}
+      <div class="lane-grid">${칸들.map(f=>{
+        const 것 = g.사건.filter(e=> f==="세계" ? e.계열!=="한국사" : (e.분야===f && e.계열==="한국사"));
+        return `<div class="lane" style="--c:${f==="세계"?"var(--f-세계)":색(f)}"><h5><i></i>${f}<small>${것.length}</small></h5>${
+          것.length ? 것.map(e=>사건칸(e, f==="세계"?null:f)).join("") : `<p class="none">—</p>`}</div>`;
+      }).join("")}</div></section>`).join("")}</div>`;
+  }
+
+  /* ═══ B안 연대 격자 — 한 해 한 줄 대신 시대에 맞는 폭으로 묶는다 ═══ */
+  const 폭 = {선사:1e9, 고조선:2400, 삼국:100, 남북국:50, 고려:50, 조선:50, 개항기:10, 일제강점기:5, 현대:10};
+  function 격자보기(list){
+    const 묶 = 시대묶음(list);
+    const head = `<div class="riv-head"><div class="yh">연대</div>${분야들.map(f=>`<div style="--c:${색(f)}"><i></i>${f}</div>`).join("")}</div>`;
+    return `<div class="riv bucket">${head}${묶.map(g=>{
+      const w = 폭[g.이름] || 50, 줄들 = new Map();
+      g.사건.filter(e=>e.계열==="한국사").forEach(e=>{
+        const k = w >= 1e8 ? g.부터 : Math.floor(e.연 / w) * w;
+        if(!줄들.has(k)) 줄들.set(k, []); 줄들.get(k).push(e);
+      });
+      const 줄 = [...줄들.entries()].map(([k, es])=>{
+        const 이름 = w >= 1e8 ? "선사" : w >= 1000 ? `${작은해(Math.max(k,g.부터))} ~` : `${작은해(Math.max(k, g.부터))}<small>~ ${작은해(Math.min(k + w - 1, g.까지))}</small>`;
+        return `<div class="yrow"><div class="yr">${이름}</div>${분야들.map(f=>`<div class="cell">${es.filter(e=>e.분야===f).map(e=>사건칸(e,f)).join("")}</div>`).join("")}</div>`;
+      }).join("");
+      return `<section class="era" id="era-${g.이름}">${시대머리(g)}${줄}</section>`;
+    }).join("")}</div>`;
   }
   const y칸 = e => e.연 < 0 ? (-e.연 > 9999 ? `<small>약</small>${-e.연/10000}만 년 전` : `<small>기원전</small>${-e.연}`) : e.연;
 
@@ -336,7 +372,7 @@
     $("#lead").innerHTML = `교과서 부록 연표와 역사부도 연표의 한국사 <b>${한국.length}건</b>을 정치·대외·경제·사회·문화 다섯 빛깔로 나눠 한 줄에 놓았습니다. `
       + `학력평가·모의평가 133회분(2015~2026)에 나온 <b>${q}건</b>은 굵기와 형광으로 표시했습니다.`;
     [...$("#viewseg").children].forEach(b=>b.setAttribute("aria-selected", String(b.dataset.v===보기)));
-    $("#stage").innerHTML = list.length ? (보기==="flow" ? 흐름보기(list) : 칸보기(list)) : `<div class="empty">고른 조건에 맞는 사건이 없습니다.</div>`;
+    $("#stage").innerHTML = list.length ? (보기==="flow" ? 흐름보기(list) : 보기==="lane" ? 줄기보기(list) : 보기==="bucket" ? 격자보기(list) : 칸보기(list)) : `<div class="empty">고른 조건에 맞는 사건이 없습니다.</div>`;
     도구높이();
   }
   그리기();

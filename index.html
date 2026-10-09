@@ -68,42 +68,36 @@
   </footer>
 </main>
 
-<script src="js/timeline.js?v=38395e474f"></script>
-<script src="js/gyebo.js?v=c0932bc868"></script>
-<script src="js/concept.js?v=62e308a68f" onerror="window.CN=null"></script>
-<script src="js/qbank.js?v=303e9b7155" onerror="window.QB=null"></script>
+<script src="js/stats.js?v=44104e8388"></script>
 <script>
 (function(){
-  const TL = window.TL, CN = window.CN || {단원:[],사건:{}}, QB = window.QB || {회차:[],문항:[]};
-  const ko = TL.사건.filter(e=>e.계열==="한국사");
-  const 왕 = window.GB ? GB.왕조.reduce((a,g)=>a+g.왕.length,0) : 0;
+  // 홈은 요약(js/stats.js, 수 KB)만 받는다 — 연표·문항 데이터(3MB)는 그 화면에서
+  const S = window.HSS || {};
   const 읽기 = k => { try{ return JSON.parse(localStorage.getItem(k)) || null; }catch(e){ return null; } };
   const 에스 = s => (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;");
-
-  // 이어서 — 마지막에 본 단원 · 틀린 문항
   const 끝단원 = (()=>{ try{ return localStorage.getItem("hs-lastunit"); }catch(e){ return null; } })();
-  const u = CN.단원.find(x=>x.키===끝단원);
+  const 이름 = 끝단원 && (S.단원이름||{})[끝단원];
   const 기록 = 읽기("hs-qlog") || {};
   const 틀린 = Object.values(기록).filter(v=>!v[0]).length, 푼 = Object.keys(기록).length;
   const 칸 = [];
-  칸.push(u ? `<div class="resume"><span class="ix">개념</span><div><b>${에스(u.소단원)}</b><span>마지막으로 본 단원</span></div><a class="btn sm act" href="개념.html#${u.키}">이어 읽기</a></div>`
-            : `<div class="resume"><span class="ix">개념</span><div><b>선사 시대의 전개와 국가의 형성</b><span>첫 단원부터</span></div><a class="btn sm act" href="개념.html">읽기</a></div>`);
+  칸.push(이름 ? `<div class="resume"><span class="ix">개념</span><div><b>${에스(이름)}</b><span>마지막으로 본 단원</span></div><a class="btn sm act" href="개념.html#${끝단원}">이어 읽기</a></div>`
+              : `<div class="resume"><span class="ix">개념</span><div><b>선사 시대의 전개와 국가의 형성</b><span>첫 단원부터</span></div><a class="btn sm act" href="개념.html">읽기</a></div>`);
   칸.push(푼 ? `<div class="resume"><span class="ix">오답</span><div><b>틀린 문항 ${틀린}개</b><span>지금까지 ${푼}문항 풀었음</span></div><a class="btn sm act" href="풀이.html">오답 노트</a></div>`
-             : `<div class="resume"><span class="ix">기출</span><div><b>최근 회차 하나 풀어 보기</b><span>20문항 · 30분 · 채점과 등급</span></div><a class="btn sm act" href="풀이.html${QB.회차[0]?`?p=${QB.회차[0].p}`:""}">시작</a></div>`);
+             : `<div class="resume"><span class="ix">기출</span><div><b>최근 회차 하나 풀어 보기</b><span>20문항 · 30분 · 채점과 등급</span></div><a class="btn sm act" href="풀이.html${S.첫회차?`?p=${S.첫회차}`:""}">시작</a></div>`);
   document.getElementById("resume").innerHTML = 칸.join("");
-
+  const 수 = n => (n||0).toLocaleString();
   const 문 = [
-    ["개념.html","읽기","개념 흐름",`소단원마다 배경 → 전개 → 결과를 이어 쓴 원고. 원인과 결과, 견주어 볼 것, 시험에서 가르는 것까지.`,`${CN.단원.filter(x=>x.흐름.length).length}개 단원`],
-    ["연표.html","보기","연표",`선사부터 오늘까지 한 줄. 분야 다섯 빛깔로 칸을 나누고, 사건을 누르면 배경·전개·결과가 열립니다.`,`${ko.length}건 · 기출 ${ko.filter(e=>e.ㄱ).length}건 표시`],
-    ["풀이.html","풀기","기출 풀이",`회차 실전(30분·채점·등급), 시대별·사건별 연습, 오답 노트. 해설 옆에 그 사건의 흐름이 붙습니다.`,`${QB.회차.length}회분 · ${QB.문항.length.toLocaleString()}문항`],
-    ["계보.html","보기","왕조 계보",`여섯 왕조 역대 왕의 재위 기간과 그때 일어난 일, 시험이 그 왕을 물은 횟수.`,`${왕}명`],
-    ["근현대.html","보기","근현대",`독립운동 단체와 인물을 지도·줄기·인물 세 가지로. 네 시기로 끊어 봅니다.`,`네 장`],
+    ["개념.html","읽기","개념 흐름","소단원마다 배경 → 전개 → 결과를 이어 쓴 원고. 원인과 결과, 견주어 볼 것, 시험에서 가르는 것까지.",`${수(S.원고)}개 단원`],
+    ["연표.html","보기","연표","선사부터 오늘까지. 분야 다섯 줄기로 나누고, 사건을 누르면 배경·전개·결과가 열립니다.",`${수(S.사건)}건 · 기출 ${수(S.기출표시)}건 표시`],
+    ["풀이.html","풀기","기출 풀이","회차 실전(30분·채점·등급), 시대별·사건별 연습, 오답 노트. 해설 옆에 그 사건의 흐름이 붙습니다.",`${수(S.회차)}회분 · ${수(S.문항)}문항`],
+    ["계보.html","보기","왕조 계보","여섯 왕조 역대 왕의 재위 기간과 그때 일어난 일, 시험이 그 왕을 물은 횟수.",`${수(S.왕)}명`],
+    ["근현대.html","보기","근현대","독립운동 단체와 인물을 지도·줄기·인물 세 가지로. 네 시기로 끊어 봅니다.","네 장"],
   ];
   document.getElementById("doors").innerHTML = 문.map(([h,k,t,p,n])=>`<a class="door" href="${h}"><span class="k">${k}</span><h3>${t}</h3><p>${p}</p><span class="n">${n}</span></a>`).join("");
   document.getElementById("stats").innerHTML = [
-    [CN.단원.length, "교과서 소단원"], [Object.keys(CN.사건||{}).length, "배경·결과를 붙인 사건"], [ko.length, "한국사 연표 사건"],
-    [QB.문항.length.toLocaleString(), "풀 수 있는 기출 문항"], [QB.회차.length, "학평·모평 회차"], [왕, "역대 왕"],
-  ].map(([n,t])=>`<div class="stat"><b>${n}</b><span>${t}</span></div>`).join("");
+    [S.단원, "교과서 소단원"], [S.맥락, "배경·결과를 붙인 사건"], [S.사건, "한국사 연표 사건"],
+    [S.문항, "풀 수 있는 기출 문항"], [S.회차, "학평·모평·수능 회차"], [S.왕, "역대 왕"],
+  ].map(([n,t])=>`<div class="stat"><b>${수(n)}</b><span>${t}</span></div>`).join("");
 })();
 </script>
 </body>

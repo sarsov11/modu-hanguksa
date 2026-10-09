@@ -38,7 +38,7 @@
 </main>
 
 <script src="js/timeline.js?v=38395e474f"></script>
-<script src="js/concept.js?v=62e308a68f"></script>
+<script src="js/concept.js?v=dd5b81142e"></script>
 <script>
 (function(){
   const CN = window.CN, TL = window.TL;
@@ -96,7 +96,8 @@
       <div class="path"><span>${에스(u.책)}</span><span>${에스(u.대단원||"")}</span><span>${에스(u.중단원||"")}</span><span>교과서 ${에스(u.쪽)}쪽</span></div>
       <h2>${에스(u.소단원)}</h2>
       ${u.한줄 ? `<p class="one">${에스(u.한줄)}</p>` : ""}
-      <div class="acts">${문항수 ? `<a class="btn" href="풀이.html?unit=${u.키}">이 단원 기출 ${문항수}문항 풀기</a>` : ""}
+      <div class="acts">${문항수 ? `<a class="btn" href="풀이.html?unit=${u.키}">이 단원 기출 ${문항수}문항 풀기</a>`
+          : u.시대[0] ? `<a class="btn" href="풀이.html?era=${encodeURIComponent(u.시대[u.시대.length-1])}">${에스(u.시대[u.시대.length-1])} 기출 풀기</a>` : ""}
         ${u.시대[0] ? `<a class="btn ghost" href="연표.html#era-${encodeURIComponent(u.시대[0])}">연표에서 ${에스(u.시대.join("·"))} 보기</a>` : ""}</div>
     </header>`;
     if(!u.흐름.length){
@@ -113,6 +114,7 @@
         (c.항목||[]).map(x=>`<dt>${에스(x.이름)}</dt><dd>${에스(x.내용)}</dd>`).join("")}</dl></div>`).join("")}</section>`;
       if(u.핵심어.length) h += `<section class="blk"><h3>핵심어</h3><div class="keys">${u.핵심어.map(x=>`<div><b>${에스(x.말)}</b><p>${에스(x.뜻)}</p></div>`).join("")}</div></section>`;
       if(u.기출포인트.length) h += `<section class="blk"><h3>시험에서 가르는 것</h3><ul class="pts">${u.기출포인트.map(x=>`<li>${에스(x)}</li>`).join("")}</ul>
+        ${문항수 ? "" : `<p class="notice" style="margin-top:14px">학평·모평·수능 기출에서 이 단원 내용만 따로 물은 문항은 아직 없습니다. 같은 시대 기출로 연습하세요.</p>`}
         ${문항수 ? `<div style="margin-top:14px"><a class="btn" href="풀이.html?unit=${u.키}">이 단원 기출 ${문항수}문항 풀기</a></div>` : ""}</section>`;
     }
     h += `<nav class="unav">${앞?`<a href="#${앞.키}"><small>← 앞 단원</small><b>${에스(앞.소단원)}</b></a>`:"<span></span>"}${뒤?`<a class="nx" href="#${뒤.키}"><small>다음 단원 →</small><b>${에스(뒤.소단원)}</b></a>`:""}</nav>`;

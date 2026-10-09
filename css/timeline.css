@@ -214,3 +214,28 @@
   .sheet-in{padding:14px 16px calc(80px + env(safe-area-inset-bottom,0))}
   .photos{grid-template-columns:repeat(2,1fr);gap:8px}
 }
+
+/* ═══ A안 분야 줄기 (2026-10-09) — 빈칸 없이 분야마다 위에서부터 쌓는다 ═══ */
+.lanes{display:grid;gap:22px}
+.lane-grid{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));border-top:0}
+.lane{padding:10px 8px 12px;display:flex;flex-direction:column;gap:5px;min-width:0}
+.lane+.lane{border-left:1px solid var(--line)}
+.lane h5{display:flex;align-items:center;gap:6px;font-size:13.5px;font-weight:800;color:var(--ink-2);margin:0 2px 4px;letter-spacing:-.01em}
+.lane h5 i{width:8px;height:8px;border-radius:2px;background:var(--c)}
+.lane h5 small{font-family:var(--mono);font-size:12px;color:var(--ink-4);font-weight:700}
+.lane .none{color:var(--line-3);font-size:14px;margin:2px 4px}
+.ev2 time{display:block;margin:0 0 1px;font-family:var(--mono);font-size:12px;font-weight:800;color:var(--ink-4)}
+.ev2 b{font-size:14px}
+/* B안 연대 격자 */
+.bucket .yr{font-size:14px;line-height:1.3}
+.bucket .yr small{display:block;font-size:11.5px;color:var(--ink-4);font-weight:700}
+@media (max-width:900px){
+  .lane-grid{grid-template-columns:1fr}
+  .lane+.lane{border-left:0;border-top:1px solid var(--line)}
+  .lane .none{display:none}
+}
+/* 폰 — 도구줄이 화면 위 1/3 을 붙잡고 따라다녔다(2026-10-09 실측 280px) → 폰에서는 따라오지 않게, 빈 분야 줄기는 숨김 */
+@media (max-width:900px){
+  .tbar{position:static;backdrop-filter:none;-webkit-backdrop-filter:none}
+  .lane:has(.none){display:none}
+}
