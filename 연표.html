@@ -60,8 +60,8 @@
   </div>
 </aside>
 
-<script src="js/timeline.js?v=38395e474f"></script>
-<script src="js/concept.js?v=dd5b81142e" onerror="window.CN=null"></script>
+<script src="js/timeline.js?v=fdabe87a49"></script>
+<script src="js/concept.js?v=b66e033c0f" onerror="window.CN=null"></script>
 <script>
 (function(){
   const TL = window.TL, CN = window.CN || {단원:[], 사건:{}, 사건문항:{}};
@@ -82,7 +82,7 @@
   try{ 보기 = localStorage.getItem("hs-tlview2") || "lane"; }catch(e){}
 
   /* 기출 빈출 층 — 개정(2015 개정, 2018 시행) 이후 횟수 */
-  const 층 = e => { const q = e.ㄱ; if(!q) return 0; return q.근 >= 10 ? 3 : q.근 >= 4 ? 2 : 1; };
+  const 층 = e => { const q = e.ㄱ; if(!q || !q.n) return 0; return q.근 >= 10 ? 3 : q.근 >= 4 ? 2 : 1; };
   const 회차글 = x => `${x.y} 고${x.g}${x.j?" "+x.j:""} ${x.b}번`;
   const 한국 = TL.사건.filter(e=>e.계열==="한국사");
 
@@ -142,7 +142,7 @@
       <span class="minibar">${분야들.map(f=>`<i style="width:${(셈[f]||0)/합*100}%;background:${색(f)}" title="${f} ${셈[f]||0}"></i>`).join("")}</span>
       ${개념있음 ? `<a class="go" href="개념.html?era=${encodeURIComponent(g.이름)}">이 시대 개념 흐름 →</a>` : ""}</h2>`;
   }
-  const 기출배지 = e => e.ㄱ ? `<span class="qn" data-q="${e.id}">${e.ㄱ.근||e.ㄱ.n}</span>` : "";
+  const 기출배지 = e => e.ㄱ && e.ㄱ.n ? `<span class="qn" data-q="${e.id}">${e.ㄱ.n}</span>` : "";
 
   /* ═══ 분야 칸 — 한 해 = 한 줄 ═══ */
   function 칸보기(list){
@@ -154,7 +154,7 @@
       g.사건.forEach(e=>{ const 끝 = 해묶[해묶.length-1]; if(끝 && 끝.연===e.연) 끝.사건.push(e); else 해묶.push({연:e.연, 사건:[e]}); });
       const 줄 = 해묶.map(y=>{
         const 칸 = 분야들.map(f=>`<div class="cell">${y.사건.filter(e=>e.분야===f && e.계열==="한국사").map(e=>
-          `<div class="ev${e.ㄱ?" q"+층(e):""}${(e.사진||[]).length?" 사진있":""}" data-id="${e.id}" style="--c:${색(f)};--c-soft:${연색(f)}">
+          `<div class="ev${층(e)?" q"+층(e):""}${(e.사진||[]).length?" 사진있":""}" data-id="${e.id}" style="--c:${색(f)};--c-soft:${연색(f)}">
             <b><span class="nm">${e.이름}</span><span class="ftag">${f}</span>${기출배지(e)}</b>${e.끝연?`<time>~ ${해(e.끝연)}</time>`:""}</div>`).join("")}</div>`).join("");
         const 세 = y.사건.filter(e=>e.계열!=="한국사");
         const 한 = y.사건.some(e=>e.계열==="한국사");
@@ -176,12 +176,12 @@
         const 줄 = m ? `<p><em>배경</em>${에스(m.배경)} <em>결과</em>${에스(m.결과)}</p>` : "";
         return `<li data-id="${e.id}" style="--c:${한?색(e.분야):"var(--f-세계)"}"><span class="fy">${y칸(e)}</span><span class="fd"></span>
           <span class="fx"><b>${e.이름}</b>${한?`<span class="tag f" style="--c:${색(e.분야)};--c-soft:${연색(e.분야)}">${e.분야||""}</span>`:`<span class="tag">세계사</span>`}${
-          e.ㄱ?`<span class="tag hot">기출 ${e.ㄱ.근||e.ㄱ.n}</span>`:""}${줄}</span></li>`;
+          e.ㄱ?`<span class="tag hot">기출 ${e.ㄱ.n}</span>`:""}${줄}</span></li>`;
       }).join("")}</ol></section>`).join("")}</div>`;
   }
   /* ═══ A안 분야 줄기 — 시대마다 분야 다섯 줄기, 사건을 위에서부터 쌓는다(빈칸이 없다) ═══ */
   const 작은해 = y => y < 0 ? (-y > 9999 ? `${-y/10000}만 년 전` : `기원전 ${-y}`) : y;
-  const 사건칸 = (e, f) => `<div class="ev ev2${e.ㄱ?" q"+층(e):""}${(e.사진||[]).length?" 사진있":""}" data-id="${e.id}" style="--c:${색(f)};--c-soft:${연색(f)}">
+  const 사건칸 = (e, f) => `<div class="ev ev2${층(e)?" q"+층(e):""}${(e.사진||[]).length?" 사진있":""}" data-id="${e.id}" style="--c:${색(f)};--c-soft:${연색(f)}">
       <time>${작은해(e.연)}${e.끝연?` ~ ${작은해(e.끝연)}`:""}</time><b><span class="nm">${e.이름}</span>${기출배지(e)}</b></div>`;
   function 줄기보기(list){
     const 묶 = 시대묶음(list);
@@ -219,9 +219,10 @@
   function 쪽지열기(el){
     const e = TL.사건.find(x=>x.id===el.dataset.q); if(!e || !e.ㄱ) return;
     const q = e.ㄱ;
-    쪽지.innerHTML = `<h5>${e.이름}<em>${q.근}회 / 전체 ${q.n}회</em></h5><ul>${q.회.map(x=>`<li><b>${회차글(x)}</b><span>${에스(x.t)}</span></li>`).join("")}</ul>`
-      + (q.n > q.회.length ? `<div class="more">… 그 밖 ${q.n - q.회.length}회</div>` : "")
-      + `<div class="more">2015~2026 학력평가·모의평가 133회분, 문항 해설의 출제의도 기준</div>`;
+    쪽지.innerHTML = `<h5>${e.이름}<em>${q.n}문항 · 2018 이후 ${q.근}</em></h5><ul>${q.회.slice(0,10).map(x=>`<li><b>${회차글(x)}</b><span>${에스(x.t)}</span></li>`).join("")}</ul>`
+      + (q.회.length > 10 ? `<div class="more">… 그 밖 ${q.회.length - 10}개 문항</div>` : "")
+      + (q.s ? `<div class="more">선지·자료로 나온 문항 ${q.s}개 더</div>` : "")
+      + `<div class="more">학평·모평·수능 124회분 2,480문항을 하나씩 읽고 센 수</div>`;
     쪽지.hidden = false;
     const r = el.getBoundingClientRect(), w = 쪽지.offsetWidth, h = 쪽지.offsetHeight;
     쪽지.style.left = Math.min(Math.max(8, r.left - 8), innerWidth - w - 8) + "px";
@@ -330,8 +331,9 @@
 
     const 문항수 = (CN.사건문항||{})[e.id] || 0;
     $("#sh-q").innerHTML = (e.ㄱ || 문항수) ? `<h6>기출</h6><div class="qbox">
-        ${e.ㄱ ? `<ul>${e.ㄱ.회.map(x=>`<li><b>${회차글(x)}</b><span>${에스(x.t)}</span></li>`).join("")}</ul>
-        ${e.ㄱ.n > e.ㄱ.회.length ? `<div class="more">… 그 밖 ${e.ㄱ.n - e.ㄱ.회.length}회</div>` : ""}` : ""}
+        ${e.ㄱ ? `<p style="font-size:14.5px;font-weight:700;color:var(--ink-2);margin:0 0 8px">이 사건을 물은 문항 ${e.ㄱ.n}개(2018 이후 ${e.ㄱ.근}개)${e.ㄱ.s?` · 선지·자료로 나온 문항 ${e.ㄱ.s}개`:""}</p>` : ""}
+        ${e.ㄱ && e.ㄱ.회.length ? `<ul>${e.ㄱ.회.slice(0,12).map(x=>`<li><b>${회차글(x)}</b><span>${에스(x.t)}</span></li>`).join("")}</ul>
+        ${e.ㄱ.회.length > 12 ? `<div class="more">… 그 밖 ${e.ㄱ.회.length - 12}개 문항</div>` : ""}` : ""}
         ${문항수 ? `<div class="acts"><a class="btn sm" href="풀이.html?ev=${e.id}">이 사건 기출 ${문항수}문항 풀기</a></div>` : ""}
       </div>` : "";
 
@@ -362,15 +364,15 @@
   document.addEventListener("keydown", e=>{ if(e.key==="Escape") $("#sheet").dataset.open="0"; });
 
   $("#legend").innerHTML =
-      `<span><b>굵고 형광</b> 개정 이후 10회 넘게 출제</span>`
-    + `<span><span class="qq">7</span> 출제 횟수(마우스를 대면 회차)</span>`
+      `<span><b>굵고 형광</b> 2018 이후 10문항 넘게 출제</span>`
+    + `<span><span class="qq">7</span> 이 사건을 물은 문항 수(마우스를 대면 회차)</span>`
     + `<span>${마우스있음 ? "사건에 마우스를 대면 배경·결과와 사진, 누르면 자세히" : "사건을 누르면 배경·전개·결과"}</span>`;
 
   function 그리기(){
     const list = 고른사건();
     const q = TL.사건.filter(e=>e.ㄱ).length;
     $("#lead").innerHTML = `교과서 부록 연표와 역사부도 연표의 한국사 <b>${한국.length}건</b>을 정치·대외·경제·사회·문화 다섯 빛깔로 나눠 한 줄에 놓았습니다. `
-      + `학력평가·모의평가 133회분(2015~2026)에 나온 <b>${q}건</b>은 굵기와 형광으로 표시했습니다.`;
+      + `학평·모평·수능 124회분 2,480문항(2015~2026)을 하나씩 읽어 시험에 나온 <b>${q}건</b>을 표시했고, 많이 나온 사건일수록 굵고 형광으로 칠했습니다.`;
     [...$("#viewseg").children].forEach(b=>b.setAttribute("aria-selected", String(b.dataset.v===보기)));
     $("#stage").innerHTML = list.length ? (보기==="flow" ? 흐름보기(list) : 보기==="lane" ? 줄기보기(list) : 보기==="bucket" ? 격자보기(list) : 칸보기(list)) : `<div class="empty">고른 조건에 맞는 사건이 없습니다.</div>`;
     도구높이();
