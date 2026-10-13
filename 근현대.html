@@ -25,7 +25,7 @@
       <p class="sub">시기마다 한 장, 장마다 <b>지도 · 줄기 · 인물</b> 세 가지 보기. 얼굴 사진은 교과서에 실린 것만 씁니다.</p></div>
   </div>
   <div class="legend">
-      <span><span class="qq">기출 7</span>&nbsp;= 출제 횟수(대면 회차)</span>
+      <span><span class="qq">기출 7</span>&nbsp;= 2018학년도 이후 그 항목을 물은 문항 수(대면 회차)</span>
       <span>지도 바탕 Natural Earth(공공 영역)</span>
     </div>
 
@@ -50,7 +50,7 @@
   </div>
 </main>
 
-<script src="js/geundae.js?v=c59d3b6248"></script>
+<script src="js/geundae.js?v=b6e3dcad6d"></script>
 <script>
 (function(){
   const GD = window.GD, $ = s => document.querySelector(s);
@@ -184,7 +184,7 @@
 
   const 단체카드 = t => `<article class="org${고른단체===t.이름?" on":""}" data-t="${에스(t.이름)}" style="--c:${색(t.갈래)}">
       <h4>${그림(t.갈래)}${에스(t.이름)}<em>${t.해}${t.끝&&t.끝!==t.해?`~${t.끝}`:""}</em>
-        ${t.ㄱ?`<span class="qn" data-q="${에스(t.이름)}">${t.ㄱ.근||t.ㄱ.n}</span>`:""}
+        ${t.ㄱ&&t.ㄱ.근?`<span class="qn" data-q="${에스(t.이름)}">${t.ㄱ.근}</span>`:""}
         ${t.교과서밖?`<span class="out">교과서 밖</span>`:""}</h4>
       <p class="why">${에스(t.한일)}</p>
       ${t.사람.length?`<div class="who">${t.사람.map(얼굴칩).join("")}</div>`:""}
@@ -207,7 +207,7 @@
         <div class="node" data-t="${에스(t.이름)}" style="--c:${색(t.갈래)}">
           <b>${그림(t.갈래)}${에스(t.이름)}</b>
           <div class="meta">${t.해}${t.끝&&t.끝!==t.해?`~${t.끝}`:""} · ${t.곳.join("·")} · ${t.갈래}
-            ${t.ㄱ?` <span class="qn" data-q="${에스(t.이름)}">${t.ㄱ.근||t.ㄱ.n}</span>`:""}</div>
+            ${t.ㄱ&&t.ㄱ.근?` <span class="qn" data-q="${에스(t.이름)}">${t.ㄱ.근}</span>`:""}</div>
           ${t.사람.length?`<div class="faces">${t.사람.map(얼굴알).join("")}</div>`:""}
         </div>`).join("");
       // 이 장을 넘어 이어지는 곳
@@ -236,7 +236,7 @@
         첫단체 && !(p.얼굴 && p.얼굴.length) ? 그림(첫단체.갈래) : ""}</span>`;
       return `<article class="person">
         <div class="top"><div class="ph">${얼}</div>
-          <div><h4>${에스(p.이름)}${p.ㄱ?` <span class="qn" data-q="${에스(p.이름)}">${p.ㄱ.근||p.ㄱ.n}</span>`:""}</h4>
+          <div><h4>${에스(p.이름)}${p.ㄱ&&p.ㄱ.근?` <span class="qn" data-q="${에스(p.이름)}">${p.ㄱ.근}</span>`:""}</h4>
             <div class="one">${에스(p.한줄||"")}</div></div></div>
         <div class="orgs2">${속.map(o=>{const t=GD.단체.find(x=>x.이름===o);
           return `<span style="--c:${색(t.갈래)}" data-t="${에스(o)}">${그림(t.갈래)}${에스(o)}</span>`;}).join("")}</div>
@@ -285,7 +285,7 @@
           <div class="vhead"><span class="ph">${얼굴칸(p.이름, true)}</span>
             <div><h5>${에스(p.이름)}</h5>
               <small>${[시기표[p.시기]?시기표[p.시기].이름:"", (p.곳||[]).slice(0,2).join("·"), p.갈래].filter(Boolean).join(" · ")}</small></div>
-            ${p.ㄱ?`<span class="qn" data-q="${에스(p.이름)}">${p.ㄱ.근||p.ㄱ.n}</span>`:""}</div>
+            ${p.ㄱ&&p.ㄱ.근?`<span class="qn" data-q="${에스(p.이름)}">${p.ㄱ.근}</span>`:""}</div>
           <p>${에스(p.한줄||"")}</p>
           <div class="vorgs">${(p.단체||[]).map(o=>{const x=GD.단체.find(y=>y.이름===o);
             return x?`<span style="--c:${색(x.갈래)}">${에스(o)}</span>`:"";}).join("")}</div>

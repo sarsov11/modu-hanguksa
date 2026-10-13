@@ -26,7 +26,7 @@
   </div>
   <div class="legend">
       <span><b>굵고 형광</b>&nbsp;= 기출에 자주 나온 왕</span>
-      <span><span class="qq">기출 7</span>&nbsp;= 출제 횟수(대면 회차)</span>
+      <span><span class="qq">기출 7</span>&nbsp;= 2018학년도 이후 그 왕을 물은 문항 수(대면 회차)</span>
     </div>
 
   <div class="tabs" id="tabs"></div>
@@ -36,7 +36,7 @@
   </div>
 </main>
 
-<script src="js/gyebo.js?v=30dbce4a80"></script>
+<script src="js/gyebo.js?v=615edd5997"></script>
 <script>
 (function(){
   const GB = window.GB, $ = s => document.querySelector(s);
@@ -101,7 +101,7 @@
           <em>${해(w.부터)}~${해(w.까지)}${w.다시?` · ${w.다시[0]}~${w.다시[1]}`:""}</em></div>
         <div class="bar" style="--c:${c}">${막}<span>${길>0?길+"년":""}</span></div>
         <div class="evs">${사건 || `<span class="none">연표에 실린 사건 없음</span>`}</div>
-        <div class="gq">${w.ㄱ ? `<span class="qn" data-k="${w.대}">${w.ㄱ.근||w.ㄱ.n}</span>`
+        <div class="gq">${w.ㄱ && w.ㄱ.근 ? `<span class="qn" data-k="${w.대}">${w.ㄱ.근}</span>`
                                : `<span class="zero">–</span>`}</div>
       </div>`;
     }).join("");

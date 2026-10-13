@@ -142,7 +142,7 @@
       <span class="minibar">${분야들.map(f=>`<i style="width:${(셈[f]||0)/합*100}%;background:${색(f)}" title="${f} ${셈[f]||0}"></i>`).join("")}</span>
       ${개념있음 ? `<a class="go" href="개념.html?era=${encodeURIComponent(g.이름)}">이 시대 개념 흐름 →</a>` : ""}</h2>`;
   }
-  const 기출배지 = e => e.ㄱ && e.ㄱ.n ? `<span class="qn" data-q="${e.id}">${e.ㄱ.n}</span>` : "";
+  const 기출배지 = e => e.ㄱ && e.ㄱ.근 ? `<span class="qn" data-q="${e.id}">${e.ㄱ.근}</span>` : "";
 
   /* ═══ 분야 칸 — 한 해 = 한 줄 ═══ */
   function 칸보기(list){
@@ -176,7 +176,7 @@
         const 줄 = m ? `<p><em>배경</em>${에스(m.배경)} <em>결과</em>${에스(m.결과)}</p>` : "";
         return `<li data-id="${e.id}" style="--c:${한?색(e.분야):"var(--f-세계)"}"><span class="fy">${y칸(e)}</span><span class="fd"></span>
           <span class="fx"><b>${e.이름}</b>${한?`<span class="tag f" style="--c:${색(e.분야)};--c-soft:${연색(e.분야)}">${e.분야||""}</span>`:`<span class="tag">세계사</span>`}${
-          e.ㄱ?`<span class="tag hot">기출 ${e.ㄱ.n}</span>`:""}${줄}</span></li>`;
+          e.ㄱ&&e.ㄱ.근?`<span class="tag hot">기출 ${e.ㄱ.근}</span>`:""}${줄}</span></li>`;
       }).join("")}</ol></section>`).join("")}</div>`;
   }
   /* ═══ A안 분야 줄기 — 시대마다 분야 다섯 줄기, 사건을 위에서부터 쌓는다(빈칸이 없다) ═══ */
@@ -365,7 +365,7 @@
 
   $("#legend").innerHTML =
       `<span><b>굵고 형광</b> 2018 이후 10문항 넘게 출제</span>`
-    + `<span><span class="qq">7</span> 이 사건을 물은 문항 수(마우스를 대면 회차)</span>`
+    + `<span><span class="qq">7</span> 2018학년도 이후 이 사건을 물은 문항 수(마우스를 대면 회차)</span>`
     + `<span>${마우스있음 ? "사건에 마우스를 대면 배경·결과와 사진, 누르면 자세히" : "사건을 누르면 배경·전개·결과"}</span>`;
 
   function 그리기(){
