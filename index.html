@@ -37,9 +37,8 @@
   <div class="phead">
     <div>
       <span class="kicker"><i></i>고등 한국사 · 미래엔 2022 개정</span>
-      <h1>사건을 <em>흐름</em>으로 잇고 <em>기출</em>로 확인한다</h1>
-      <p class="sub">교과서 소단원 86개를 배경·전개·결과로 다시 쓰고 연표 사건 335건과 학력평가·모의평가 기출을 서로 이었습니다.
-        개념에서 사건으로, 사건에서 그 사건을 물은 문항으로 바로 넘어갑니다.</p>
+      <h1>개념 · 연표 · <em>기출</em></h1>
+      <p class="sub" id="hsub"></p>
       <div class="fkeys">
         <span class="tag f" style="--c:var(--f-정치);--c-soft:var(--f-정치-soft)">정치</span>
         <span class="tag f" style="--c:var(--f-대외);--c-soft:var(--f-대외-soft)">대외</span>
@@ -56,7 +55,7 @@
 
   <div class="go2" id="resume"></div>
 
-  <div class="sec"><h2>무엇을 할까</h2></div>
+  <div class="sec"><h2>바로 가기</h2></div>
   <div class="doors" id="doors"></div>
 
   <div class="sec"><h2>들어 있는 것</h2></div>
@@ -64,11 +63,10 @@
 
   <footer class="foot">
     사건은 <b>미래엔 2022개정 한국사1·2 부록 연표와 역사부도</b>에서 옮겼고 문항은 <b>2015~2026 학력평가·모의평가</b> 시험지와 해설지를 썼습니다.
-    문항 저작권은 출제 기관(시도교육청·한국교육과정평가원)에 있습니다.
   </footer>
 </main>
 
-<script src="js/stats.js?v=0b229868a9"></script>
+<script src="js/stats.js?v=410ca8c026"></script>
 <script>
 (function(){
   // 홈은 요약(js/stats.js, 수 KB)만 받는다 — 연표·문항 데이터(3MB)는 그 화면에서
@@ -86,6 +84,7 @@
              : `<div class="resume"><span class="ix">기출</span><div><b>최근 회차 하나 풀어 보기</b><span>20문항 · 30분 · 채점과 등급</span></div><a class="btn sm act" href="풀이.html${S.첫회차?`?p=${S.첫회차}`:""}" style="background:var(--surface,#fff);color:var(--ink,#111);border:1px solid var(--line-2,#ddd)">시작</a></div>`);
   /* 빨간 주 단추는 이어 읽기 하나만 — 홈에 빨간 단추가 넷이라 다음에 누를 것이 흩어졌다(2026-10-09 흐름 점검) */
   document.getElementById("resume").innerHTML = 칸.join("");
+  document.getElementById("hsub").innerHTML = `교과서 소단원 <b>${S.단원||86}개</b> · 연표 사건 <b>${(S.사건||0).toLocaleString()}건</b> · 학력평가·모의평가 <b>${(S.문항||0).toLocaleString()}문항</b>`;
   const 수 = n => (n||0).toLocaleString();
   const 문 = [
     ["개념.html","읽기","개념 흐름","소단원마다 배경 → 전개 → 결과를 이어 쓴 원고. 원인과 결과, 견주어 볼 것, 시험에서 가르는 것까지.",`${수(S.원고)}개 단원`],
@@ -101,6 +100,6 @@
   ].map(([n,t])=>`<div class="stat"><b>${수(n)}</b><span>${t}</span></div>`).join("");
 })();
 </script>
-<script src="js/zzsfx.js?v=1009a" defer></script><script src="js/zzajan.js?v=1009a" defer></script>
+<script src="js/zzsfx.js?v=4dfd95248a" defer></script><script src="js/zzajan.js?v=8e6319edf2" defer></script>
 </body>
 </html>

@@ -191,8 +191,9 @@
 /* ═══ 폰 ═══ */
 @media (max-width:900px){
   .tbar .find{min-width:0;flex:1}
-  .tbar .chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;width:100%}
+  .tbar .chips{flex-wrap:wrap;width:100%}
   .tbar .chip{flex:none}
+  .eras{-webkit-mask-image:linear-gradient(to right,#000 88%,transparent);mask-image:linear-gradient(to right,#000 88%,transparent);padding-right:24px}
   .riv{--cols:60px 1fr;gap:16px}
   .riv-head{display:none}
   .era-tag{padding:12px 14px;gap:8px}

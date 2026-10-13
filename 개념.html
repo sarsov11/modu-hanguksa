@@ -20,7 +20,7 @@
   <div class="phead">
     <div>
       <span class="kicker"><i></i>개념 흐름</span>
-      <h1>사건을 <em>원인과 결과</em>로 잇는다</h1>
+      <h1>개념 <em>흐름</em></h1>
       <p class="sub" id="lead"></p>
     </div>
   </div>
@@ -37,8 +37,8 @@
   </div>
 </main>
 
-<script src="js/timeline.js?v=fdabe87a49"></script>
-<script src="js/concept.js?v=61dc6dc36c"></script>
+<script src="js/timeline.js?v=48ae65774b"></script>
+<script src="js/concept.js?v=11b802194a"></script>
 <script>
 (function(){
   const CN = window.CN, TL = window.TL;
@@ -52,7 +52,7 @@
   let 시대 = new URLSearchParams(location.search).get("era") || "", 찾기 = "";
 
   const 원고수 = 단원.filter(u=>u.흐름.length).length;
-  $("#lead").innerHTML = `교과서 소단원 <b>${단원.length}개</b>를 <b>배경 → 전개 → 결과</b>의 줄기로 다시 썼습니다. 마디마다 연표 사건이 걸려 있고 단원 끝에서 그 단원 기출로 바로 넘어갑니다.`;
+  $("#lead").innerHTML = `교과서 소단원 <b>${단원.length}개</b> · 배경 → 전개 → 결과`;
 
   /* ── 차례 ── */
   $("#eraf").innerHTML = `<button data-e="" aria-pressed="${!시대}">전체</button>` + 시대순.filter(e=>단원.some(u=>u.시대.includes(e)))

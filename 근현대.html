@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script>try{var s=localStorage.getItem("hs-skin")||"white";document.documentElement.dataset.skin=s;document.documentElement.dataset.look=s==="night"?"night":"paper"}catch(e){}</script>
 <link rel="stylesheet" href="css/modu.css?v=5a6203a6d5">
-<link rel="stylesheet" href="css/timeline.css?v=be07603ba6">
+<link rel="stylesheet" href="css/timeline.css?v=318dd3e83e">
 <link rel="stylesheet" href="css/geundae.css?v=8a6150c7c0">
 </head>
 <body>
@@ -21,10 +21,8 @@
 <main class="wrap">
   <div class="phead">
     <div><span class="kicker"><i></i>근현대</span>
-      <h1>근현대를 <em>네 장</em>으로 끊어 보기</h1>
-      <p class="sub">한 장에 다 담지 않았습니다. <b>시기마다 한 장</b>씩 넘겨 보고 장마다
-        <b>지도(어디서) · 줄기(어떻게 이어졌나) · 인물(누가)</b> 세 가지로 볼 수 있습니다.
-        얼굴 사진은 교과서에 실린 것만 씁니다.</p></div>
+      <h1>근현대 <em>네 장</em></h1>
+      <p class="sub">시기마다 한 장, 장마다 <b>지도 · 줄기 · 인물</b> 세 가지 보기. 얼굴 사진은 교과서에 실린 것만 씁니다.</p></div>
   </div>
   <div class="legend">
       <span><span class="qq">기출 7</span>&nbsp;= 출제 횟수(대면 회차)</span>
@@ -334,7 +332,7 @@
     if(!t || !t.ㄱ) return;
     쪽지.innerHTML = `<h5>${에스(t.이름)}<em>${t.ㄱ.근}회 / 전체 ${t.ㄱ.n}회</em></h5>`
       + `<ul>${t.ㄱ.회.map(x=>`<li><b>${x.y} 고${x.g}${x.j?" "+x.j:""} ${x.b}번</b><span>${에스(x.t)}</span></li>`).join("")}</ul>`
-      + `<div class="more">2015~2026 학력평가·모의평가·수능 133회분, 문항 해설의 출제의도 기준</div>`;
+      + `<div class="more">2015~2026 학력평가·모의평가·수능 문항 해설의 출제의도 기준</div>`;
     쪽지.hidden = false;
     const r = el.getBoundingClientRect(), w = 쪽지.offsetWidth, h = 쪽지.offsetHeight;
     쪽지.style.left = Math.min(Math.max(8, r.left - w + 60), innerWidth - w - 8) + "px";
@@ -363,6 +361,6 @@
   옷(document.documentElement.dataset.look || "paper");
 })();
 </script>
-<script src="js/zzsfx.js?v=1009a" defer></script><script src="js/zzajan.js?v=1009a" defer></script>
+<script src="js/zzsfx.js?v=4dfd95248a" defer></script><script src="js/zzajan.js?v=8e6319edf2" defer></script>
 </body>
 </html>

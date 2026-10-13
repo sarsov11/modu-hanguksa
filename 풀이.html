@@ -115,7 +115,7 @@
     <div class="phead">
       <div>
         <span class="kicker"><i></i>기출 풀이</span>
-        <h1>실제 시험지로 <em>풀고</em> 틀린 건 흐름으로</h1>
+        <h1>기출 <em>풀이</em></h1>
         <p class="sub" id="lead"></p>
       </div>
       <div class="pheadact"><button class="btn" id="quick">아무 시대 10문항</button></div>
@@ -152,8 +152,8 @@
   </section>
 </main>
 
-<script src="js/qctx.js?v=1cb5e73e66"></script>
-<script src="js/qbank.js?v=a14ec513d3"></script>
+<script src="js/qctx.js?v=6184b622dc"></script>
+<script src="js/qbank.js?v=10f0f80e19"></script>
 <script>
 (function(){
   const QB = window.QB, QC = window.QC;
@@ -180,7 +180,7 @@
   const 등급 = s => s>=40?1:s>=35?2:s>=30?3:s>=25?4:s>=20?5:s>=15?6:s>=10?7:s>=5?8:9;
   const 회이름 = p => { const r = 회차표[p]; return r ? `${r.연} ${r.이름}` : p; };
 
-  $("#lead").innerHTML = `학력평가·모의평가 <b>${QB.회차.length}회분 ${문항.length.toLocaleString()}문항</b>. 문항마다 해설과, 그 문항이 묻는 사건의 배경·결과, 교과서 흐름으로 이어집니다.`;
+  $("#lead").innerHTML = `학력평가·모의평가 <b>${QB.회차.length}회분 ${문항.length.toLocaleString()}문항</b>`;
 
   /* ═══ 내 기록 ═══ */
   function 내기록(){
@@ -277,7 +277,7 @@
   function 해설준비(pid){
     if(window.QE[pid]) return Promise.resolve();
     if(!받는중[pid]) 받는중[pid] = new Promise(res=>{ const sc = document.createElement("script");
-      sc.src = `js/qe/${pid}.js`; sc.onload = res; sc.onerror = res; document.head.appendChild(sc); });
+      sc.src = `js/qe/${pid}.js?v=1013a`; sc.onload = res; sc.onerror = res; document.head.appendChild(sc); });
     return 받는중[pid];
   }
   // 해설 첫머리의 출제의도 제목은 위에 따로 보이므로 뗀다
@@ -392,6 +392,7 @@
     const 빈 = 판.qs.length - Object.keys(판.고름).length;
     if(빈 && 판.남은>0 && !confirm(`${빈}문항이 비어 있습니다. 채점할까요?`)) return;
     판.끝 = true; clearInterval(시계);
+    $("#timer").classList.add("hide");
     window.ZZ && ZZ.quiet && ZZ.quiet(1500);
     const 전등급 = (회기록[판.pid]||[])[1];
     let 점 = 0;
@@ -449,6 +450,6 @@
   else if(P.get("p") && 회차표[P.get("p")]) 실전(P.get("p"));
 })();
 </script>
-<script src="js/zzsfx.js?v=1009a" defer></script><script src="js/zzajan.js?v=1009a" defer></script>
+<script src="js/zzsfx.js?v=4dfd95248a" defer></script><script src="js/zzajan.js?v=8e6319edf2" defer></script>
 </body>
 </html>
