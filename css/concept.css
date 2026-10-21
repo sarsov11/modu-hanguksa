@@ -60,7 +60,7 @@
 .evchip:hover{border-color:var(--c);color:var(--ink)}
 .evchip i{width:7px;height:7px;border-radius:2px;background:var(--c)}
 .evchip time{font-family:var(--mono);font-size:12.5px;font-weight:800;color:var(--ink-4)}
-.evchip .q{font-family:var(--mono);font-size:11.5px;font-weight:800;color:#fff;background:var(--red);border-radius:3px;padding:0 4px}
+.evchip .q{font-family:var(--mono);font-size:12px;font-weight:800;color:#fff;background:var(--red);border-radius:3px;padding:0 4px}
 
 /* 인과 */
 .cause{display:grid;gap:10px;margin-top:14px}

@@ -212,3 +212,7 @@
   .qopts{grid-template-columns:1fr}
   .vs{grid-template-columns:1fr}
 }
+
+
+/* 10-21 폰: 지도 범례가 지도 아래쪽 고장(상하이·난징)을 덮던 것 → 지도 밑으로 */
+@media(max-width:700px){.mapbox .legend-m{position:static!important;margin:8px 0 0;background:none!important;box-shadow:none!important;border:0!important;padding:0!important}}
