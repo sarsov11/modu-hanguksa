@@ -10,7 +10,8 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script>try{var s=localStorage.getItem("hs-skin")||"white";document.documentElement.dataset.skin=s;document.documentElement.dataset.look=s==="night"?"night":"paper"}catch(e){}</script>
 <link rel="stylesheet" href="css/modu.css?v=5a6203a6d5">
-<link rel="stylesheet" href="css/concept.css?v=337513fb2d">
+<link rel="stylesheet" href="css/concept.css?v=ccbfe6a962">
+<link rel="stylesheet" href="css/diagram.css?v=9f93d9cd8c">
 </head>
 <body>
 <header class="nav" id="nav"></header>
@@ -39,6 +40,8 @@
 
 <script src="js/timeline.js?v=48ae65774b"></script>
 <script src="js/concept.js?v=11b802194a"></script>
+<script src="js/diagram.js?v=f383e2e7eb"></script>
+<script src="js/dosik.js?v=7dec7cabd1"></script>
 <script>
 (function(){
   const CN = window.CN, TL = window.TL;
@@ -103,9 +106,11 @@
       h += `<div class="notice wait">이 단원 원고는 정리 중입니다. 아래 사건은 연표에서 볼 수 있습니다.</div>
         <div class="story"><div class="evs" style="margin-top:12px">${u.사건목록.map(사건칩).join("")}</div></div>`;
     } else {
-      h += `<section class="blk"><h3>흐름 <small>배경 → 전개 → 결과</small></h3><ol class="story">${u.흐름.map(s=>`
+      /* 도식(2026-10-26 대표님 「모든 과목 개념을 도식으로」) — js/dosik.js 에 마디 도식이 있으면 줄글 대신 도식, 원문은 접는다 */
+      const 도 = (window.DOSIK && DOSIK.hanguksa && DOSIK.hanguksa[u.키]) || {};
+      h += `<section class="blk"><h3>흐름 <small>배경 → 전개 → 결과</small></h3><ol class="story">${u.흐름.map((s,j)=>`
         <li data-k="${에스(s.갈래)}"><span class="knot">${에스(s.갈래)}</span><div class="body">
-          <h4>${에스(s.제목)}${s.때?`<time>${에스(s.때)}</time>`:""}</h4><p>${에스(s.내용)}</p>
+          <h4>${에스(s.제목)}${s.때?`<time>${에스(s.때)}</time>`:""}</h4>${도[j] && window.DIAGRAM ? 도[j].map(DIAGRAM.html).join("") + `<details class="dsrc"><summary>원문</summary><p>${에스(s.내용)}</p></details>` : `<p>${에스(s.내용)}</p>`}
           ${s.사건.length ? `<div class="evs">${s.사건.map(사건칩).join("")}</div>` : ""}</div></li>`).join("")}</ol></section>`;
       if(u.인과.length) h += `<section class="blk"><h3>원인과 결과</h3><div class="cause">${u.인과.map(c=>
         `<div><p><b>원인</b>${에스(c.원인)}</p><span>→</span><p class="r"><b>결과</b>${에스(c.결과)}</p></div>`).join("")}</div></section>`;
