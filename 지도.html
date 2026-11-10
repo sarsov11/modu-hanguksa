@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ko" data-skin="white">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>합격 지도 — 모두의 한국사</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<script>try{var s=localStorage.getItem("hs-skin")||"white";document.documentElement.dataset.skin=s;document.documentElement.dataset.look=s==="night"?"night":"paper"}catch(e){}</script>
+<link rel="stylesheet" href="css/modu.css?v=b3f2775675">
+<style>
+  main.mapwrap{max-width:1180px;margin:0 auto;padding:18px 20px 120px}
+</style>
+</head>
+<body>
+<header class="nav" id="nav"></header>
+<script src="js/shell.js?v=01f12c731d"></script>
+<main class="mapwrap"><div id="map"></div></main>
+<script src="js/concept.js?v=11b802194a"></script>
+<script src="js/qbank.js?v=10f0f80e19"></script>
+<script src="js/tera-map.js?v=f82370e6e2"></script>
+<script>
+(function(){
+  /* 합격 지도 — 줄 = 시대, 칸 = 중단원 묶음(소단원이 잎). 해마다 문제 수는 학력평가·모의평가 기출 문항 수 ÷ 출제 연수.
+     진척 = 푼 문항 ÷ 그 단원에 걸린 기출 문항(hs-qlog). 자료가 없는 칸은 숫자를 비운다. */
+  var U = window.CN.단원, QB = window.QB;
+  var 연수 = Math.max(1, new Set(QB.회차.map(function(r){ return r.연; })).size);
+  var 기록 = {}; try { 기록 = JSON.parse(localStorage.getItem("hs-qlog")) || {}; } catch(e){}
+  function 수(u){ return (u.문항||[]).length; }
+  function 푼(u){ return (u.문항||[]).filter(function(id){ return 기록[id]; }).length; }
+  var 줄 = {};
+  U.forEach(function(u){
+    var e = (u.시대 && u.시대[0]) || "기타", g = 줄[e] = 줄[e] || { name: e, 연대: (u.연대||[0])[0], 칸: {} };
+    g.연대 = Math.min(g.연대, (u.연대||[0])[0]);
+    var k = u.대단원 + "|" + u.중단원, n = g.칸[k] = g.칸[k] || { id: u.키, name: String(u.중단원||"").replace(/^\d+\s*/, ""), 소: [] };
+    n.소.push(u);
+  });
+  var groups = Object.keys(줄).map(function(e){ return 줄[e]; }).sort(function(a,b){ return a.연대 - b.연대; }).map(function(g){
+    var nodes = Object.keys(g.칸).map(function(k){
+      var n = g.칸[k], all = 0, got = 0;
+      var leaves = n.소.map(function(u){
+        var c = 수(u), p = 푼(u); all += c; got += p;
+        return { name: u.소단원, key: u.키, avg: c ? Math.round(c / 연수 * 10) / 10 : 0, pct: c ? Math.round(p / c * 100) : 0 };
+      });
+      return { id: n.id, name: n.name, avg: all ? Math.round(all / 연수 * 10) / 10 : 0, pct: all ? Math.round(got / all * 100) : 0, leaves: leaves };
+    });
+    return { name: g.name, nodes: nodes };
+  });
+  window.TERA_MAP.mount(document.getElementById("map"), {
+    title: "합격 지도", sub: "한국사", unit: "문제", groups: groups, mark: "star",
+    onLeaf: function(l){ location.href = "개념.html#" + encodeURIComponent(l.key); },
+    onStart: function(n){
+      var l = n.leaves.slice().sort(function(a,b){ return a.pct - b.pct; })[0] || n.leaves[0];
+      location.href = "개념.html#" + encodeURIComponent(l.key);
+    }
+  });
+})();
+</script>
+<script src="js/zzsfx.js?v=4dfd95248a" defer></script><script src="js/zzajan.js?v=a9c0ed7521" defer></script>
+<!-- 합격 전략 브리핑(공용 zzstrat) -->
+<script src="js/zzstrat.js?v=006a7100e1"></script><script src="js/zzstrat_hanguksa.js?v=9a45354c2e"></script><script>ZZSTRAT.auto("hanguksa");</script>
+<script src="js/terrahome.js?v=243c5cfd6d" data-slot="#nav .wrap" defer></script>
+<script src="js/supa.config.js?v=215439d9e6"></script>
+<script src="js/research.js?v=fe03c8d7e1" data-service="hanguksa"></script>
+</body>
+</html>

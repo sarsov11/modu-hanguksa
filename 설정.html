@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ko" data-skin="white">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>설정 — 모두의 한국사</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<script>try{var s=localStorage.getItem("hs-skin")||"white";document.documentElement.dataset.skin=s;document.documentElement.dataset.look=s==="night"?"night":"paper"}catch(e){}</script>
+<link rel="stylesheet" href="css/modu.css?v=b3f2775675">
+<style>
+  /* 2026-11-10 화면표준 5절 — 쪽 제목 900 26px · 묶음마다 판 한 장 · 고르는 단추 44px */
+  main.set{max-width:720px;padding:0 20px 120px}
+  .set h1{font-size:26px;font-weight:900;letter-spacing:-.04em;margin:22px 2px 16px}
+  .pan{border:0;border-radius:18px;background:var(--surface);box-shadow:0 1px 2px rgba(17,20,25,.05),0 0 0 1px var(--line);padding:18px;margin-bottom:12px}
+  .pan h2{font-size:16px;font-weight:800;letter-spacing:-.02em;margin:0 0 4px}
+  .pan p{font-size:13.5px;font-weight:600;color:var(--ink-3);margin:0 0 12px;line-height:1.55}
+  .pick3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .pick3 button{appearance:none;height:44px;border:1.5px solid var(--line-2);border-radius:12px;background:var(--surface);color:var(--ink);font:700 15px var(--kr);cursor:pointer}
+  .pick3 button[aria-pressed="true"]{border-color:var(--pt);background:var(--pt-soft);color:var(--pt-ink)}
+  .row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line);font-size:15px;font-weight:600;color:var(--ink-2)}
+  .row:first-of-type{border-top:0}
+  .row b{font-variant-numeric:tabular-nums;color:var(--ink)}
+</style>
+</head>
+<body>
+<header class="nav" id="nav"></header>
+<script src="js/shell.js?v=01f12c731d"></script>
+<script src="js/tera-daeip-time.js?v=aaa4d332f9"></script>
+
+<main class="wrap set">
+  <h1>설정</h1>
+  <section class="pan">
+    <h2>공부</h2>
+    <div id="tdt"></div>
+  </section>
+  <section class="pan">
+    <h2>화면 색</h2>
+    <p>내용은 같고 색과 바탕만 바뀝니다.</p>
+    <div class="pick3" id="skins"></div>
+  </section>
+  <section class="pan">
+    <h2>기록</h2>
+    <p>기록은 이 브라우저에만 있습니다.</p>
+    <div id="rec"></div>
+  </section>
+<div class="endgo"><a href="index.html">시작</a></div>
+</main>
+
+<script>
+(function(){
+  TERA_DAEIP.mount(document.getElementById("tdt"),"hanguksa");
+  const 옷 = [["white","흰 판"],["paper","종이"],["night","밤"]];
+  const 지금 = () => document.documentElement.dataset.skin || "white";
+  function 그리기(){
+    document.getElementById("skins").innerHTML = 옷.map(x=>`<button type="button" data-s="${x[0]}" aria-pressed="${지금()===x[0]}">${x[1]}</button>`).join("");
+  }
+  document.getElementById("skins").addEventListener("click", ev=>{
+    const b = ev.target.closest("button"); if(!b) return;
+    window.HS.옷입기(b.dataset.s); 그리기();
+  });
+  그리기();
+  let 기록 = {}; try{ 기록 = JSON.parse(localStorage.getItem("hs-qlog")) || {}; }catch(e){}
+  const 푼 = Object.keys(기록).length, 틀린 = Object.values(기록).filter(v=>!v[0]).length;
+  document.getElementById("rec").innerHTML =
+    `<div class="row"><span>푼 문항</span><b>${푼}개</b></div><div class="row"><span>복습</span><b>${틀린}개</b></div>`;
+})();
+</script>
+</body>
+</html>

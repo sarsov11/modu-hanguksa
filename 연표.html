@@ -9,12 +9,12 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script>try{var s=localStorage.getItem("hs-skin")||"white";document.documentElement.dataset.skin=s;document.documentElement.dataset.look=s==="night"?"night":"paper"}catch(e){}</script>
-<link rel="stylesheet" href="css/modu.css?v=5a6203a6d5">
+<link rel="stylesheet" href="css/modu.css?v=b3f2775675">
 <link rel="stylesheet" href="css/timeline.css?v=48860ff459">
 </head>
 <body>
 <header class="nav" id="nav"></header>
-<script src="js/shell.js?v=cb9857063f"></script>
+<script src="js/shell.js?v=01f12c731d"></script>
 
 <main class="wrap">
   <div class="phead">
@@ -45,6 +45,7 @@
 
   <div class="legend" id="legend"></div>
   <div id="stage"></div>
+<div class="endgo"><a href="풀이.html">기출</a></div>
 </main>
 
 <aside class="sheet" id="sheet" data-open="0" aria-label="사건 자세히">
@@ -140,7 +141,7 @@
     const 개념있음 = (CN.단원||[]).some(u=>u.시대 && u.시대.includes(g.이름));
     return `<h2 class="era-tag"><b>${g.이름}</b><span class="span">${시대폭(g)}</span><small>${g.사건.filter(e=>e.계열==="한국사").length}건</small>
       <span class="minibar">${분야들.map(f=>`<i style="width:${(셈[f]||0)/합*100}%;background:${색(f)}" title="${f} ${셈[f]||0}"></i>`).join("")}</span>
-      ${개념있음 ? `<a class="go" href="개념.html?era=${encodeURIComponent(g.이름)}">이 시대 개념 흐름 →</a>` : ""}</h2>`;
+      ${개념있음 ? `<a class="go" href="개념.html?era=${encodeURIComponent(g.이름)}">이 시대 개념 →</a>` : ""}</h2>`;
   }
   const 기출배지 = e => e.ㄱ && e.ㄱ.근 ? `<span class="qn" data-q="${e.id}">${e.ㄱ.근}</span>` : "";
 
@@ -325,7 +326,7 @@
     }
     if(u && u.흐름 && u.흐름.length){
       ctx += `<h6>「${에스(u.소단원)}」 흐름 속 자리</h6><ol class="ctxflow">${u.흐름.map((s,i)=>`<li class="${(s.사건||[]).includes(e.id)?"me":""}"><i></i><div><b>${에스(s.제목)}${s.때?`<small>${에스(s.때)}</small>`:""}</b><p>${에스(s.내용)}</p></div></li>`).join("")}</ol>`
-        + `<div class="acts"><a class="btn ghost sm" href="개념.html#${u.키}">개념 흐름 전체 보기</a></div>`;
+        + `<div class="acts"><a class="btn ghost sm" href="개념.html#${u.키}">개념 전체</a></div>`;
     }
     $("#sh-ctx").innerHTML = ctx;
 
@@ -334,7 +335,7 @@
         ${e.ㄱ ? `<p style="font-size:14.5px;font-weight:700;color:var(--ink-2);margin:0 0 8px">이 사건을 물은 문항 ${e.ㄱ.n}개(2018 이후 ${e.ㄱ.근}개)${e.ㄱ.s?` · 선지·자료로 나온 문항 ${e.ㄱ.s}개`:""}</p>` : ""}
         ${e.ㄱ && e.ㄱ.회.length ? `<ul>${e.ㄱ.회.slice(0,12).map(x=>`<li><b>${회차글(x)}</b><span>${에스(x.t)}</span></li>`).join("")}</ul>
         ${e.ㄱ.회.length > 12 ? `<div class="more">… 그 밖 ${e.ㄱ.회.length - 12}개 문항</div>` : ""}` : ""}
-        ${문항수 ? `<div class="acts"><a class="btn sm" href="풀이.html?ev=${e.id}">이 사건 기출 ${문항수}문항 풀기</a></div>` : ""}
+        ${문항수 ? `<div class="acts"><a class="btn sm" href="풀이.html?ev=${e.id}">이 사건 기출 ${문항수}문항</a></div>` : ""}
       </div>` : "";
 
     const 직 = e.사진 || [], 기 = e.계열==="한국사" ? 기출자료(e) : {것:[],이름:""};
@@ -398,5 +399,7 @@
 </script>
 <!-- 테라러닝 홈 단추(공용 terrahome) -->
 <script src="js/terrahome.js?v=243c5cfd6d" data-slot="#nav .wrap" defer></script>
+<script src="js/supa.config.js?v=215439d9e6"></script>
+<script src="js/research.js?v=fe03c8d7e1" data-service="hanguksa"></script>
 </body>
 </html>

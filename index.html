@@ -9,54 +9,89 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script>try{var s=localStorage.getItem("hs-skin")||"white";document.documentElement.dataset.skin=s;document.documentElement.dataset.look=s==="night"?"night":"paper"}catch(e){}</script>
-<link rel="stylesheet" href="css/modu.css?v=5a6203a6d5">
+<link rel="stylesheet" href="css/modu.css?v=b3f2775675">
 <style>
-  .go2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;margin-top:26px}
-  @media(max-width:760px){.go2{grid-template-columns:1fr}}
-  .resume{display:flex;align-items:center;gap:14px;border:1px solid var(--line);border-radius:var(--r2);background:var(--surface);padding:16px 18px}
-  .resume .ix{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:0 0 40px;
-    background:var(--red-soft);color:var(--red);font-weight:900;font-size:15px}
-  .resume b{display:block;font-size:16px;color:var(--ink);font-weight:800}
-  .resume span{display:block;font-size:14px;color:var(--ink-4);font-weight:600;margin-top:2px}
-  .resume .act{margin-left:auto}
-  .doors{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-top:6px}
-  .door{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:var(--r2);background:var(--surface);padding:18px 18px 16px;transition:border-color .12s}
-  .door:hover{border-color:var(--ink)}
-  .door .k{font-size:13.5px;font-weight:800;color:var(--red)}
-  .door h3{font-size:20px;margin-top:6px}
-  .door p{font-size:14.5px;line-height:1.65;color:var(--ink-3);margin-top:8px;flex:1}
-  .door .n{font-family:var(--mono);font-size:14px;font-weight:800;color:var(--ink-2);margin-top:12px}
-  .fkeys{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+  /* 2026-11-10 화면표준 3절 — 날짜 줄 → 오늘 카드(+시작) → 숫자 두 칸 → 출석 → 목록 (본문 최대 720) */
+  main.home{max-width:720px;padding:0 20px 120px}
+  .hp{border:0;border-radius:18px;background:var(--surface);box-shadow:0 1px 2px rgba(17,20,25,.05),0 0 0 1px var(--line)}
+  .dtl{padding:18px 2px 14px}
+  .dtl small{display:block;font-size:13px;font-weight:600;color:var(--ink-4)}
+  .dtl h1{font-size:30px;line-height:1.15;font-weight:900;letter-spacing:-.04em;margin:6px 0 0;color:var(--ink)}
+  .dtl h1 em{font-style:normal;color:var(--pt-ink)}
+  .dtl .sub{font-size:13px;font-weight:600;color:var(--ink-4);margin-top:8px}
+  .fkeys{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+  .today{padding:20px 18px 18px}
+  .today h2{font-size:20px;font-weight:900;letter-spacing:-.03em;margin:0;color:var(--ink)}
+  .today .sum{font-size:13.5px;font-weight:600;color:var(--ink-3);margin:4px 0 0;line-height:1.5}
+  .steps{display:grid;gap:6px;margin:14px 0 16px}
+  .steps a{display:grid;grid-template-columns:34px 1fr auto;gap:12px;align-items:center;padding:8px 10px;border-radius:14px;color:inherit}
+  .steps a.now{background:var(--pt-soft)}
+  .steps .c{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--surface-3);color:var(--ink-3);font:800 14px/1 var(--kr)}
+  .steps a.now .c{background:var(--pt);color:#fff}
+  .steps b{display:block;font-size:15px;font-weight:800;letter-spacing:-.02em;color:var(--ink);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .steps small{display:block;font-size:12.5px;font-weight:600;color:var(--ink-3);margin-top:2px;line-height:1.4}
+  .steps .tm{font-size:13px;font-weight:700;color:var(--ink-3)}
+  .go54{display:flex;align-items:center;justify-content:center;width:100%;height:54px;border-radius:16px;background:var(--pt);color:#fff;
+    font-size:16.5px;font-weight:800;letter-spacing:-.02em;box-shadow:0 14px 30px -14px color-mix(in srgb,var(--pt) 60%,transparent)}
+  .go54:active{background:var(--pt-2)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+  .hstat{padding:16px 18px}
+  .hstat b{display:block;font-size:22px;font-weight:900;letter-spacing:-.03em;font-variant-numeric:tabular-nums;color:var(--ink);line-height:1.2}
+  .hstat span{display:block;font-size:12.5px;font-weight:600;color:var(--ink-3);margin-top:2px}
+  .att{padding:16px 18px;margin:0 0 12px}
+  .att h3{font-size:16px;font-weight:800;margin:0 0 12px;letter-spacing:-.02em}
+  .days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+  .days span{font-size:12px;font-weight:700;color:var(--ink-3)}
+  .days i{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;margin:6px auto 0;background:var(--surface-3);font:800 12px/1 var(--kr);font-style:normal;color:var(--ink-4)}
+  .days .on i{background:var(--pt);color:#fff} .days .td i{box-shadow:0 0 0 2px var(--pt-line)}
+  .home .sec{margin:26px 2px 10px}
+  .home .sec h2{font-size:16px;font-weight:800}
+  .links{display:grid;gap:10px}
+  .links a{display:grid;grid-template-columns:1fr 32px;gap:12px;align-items:center;padding:14px 16px;color:var(--ink)}
+  .links b{display:block;font-size:16px;font-weight:800;letter-spacing:-.02em}
+  .links small{display:block;font-size:13px;font-weight:600;color:var(--ink-3);margin-top:2px;line-height:1.5}
+  .links small em{font-style:normal;font-weight:800;color:var(--ink-2)}
+  .links .ar{width:32px;height:32px;border-radius:50%;background:#F6F7F9;display:grid;place-items:center;color:var(--ink-3)}
+  .links .ar svg{width:16px;height:16px}
+  .home .stats{grid-template-columns:repeat(2,1fr)}
+  .home .stat{padding:16px 18px}
+  .home .stat b{font-size:22px;font-weight:900}
+  .home .stat span{font-size:12.5px;font-weight:600;color:var(--ink-3)}
 </style>
 </head>
 <body>
 <header class="nav" id="nav"></header>
-<script src="js/shell.js?v=cb9857063f"></script>
+<script src="js/shell.js?v=01f12c731d"></script>
+<script src="js/tera-daeip-time.js?v=aaa4d332f9"></script>
 
-<main class="wrap">
-  <div class="phead">
-    <div>
-      <span class="kicker"><i></i>고등 한국사 · 미래엔 2022 개정</span>
-      <h1>개념 · 연표 · <em>기출</em></h1>
-      <p class="sub" id="hsub"></p>
-      <div class="fkeys">
-        <span class="tag f" style="--c:var(--f-정치);--c-soft:var(--f-정치-soft)">정치</span>
-        <span class="tag f" style="--c:var(--f-대외);--c-soft:var(--f-대외-soft)">대외</span>
-        <span class="tag f" style="--c:var(--f-경제);--c-soft:var(--f-경제-soft)">경제</span>
-        <span class="tag f" style="--c:var(--f-사회);--c-soft:var(--f-사회-soft)">사회</span>
-        <span class="tag f" style="--c:var(--f-문화);--c-soft:var(--f-문화-soft)">문화</span>
-      </div>
-    </div>
-    <div class="pheadact">
-      <a class="btn ghost" href="개념.html">개념 흐름부터</a>
-      <a class="btn ghost" href="풀이.html">기출 풀기</a>
+<main class="wrap home">
+  <div class="dtl">
+    <small>고등 한국사 · 미래엔 2022 개정</small>
+    <h1>개념 · 연표 · <em>기출</em></h1>
+    <p class="sub" id="hsub"></p>
+    <div class="fkeys">
+      <span class="tag f" style="--c:var(--f-정치);--c-soft:var(--f-정치-soft)">정치</span>
+      <span class="tag f" style="--c:var(--f-대외);--c-soft:var(--f-대외-soft)">대외</span>
+      <span class="tag f" style="--c:var(--f-경제);--c-soft:var(--f-경제-soft)">경제</span>
+      <span class="tag f" style="--c:var(--f-사회);--c-soft:var(--f-사회-soft)">사회</span>
+      <span class="tag f" style="--c:var(--f-문화);--c-soft:var(--f-문화-soft)">문화</span>
     </div>
   </div>
 
-  <div class="go2" id="resume"></div>
+  <section class="hp today">
+    <h2 id="th">오늘 할 것</h2>
+    <p class="sum" id="ts"></p>
+    <div class="steps" id="steps"></div>
+    <a class="go54" id="go" href="개념.html">시작</a>
+  </section>
+  <div class="two">
+    <div class="hp hstat"><b id="n1">—</b><span>푼 문항 정답률</span></div>
+    <div class="hp hstat"><b id="n2">0</b><span>오늘 푼 문항</span></div>
+  </div>
+  <section class="hp att"><h3>이번 주 출석</h3><div class="days" id="days"></div></section>
 
   <div class="sec"><h2>바로 가기</h2></div>
-  <div class="doors" id="doors"></div>
+  <div class="links" id="doors"></div>
 
   <div class="sec"><h2>들어 있는 것</h2></div>
   <div class="stats" id="stats"></div>
@@ -77,33 +112,51 @@
   const 이름 = 끝단원 && (S.단원이름||{})[끝단원];
   const 기록 = 읽기("hs-qlog") || {};
   const 틀린 = Object.values(기록).filter(v=>!v[0]).length, 푼 = Object.keys(기록).length;
-  const 칸 = [];
-  칸.push(이름 ? `<div class="resume"><span class="ix">개념</span><div><b>${에스(이름)}</b><span>마지막으로 본 단원</span></div><a class="btn sm act" href="개념.html#${끝단원}">이어 읽기</a></div>`
-              : `<div class="resume"><span class="ix">개념</span><div><b>선사 시대의 전개와 국가의 형성</b><span>첫 단원부터</span></div><a class="btn sm act" href="개념.html">읽기</a></div>`);
-  칸.push(푼 ? `<div class="resume"><span class="ix">오답</span><div><b>틀린 문항 ${틀린}개</b><span>지금까지 ${푼}문항 풀었음</span></div><a class="btn sm act" href="풀이.html" style="background:var(--surface,#fff);color:var(--ink,#111);border:1px solid var(--line-2,#ddd)">오답 노트</a></div>`
-             : `<div class="resume"><span class="ix">기출</span><div><b>최근 회차 하나 풀어 보기</b><span>20문항 · 30분 · 채점과 등급</span></div><a class="btn sm act" href="풀이.html${S.첫회차?`?p=${S.첫회차}`:""}" style="background:var(--surface,#fff);color:var(--ink,#111);border:1px solid var(--line-2,#ddd)">시작</a></div>`);
-  /* 빨간 주 단추는 이어 읽기 하나만 — 홈에 빨간 단추가 넷이라 다음에 누를 것이 흩어졌다(2026-10-09 흐름 점검) */
-  document.getElementById("resume").innerHTML = 칸.join("");
+  const 시작주소 = 끝단원 && 이름 ? `개념.html#${끝단원}` : "개념.html";
+  const 줄 = [
+    [시작주소, 이름 || "선사 시대의 전개와 국가의 형성", 이름 ? "마지막으로 본 단원 · 이어서" : "첫 단원부터", "개념"],
+    ["풀이.html" + (푼 ? "" : (S.첫회차 ? `?p=${S.첫회차}` : "")), 푼 ? `복습 ${틀린}문항` : "최근 회차 하나 풀어 보기", 푼 ? `지금까지 ${푼}문항 풀었음` : "20문항 · 30분 · 채점과 등급", 푼 ? "복습" : "기출"],
+    ["연표.html", "연표 훑어보기", `사건 ${(S.사건||0).toLocaleString()}건 · 분야 다섯 줄기`, "보기"],
+  ];
+  document.getElementById("steps").innerHTML = 줄.map((x,i)=>`<a href="${x[0]}"${i===0?' class="now"':""}><span class="c">${i+1}</span><div><b>${에스(x[1])}</b><small>${에스(x[2])}</small></div><span class="tm">${x[3]}</span></a>`).join("");
+  document.getElementById("go").href = 시작주소;
+  document.getElementById("ts").textContent = 푼 ? `푼 문항 ${푼}개 · 복습 ${틀린}문항` : "아직 푼 문항이 없습니다";
+  /* 숫자 두 칸 · 이번 주 출석 — hs-qlog 의 푼 때(세 번째 값)로 센다 */
+  document.getElementById("n1").textContent = 푼 ? Math.round((푼-틀린)/푼*100) + "%" : "—";
+  const 날키 = t => { const d = new Date(t); return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate(); };
+  const 푼때 = Object.values(기록).map(v=>v[2]).filter(Boolean);
+  const 푼날 = new Set(푼때.map(날키));
+  const 지금 = new Date(), 오늘키 = 날키(지금);
+  document.getElementById("th").textContent="오늘 "+TERA_DAEIP.fmt(TERA_DAEIP.perMin());
+  document.getElementById("n2").textContent = 푼때.filter(t=>날키(t)===오늘키).length;
+  const 월 = new Date(지금); 월.setDate(지금.getDate() - ((지금.getDay()+6)%7));
+  document.getElementById("days").innerHTML = ["월","화","수","목","금","토","일"].map((n,k)=>{
+    const d = new Date(월); d.setDate(월.getDate()+k); const kk = 날키(d);
+    return `<div class="${푼날.has(kk)?"on ":""}${kk===오늘키?"td":""}"><span>${n}</span><i>${푼날.has(kk)?"✓":d.getDate()}</i></div>`; }).join("");
   document.getElementById("hsub").innerHTML = `교과서 소단원 <b>${S.단원||86}개</b> · 연표 사건 <b>${(S.사건||0).toLocaleString()}건</b> · 학력평가·모의평가 <b>${(S.문항||0).toLocaleString()}문항</b>`;
   const 수 = n => (n||0).toLocaleString();
   const 문 = [
-    ["개념.html","읽기","개념 흐름","소단원마다 배경 → 전개 → 결과를 이어 쓴 원고. 원인과 결과, 견주어 볼 것, 시험에서 가르는 것까지.",`${수(S.원고)}개 단원`],
+    ["개념.html","개념","개념","소단원마다 배경 → 전개 → 결과를 이어 쓴 원고. 원인과 결과, 견주어 볼 것, 시험에서 가르는 것까지.",`${수(S.원고)}개 단원`],
     ["연표.html","보기","연표","선사부터 오늘까지. 분야 다섯 줄기로 나누고 사건을 누르면 배경·전개·결과가 열립니다.",`${수(S.사건)}건 · 기출 ${수(S.기출표시)}건 표시`],
-    ["풀이.html","풀기","기출 풀이","회차 실전(30분·채점·등급), 시대별·사건별 연습, 오답 노트. 해설 옆에 그 사건의 흐름이 붙습니다.",`${수(S.회차)}회분 · ${수(S.문항)}문항`],
+    ["풀이.html","기출","기출","모의고사(30분·채점·등급), 시대별·사건별 기출, 복습. 해설 옆에 그 사건의 흐름이 붙습니다.",`${수(S.회차)}회분 · ${수(S.문항)}문항`],
     ["계보.html","보기","왕조 계보","여섯 왕조 역대 왕의 재위 기간과 그때 일어난 일, 시험이 그 왕을 물은 횟수.",`${수(S.왕)}명`],
     ["근현대.html","보기","근현대","독립운동 단체와 인물을 지도·줄기·인물 세 가지로. 네 시기로 끊어 봅니다.","네 장"],
   ];
-  document.getElementById("doors").innerHTML = 문.map(([h,k,t,p,n])=>`<a class="door" href="${h}"><span class="k">${k}</span><h3>${t}</h3><p>${p}</p><span class="n">${n}</span></a>`).join("");
+  const 화살 = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9.5 5.5 6.5 6.5-6.5 6.5"/></svg>';
+  document.getElementById("doors").innerHTML = 문.map(([h,k,t,p,n])=>`<a class="hp" href="${h}"><div><b>${t}</b><small>${p} <em>${n}</em></small></div><span class="ar">${화살}</span></a>`).join("")
+    + `<a class="hp" href="설정.html"><div><b>설정</b><small>화면 색(흰 판 · 종이 · 밤)</small></div><span class="ar">${화살}</span></a>`;
   document.getElementById("stats").innerHTML = [
     [S.단원, "교과서 소단원"], [S.맥락, "배경·결과를 붙인 사건"], [S.사건, "한국사 연표 사건"],
     [S.문항, "풀 수 있는 기출 문항"], [S.회차, "학평·모평·수능 회차"], [S.왕, "역대 왕"],
   ].map(([n,t])=>`<div class="stat"><b>${수(n)}</b><span>${t}</span></div>`).join("");
 })();
 </script>
-<script src="js/zzsfx.js?v=4dfd95248a" defer></script><script src="js/zzajan.js?v=b33b92667a" defer></script>
+<script src="js/zzsfx.js?v=4dfd95248a" defer></script><script src="js/zzajan.js?v=a9c0ed7521" defer></script>
 <!-- 합격전략 브리핑(공용 zzstrat) -->
-<script src="js/zzstrat.js?v=3247d7fa31"></script><script src="js/zzstrat_hanguksa.js?v=e63a4d4529"></script><style>#nav .navact{display:flex;align-items:center}@media(max-width:560px){#nav .navact>.zs-btn span{display:none}#nav .navact>.zs-btn{padding:6px!important}}</style><script>ZZSTRAT.auto("hanguksa",{fab:false});(function(){function f(){var b=ZZSTRAT.button("hanguksa","#nav .navact");if(b){b.classList.add("zs-fab");b.style.cssText="position:static;margin-left:8px;padding:7px 11px;font-size:13px;flex:none"}}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",f);else f()})();</script>
+<script src="js/zzstrat.js?v=006a7100e1"></script><script src="js/zzstrat_hanguksa.js?v=9a45354c2e"></script><style>#nav .navact{display:flex;align-items:center}@media(max-width:560px){#nav .navact>.zs-btn span{display:none}#nav .navact>.zs-btn{padding:6px!important}}</style><script>ZZSTRAT.auto("hanguksa",{fab:false});(function(){function f(){var b=ZZSTRAT.button("hanguksa","#nav .navact");if(b){b.classList.add("zs-fab");b.style.cssText="position:static;margin-left:8px;padding:7px 11px;font-size:13px;flex:none"}}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",f);else f()})();</script>
 <!-- 테라러닝 홈 단추(공용 terrahome) -->
 <script src="js/terrahome.js?v=243c5cfd6d" data-slot="#nav .wrap" defer></script>
+<script src="js/supa.config.js?v=215439d9e6"></script>
+<script src="js/research.js?v=fe03c8d7e1" data-service="hanguksa"></script>
 </body>
 </html>
