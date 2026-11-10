@@ -5,9 +5,7 @@
   border-radius:8px;padding:9px 15px;font:700 14px/1 var(--sans);cursor:pointer;display:inline-flex;gap:8px;align-items:center}
 .tabs button small{font:500 13px/1 var(--sans);color:var(--ink-4);font-variant-numeric:tabular-nums}
 .tabs button:hover{border-color:var(--line-3)}
-.tabs button[aria-pressed="true"]{background:var(--pt,#E5202E);color:#fff;border-color:transparent}
-.tabs button[aria-pressed="true"] small{color:rgba(255,255,255,.7)}
-:root[data-look="night"] .tabs button[aria-pressed="true"] small{color:rgba(0,0,0,.55)}
+.tabs button[aria-pressed="true"]{background:rgba(229,32,46,.10);color:#B3141F;border-color:rgba(229,32,46,.45)}
 
 .gwrap{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;align-items:start}
 .gcard{background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r2);box-shadow:var(--shadow)}

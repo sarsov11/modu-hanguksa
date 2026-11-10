@@ -8,10 +8,8 @@
 .chaps button b{font:800 16px/1.2 var(--sans);letter-spacing:-.03em;color:var(--ink)}
 .chaps button small{font:500 14px/1.35 var(--sans);color:var(--ink-4)}
 .chaps button:hover{border-color:var(--line-3)}
-.chaps button[aria-pressed="true"]{background:var(--pt,#E5202E);border-color:transparent;color:#fff}
-.chaps button[aria-pressed="true"] b,.chaps button[aria-pressed="true"] em{color:var(--bg)}
-.chaps button[aria-pressed="true"] small{color:rgba(255,255,255,.72)}
-:root[data-look="night"] .chaps button[aria-pressed="true"] small{color:rgba(0,0,0,.6)}
+.chaps button[aria-pressed="true"]{background:rgba(229,32,46,.10);border-color:rgba(229,32,46,.45);color:#B3141F}
+.chaps button[aria-pressed="true"] b,.chaps button[aria-pressed="true"] em,.chaps button[aria-pressed="true"] span,.chaps button[aria-pressed="true"] small{color:#B3141F}
 
 /* ── 장 표지 ── */
 .cover{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:18px;align-items:center;
