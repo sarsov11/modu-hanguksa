@@ -9,40 +9,40 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script>try{var s=localStorage.getItem("hs-skin")||"white";document.documentElement.dataset.skin=s;document.documentElement.dataset.look=s==="night"?"night":"paper"}catch(e){}</script>
-<link rel="stylesheet" href="css/modu.css?v=b3f2775675">
+<link rel="stylesheet" href="css/modu.css?v=2bc1ac7c14">
 <style>
   /* 2026-11-10 화면표준 3절 — 날짜 줄 → 오늘 카드(+시작) → 숫자 두 칸 → 출석 → 목록 (본문 최대 720) */
   main.home{max-width:720px;padding:0 20px 120px}
   .hp{border:0;border-radius:18px;background:var(--surface);box-shadow:0 1px 2px rgba(17,20,25,.05),0 0 0 1px var(--line)}
   .dtl{padding:18px 2px 14px}
   .dtl small{display:block;font-size:13px;font-weight:600;color:var(--ink-4)}
-  .dtl h1{font-size:30px;line-height:1.15;font-weight:900;letter-spacing:-.04em;margin:6px 0 0;color:var(--ink)}
+  .dtl h1{font-size:26px;line-height:1.15;font-weight:800;letter-spacing:-.04em;margin:6px 0 0;color:var(--ink)}
   .dtl h1 em{font-style:normal;color:var(--pt-ink)}
   .dtl .sub{font-size:13px;font-weight:600;color:var(--ink-4);margin-top:8px}
   .fkeys{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
   .today{padding:20px 18px 18px}
-  .today h2{font-size:20px;font-weight:900;letter-spacing:-.03em;margin:0;color:var(--ink)}
-  .today .sum{font-size:13.5px;font-weight:600;color:var(--ink-3);margin:4px 0 0;line-height:1.5}
+  .today h2{font-size:20px;font-weight:800;letter-spacing:-.03em;margin:0;color:var(--ink)}
+  .today .sum{font-size:14px;font-weight:600;color:var(--ink-3);margin:4px 0 0;line-height:1.5}
   .steps{display:grid;gap:6px;margin:14px 0 16px}
   .steps a{display:grid;grid-template-columns:34px 1fr auto;gap:12px;align-items:center;padding:8px 10px;border-radius:14px;color:inherit}
   .steps a.now{background:var(--pt-soft)}
   .steps .c{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--surface-3);color:var(--ink-3);font:800 14px/1 var(--kr)}
   .steps a.now .c{background:var(--pt);color:#fff}
-  .steps b{display:block;font-size:15px;font-weight:800;letter-spacing:-.02em;color:var(--ink);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .steps small{display:block;font-size:12.5px;font-weight:600;color:var(--ink-3);margin-top:2px;line-height:1.4}
+  .steps b{display:block;font-size:16px;font-weight:800;letter-spacing:-.02em;color:var(--ink);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .steps small{display:block;font-size:13px;font-weight:600;color:var(--ink-3);margin-top:2px;line-height:1.4}
   .steps .tm{font-size:13px;font-weight:700;color:var(--ink-3)}
-  .go54{display:flex;align-items:center;justify-content:center;width:100%;height:54px;border-radius:16px;background:var(--pt);color:#fff;
-    font-size:16.5px;font-weight:800;letter-spacing:-.02em;box-shadow:0 14px 30px -14px color-mix(in srgb,var(--pt) 60%,transparent)}
+  .go54{display:flex;align-items:center;justify-content:center;width:100%;height:54px;border-radius:14px;background:var(--pt);color:#fff;
+    font-size:16px;font-weight:800;letter-spacing:-.02em;box-shadow:0 14px 30px -14px color-mix(in srgb,var(--pt) 60%,transparent)}
   .go54:active{background:var(--pt-2)}
   .two{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
   .hstat{padding:16px 18px}
-  .hstat b{display:block;font-size:22px;font-weight:900;letter-spacing:-.03em;font-variant-numeric:tabular-nums;color:var(--ink);line-height:1.2}
-  .hstat span{display:block;font-size:12.5px;font-weight:600;color:var(--ink-3);margin-top:2px}
+  .hstat b{display:block;font-size:20px;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums;color:var(--ink);line-height:1.2}
+  .hstat span{display:block;font-size:13px;font-weight:600;color:var(--ink-3);margin-top:2px}
   .att{padding:16px 18px;margin:0 0 12px}
   .att h3{font-size:16px;font-weight:800;margin:0 0 12px;letter-spacing:-.02em}
   .days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
-  .days span{font-size:12px;font-weight:700;color:var(--ink-3)}
-  .days i{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;margin:6px auto 0;background:var(--surface-3);font:800 12px/1 var(--kr);font-style:normal;color:var(--ink-4)}
+  .days span{font-size:11.5px;font-weight:700;color:var(--ink-3)}
+  .days i{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;margin:6px auto 0;background:var(--surface-3);font:800 11.5px/1 var(--kr);font-style:normal;color:var(--ink-4)}
   .days .on i{background:var(--pt);color:#fff} .days .td i{box-shadow:0 0 0 2px var(--pt-line)}
   .home .sec{margin:26px 2px 10px}
   .home .sec h2{font-size:16px;font-weight:800}
@@ -55,8 +55,8 @@
   .links .ar svg{width:16px;height:16px}
   .home .stats{grid-template-columns:repeat(2,1fr)}
   .home .stat{padding:16px 18px}
-  .home .stat b{font-size:22px;font-weight:900}
-  .home .stat span{font-size:12.5px;font-weight:600;color:var(--ink-3)}
+  .home .stat b{font-size:20px;font-weight:800}
+  .home .stat span{font-size:13px;font-weight:600;color:var(--ink-3)}
 </style>
 </head>
 <body>
@@ -67,8 +67,7 @@
 <main class="wrap home">
   <div class="dtl">
     <small>고등 한국사 · 미래엔 2022 개정</small>
-    <h1>개념 · 연표 · <em>기출</em></h1>
-    <p class="sub" id="hsub"></p>
+    <h1>개념 · 연표 · 기출</h1>
     <div class="fkeys">
       <span class="tag f" style="--c:var(--f-정치);--c-soft:var(--f-정치-soft)">정치</span>
       <span class="tag f" style="--c:var(--f-대외);--c-soft:var(--f-대외-soft)">대외</span>
@@ -96,9 +95,6 @@
   <div class="sec"><h2>들어 있는 것</h2></div>
   <div class="stats" id="stats"></div>
 
-  <footer class="foot">
-    사건은 <b>미래엔 2022개정 한국사1·2 부록 연표와 역사부도</b>에서 옮겼고 문항은 <b>2015~2026 학력평가·모의평가</b> 시험지와 해설지를 썼습니다.
-  </footer>
 </main>
 
 <script src="js/stats.js?v=410ca8c026"></script>
@@ -133,7 +129,6 @@
   document.getElementById("days").innerHTML = ["월","화","수","목","금","토","일"].map((n,k)=>{
     const d = new Date(월); d.setDate(월.getDate()+k); const kk = 날키(d);
     return `<div class="${푼날.has(kk)?"on ":""}${kk===오늘키?"td":""}"><span>${n}</span><i>${푼날.has(kk)?"✓":d.getDate()}</i></div>`; }).join("");
-  document.getElementById("hsub").innerHTML = `교과서 소단원 <b>${S.단원||86}개</b> · 연표 사건 <b>${(S.사건||0).toLocaleString()}건</b> · 학력평가·모의평가 <b>${(S.문항||0).toLocaleString()}문항</b>`;
   const 수 = n => (n||0).toLocaleString();
   const 문 = [
     ["개념.html","개념","개념","소단원마다 배경 → 전개 → 결과를 이어 쓴 원고. 원인과 결과, 견주어 볼 것, 시험에서 가르는 것까지.",`${수(S.원고)}개 단원`],
@@ -143,7 +138,8 @@
     ["근현대.html","보기","근현대","독립운동 단체와 인물을 지도·줄기·인물 세 가지로. 네 시기로 끊어 봅니다.","네 장"],
   ];
   const 화살 = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9.5 5.5 6.5 6.5-6.5 6.5"/></svg>';
-  document.getElementById("doors").innerHTML = 문.map(([h,k,t,p,n])=>`<a class="hp" href="${h}"><div><b>${t}</b><small>${p} <em>${n}</em></small></div><span class="ar">${화살}</span></a>`).join("")
+  document.getElementById("doors").innerHTML = 문.map(([h,k,t,p,n])=>`<a class="hp" href="${h}"><div><b>${t}</b><small><em>${n}</em></small></div><span class="ar">${화살}</span></a>`).join("")
+    + `<a class="hp" href="#" data-zs="1"><div><b>합격 전략</b></div><span class="ar">${화살}</span></a>`
     + `<a class="hp" href="설정.html"><div><b>설정</b><small>화면 색(흰 판 · 종이 · 밤)</small></div><span class="ar">${화살}</span></a>`;
   document.getElementById("stats").innerHTML = [
     [S.단원, "교과서 소단원"], [S.맥락, "배경·결과를 붙인 사건"], [S.사건, "한국사 연표 사건"],
@@ -153,7 +149,7 @@
 </script>
 <script src="js/zzsfx.js?v=4dfd95248a" defer></script><script src="js/zzajan.js?v=a9c0ed7521" defer></script>
 <!-- 합격전략 브리핑(공용 zzstrat) -->
-<script src="js/zzstrat.js?v=006a7100e1"></script><script src="js/zzstrat_hanguksa.js?v=9a45354c2e"></script><style>#nav .navact{display:flex;align-items:center}@media(max-width:560px){#nav .navact>.zs-btn span{display:none}#nav .navact>.zs-btn{padding:6px!important}}</style><script>ZZSTRAT.auto("hanguksa",{fab:false});(function(){function f(){var b=ZZSTRAT.button("hanguksa","#nav .navact");if(b){b.classList.add("zs-fab");b.style.cssText="position:static;margin-left:8px;padding:7px 11px;font-size:13px;flex:none"}}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",f);else f()})();</script>
+<script src="js/zzstrat.js?v=006a7100e1"></script><script src="js/zzstrat_hanguksa.js?v=9a45354c2e"></script><style>#nav .navact{display:flex;align-items:center}@media(max-width:560px){#nav .navact>.zs-btn span{display:none}#nav .navact>.zs-btn{padding:6px!important}}</style><script>ZZSTRAT.auto("hanguksa",{fab:false});</script><script src="js/zzstrat_cover.js?v=786536c1e8"></script>
 <!-- 테라러닝 홈 단추(공용 terrahome) -->
 <script src="js/terrahome.js?v=243c5cfd6d" data-slot="#nav .wrap" defer></script>
 <script src="js/supa.config.js?v=215439d9e6"></script>

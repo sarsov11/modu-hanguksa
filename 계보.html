@@ -9,9 +9,10 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script>try{var s=localStorage.getItem("hs-skin")||"white";document.documentElement.dataset.skin=s;document.documentElement.dataset.look=s==="night"?"night":"paper"}catch(e){}</script>
-<link rel="stylesheet" href="css/modu.css?v=b3f2775675">
-<link rel="stylesheet" href="css/timeline.css?v=48860ff459">
-<link rel="stylesheet" href="css/gyebo.css?v=87d7384cf4">
+<link rel="stylesheet" href="css/modu.css?v=2bc1ac7c14">
+<style>/* 11-10 정돈: 이 화면의 고유 그림 안쪽 모서리는 그대로 둔다 */:root{--r1:6px;--r2:10px;--r3:14px}</style>
+<link rel="stylesheet" href="css/timeline.css?v=3df411827f">
+<link rel="stylesheet" href="css/gyebo.css?v=2e0614d94d">
 </head>
 <body>
 
@@ -21,8 +22,7 @@
 <main class="wrap">
   <div class="phead">
     <div><span class="kicker"><i></i>왕조 계보</span>
-      <h1>왕조 <em>계보</em></h1>
-      <p class="sub">역사부도 부록 「우리나라 주요 왕조 계보」(144~146쪽)의 역대 왕, 재위 중 일어난 연표 사건, 기출에서 그 왕을 물은 횟수. 막대는 재위 길이.</p></div>
+      <h1>왕조 <em>계보</em></h1></div>
   </div>
   <div class="legend">
       <span><b>굵고 형광</b>&nbsp;= 기출에 자주 나온 왕</span>
@@ -116,9 +116,7 @@
             <dt>가장 긴 재위</dt><dd>${긴.이름} ${((긴.까지??긴.부터)-긴.부터)}년</dd>
             <dt>사건이 붙은 왕</dt><dd>${g.왕.filter(w=>w.사건.length).length}명</dd></dl></div>
       <div class="box"><h3>모의고사가 자주 묻는 왕</h3>
-        <ol>${톱.map((w,i)=>`<li><i>${i+1}</i><b>${w.이름}</b><em>${w.ㄱ.근}회</em></li>`).join("") || "<li>기출에 나온 왕이 없습니다.</li>"}</ol></div>
-      <div class="box"><p>계보는 <b>미래엔 역사부도 144~146쪽</b>을 그대로 옮겼습니다. 사건은 교과서 부록 연표,
-        기출은 2015~2026 학력평가·모의평가·수능 문항 해설에서 셌습니다.</p></div>`;
+        <ol>${톱.map((w,i)=>`<li><i>${i+1}</i><b>${w.이름}</b><em>${w.ㄱ.근}회</em></li>`).join("") || "<li>기출에 나온 왕이 없습니다.</li>"}</ol></div>`;
   }
 
   그리기();

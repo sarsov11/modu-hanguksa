@@ -9,9 +9,10 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script>try{var s=localStorage.getItem("hs-skin")||"white";document.documentElement.dataset.skin=s;document.documentElement.dataset.look=s==="night"?"night":"paper"}catch(e){}</script>
-<link rel="stylesheet" href="css/modu.css?v=b3f2775675">
-<link rel="stylesheet" href="css/timeline.css?v=48860ff459">
-<link rel="stylesheet" href="css/geundae.css?v=b7dcfb26c7">
+<link rel="stylesheet" href="css/modu.css?v=2bc1ac7c14">
+<style>/* 11-10 정돈: 이 화면의 고유 그림 안쪽 모서리는 그대로 둔다 */:root{--r1:6px;--r2:10px;--r3:14px}</style>
+<link rel="stylesheet" href="css/timeline.css?v=3df411827f">
+<link rel="stylesheet" href="css/geundae.css?v=5117c5c932">
 </head>
 <body>
 
@@ -21,12 +22,10 @@
 <main class="wrap">
   <div class="phead">
     <div><span class="kicker"><i></i>근현대</span>
-      <h1>근현대 <em>네 장</em></h1>
-      <p class="sub">시기마다 한 장, 장마다 <b>지도 · 줄기 · 인물</b> 세 가지 보기. 얼굴 사진은 교과서에 실린 것만 씁니다.</p></div>
+      <h1>근현대 <em>네 장</em></h1></div>
   </div>
   <div class="legend">
       <span><span class="qq">기출 7</span>&nbsp;= 2018학년도 이후 그 항목을 물은 문항 수(대면 회차)</span>
-      <span>지도 바탕 Natural Earth(공공 영역)</span>
     </div>
 
   <div class="chaps" id="chaps"></div>
@@ -172,14 +171,14 @@
           <g>${M.국경.map(d=>`<path class="border" d="${d}"/>`).join("")}</g>
           <g>${M.해안.map(d=>`<path class="coast" d="${d}"/>`).join("")}</g>
           <g>${핀.map(표시).join("")}</g></svg>
-          <div class="legend-m">동그라미 안 숫자 = 이 장에서 이 고장의 단체 수<br>지도 바탕: Natural Earth 50m</div></div>
-        <div class="oversea">${밖.length ? `<span style="font:600 12px/1 var(--sans);color:var(--ink-4);align-self:center">바다 건너</span>`
+          <div class="legend-m">동그라미 안 숫자 = 이 장에서 이 고장의 단체 수</div></div>
+        <div class="oversea">${밖.length ? `<span style="font:600 11.5px/1 var(--sans);color:var(--ink-4);align-self:center">바다 건너</span>`
           + 밖.map(z=>`<button data-z="${z.이름}">${z.이름}<small>${z.곁||""} · ${곳셈[z.이름].length}곳</small></button>`).join("") : ""}</div>
       </div>
       <aside class="gd-side"><div class="orgs">
         <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px">
-          <b style="font:800 15px/1.3 var(--sans);color:var(--ink)">${고른곳 ? 고른곳+" 의 단체" : "이 장의 단체"} ${볼.length}</b>
-          ${고른곳 ? `<button id="allz" style="appearance:none;border:0;background:transparent;color:var(--red);font:600 12px/1 var(--sans);cursor:pointer">전체 보기</button>` : ""}
+          <b style="font:800 16px/1.3 var(--sans);color:var(--ink)">${고른곳 ? 고른곳+" 의 단체" : "이 장의 단체"} ${볼.length}</b>
+          ${고른곳 ? `<button id="allz" style="appearance:none;border:0;background:transparent;color:var(--red);font:600 11.5px/1 var(--sans);cursor:pointer">전체 보기</button>` : ""}
         </div>${볼.map(단체카드).join("")}</div></aside></div>`;
   }
 

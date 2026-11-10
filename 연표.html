@@ -9,8 +9,9 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script>try{var s=localStorage.getItem("hs-skin")||"white";document.documentElement.dataset.skin=s;document.documentElement.dataset.look=s==="night"?"night":"paper"}catch(e){}</script>
-<link rel="stylesheet" href="css/modu.css?v=b3f2775675">
-<link rel="stylesheet" href="css/timeline.css?v=48860ff459">
+<link rel="stylesheet" href="css/modu.css?v=2bc1ac7c14">
+<style>/* 11-10 정돈: 이 화면의 고유 그림 안쪽 모서리는 그대로 둔다 */:root{--r1:6px;--r2:10px;--r3:14px}</style>
+<link rel="stylesheet" href="css/timeline.css?v=3df411827f">
 </head>
 <body>
 <header class="nav" id="nav"></header>
@@ -332,7 +333,7 @@
 
     const 문항수 = (CN.사건문항||{})[e.id] || 0;
     $("#sh-q").innerHTML = (e.ㄱ || 문항수) ? `<h6>기출</h6><div class="qbox">
-        ${e.ㄱ ? `<p style="font-size:14.5px;font-weight:700;color:var(--ink-2);margin:0 0 8px">이 사건을 물은 문항 ${e.ㄱ.n}개(2018 이후 ${e.ㄱ.근}개)${e.ㄱ.s?` · 선지·자료로 나온 문항 ${e.ㄱ.s}개`:""}</p>` : ""}
+        ${e.ㄱ ? `<p style="font-size:14px;font-weight:700;color:var(--ink-2);margin:0 0 8px">이 사건을 물은 문항 ${e.ㄱ.n}개(2018 이후 ${e.ㄱ.근}개)${e.ㄱ.s?` · 선지·자료로 나온 문항 ${e.ㄱ.s}개`:""}</p>` : ""}
         ${e.ㄱ && e.ㄱ.회.length ? `<ul>${e.ㄱ.회.slice(0,12).map(x=>`<li><b>${회차글(x)}</b><span>${에스(x.t)}</span></li>`).join("")}</ul>
         ${e.ㄱ.회.length > 12 ? `<div class="more">… 그 밖 ${e.ㄱ.회.length - 12}개 문항</div>` : ""}` : ""}
         ${문항수 ? `<div class="acts"><a class="btn sm" href="풀이.html?ev=${e.id}">이 사건 기출 ${문항수}문항</a></div>` : ""}

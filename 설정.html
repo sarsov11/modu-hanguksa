@@ -9,18 +9,18 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script>try{var s=localStorage.getItem("hs-skin")||"white";document.documentElement.dataset.skin=s;document.documentElement.dataset.look=s==="night"?"night":"paper"}catch(e){}</script>
-<link rel="stylesheet" href="css/modu.css?v=b3f2775675">
+<link rel="stylesheet" href="css/modu.css?v=2bc1ac7c14">
 <style>
   /* 2026-11-10 화면표준 5절 — 쪽 제목 900 26px · 묶음마다 판 한 장 · 고르는 단추 44px */
   main.set{max-width:720px;padding:0 20px 120px}
-  .set h1{font-size:26px;font-weight:900;letter-spacing:-.04em;margin:22px 2px 16px}
+  .set h1{font-size:26px;font-weight:800;letter-spacing:-.04em;margin:22px 2px 16px}
   .pan{border:0;border-radius:18px;background:var(--surface);box-shadow:0 1px 2px rgba(17,20,25,.05),0 0 0 1px var(--line);padding:18px;margin-bottom:12px}
   .pan h2{font-size:16px;font-weight:800;letter-spacing:-.02em;margin:0 0 4px}
-  .pan p{font-size:13.5px;font-weight:600;color:var(--ink-3);margin:0 0 12px;line-height:1.55}
+  .pan p{font-size:14px;font-weight:600;color:var(--ink-3);margin:0 0 12px;line-height:1.55}
   .pick3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-  .pick3 button{appearance:none;height:44px;border:1.5px solid var(--line-2);border-radius:12px;background:var(--surface);color:var(--ink);font:700 15px var(--kr);cursor:pointer}
+  .pick3 button{appearance:none;height:44px;border:1.5px solid var(--line-2);border-radius:12px;background:var(--surface);color:var(--ink);font:700 16px var(--kr);cursor:pointer}
   .pick3 button[aria-pressed="true"]{border-color:var(--pt);background:var(--pt-soft);color:var(--pt-ink)}
-  .row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line);font-size:15px;font-weight:600;color:var(--ink-2)}
+  .row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line);font-size:16px;font-weight:600;color:var(--ink-2)}
   .row:first-of-type{border-top:0}
   .row b{font-variant-numeric:tabular-nums;color:var(--ink)}
 </style>
@@ -35,6 +35,7 @@
   <section class="pan">
     <h2>공부</h2>
     <div id="tdt"></div>
+    <a class="zsrow" href="#" data-zs="1"><b>합격 전략</b><span class="ar">›</span></a>
   </section>
   <section class="pan">
     <h2>화면 색</h2>
@@ -42,11 +43,18 @@
     <div class="pick3" id="skins"></div>
   </section>
   <section class="pan">
+    <h2>자료 출처</h2>
+    <details class="src"><summary>사건 · 문항 · 계보 · 지도</summary>
+      <p>사건은 미래엔 2022개정 한국사1·2 부록 연표와 역사부도에서 옮겼고 문항은 2015~2026 학력평가·모의평가 시험지와 해설지를 썼습니다.</p>
+      <p>계보는 미래엔 역사부도 144~146쪽을 그대로 옮겼습니다. 사건은 교과서 부록 연표, 기출은 2015~2026 학력평가·모의평가·수능 문항 해설에서 셌습니다.</p>
+      <p>왕조 계보의 막대는 재위 길이입니다. 지도 바탕은 Natural Earth(공공 영역)입니다.</p>
+    </details>
+  </section>
+  <section class="pan">
     <h2>기록</h2>
     <p>기록은 이 브라우저에만 있습니다.</p>
     <div id="rec"></div>
   </section>
-<div class="endgo"><a href="index.html">시작</a></div>
 </main>
 
 <script>
@@ -68,5 +76,6 @@
     `<div class="row"><span>푼 문항</span><b>${푼}개</b></div><div class="row"><span>복습</span><b>${틀린}개</b></div>`;
 })();
 </script>
+<script src="js/zzstrat.js?v=006a7100e1"></script><script src="js/zzstrat_hanguksa.js?v=9a45354c2e"></script><script src="js/zzstrat_cover.js?v=786536c1e8"></script>
 </body>
 </html>

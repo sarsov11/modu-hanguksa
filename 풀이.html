@@ -9,8 +9,8 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script>try{var s=localStorage.getItem("hs-skin")||"white";document.documentElement.dataset.skin=s;document.documentElement.dataset.look=s==="night"?"night":"paper"}catch(e){}</script>
-<link rel="stylesheet" href="css/modu.css?v=b3f2775675">
-<link rel="stylesheet" href="css/tera-q.css?v=6f757e1521">
+<link rel="stylesheet" href="css/modu.css?v=2bc1ac7c14">
+<link rel="stylesheet" href="css/tera-q.css?v=fec71390cc">
 <style>
   /* ── 고르기 ── */
   .modes{margin-top:22px}
@@ -22,39 +22,39 @@
   .paper{display:block;text-align:left;border:1px solid var(--line);border-radius:var(--r2);background:var(--surface);padding:14px 16px;cursor:pointer;transition:border-color .12s}
   .paper:hover{border-color:var(--ink)}
   .paper b{display:block;font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.03em}
-  .paper span{display:block;font-size:13.5px;color:var(--ink-4);font-weight:600;margin-top:4px}
+  .paper span{display:block;font-size:14px;color:var(--ink-4);font-weight:600;margin-top:4px}
   .paper b .recpill{display:inline-flex;margin-top:0;font-size:11.5px;font-weight:800;color:#fff}
-  .paper .res{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:13.5px;font-weight:700;color:var(--ink-3)}
-  .paper .res .g{font-family:var(--mono);font-weight:800;color:#fff;background:var(--ink);border-radius:4px;padding:1px 6px}
-  .yearh{grid-column:1/-1;font-size:15px;font-weight:900;color:var(--ink);margin:14px 0 2px}
+  .paper .res{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:14px;font-weight:700;color:var(--ink-3)}
+  .paper .res .g{font-family:var(--mono);font-weight:800;color:#fff;background:var(--ink);border-radius:12px;padding:1px 6px}
+  .yearh{grid-column:1/-1;font-size:16px;font-weight:800;color:var(--ink);margin:14px 0 2px}
   .yearh:first-child{margin-top:0}
   .eragrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
   .erab{display:block;text-align:left;border:1px solid var(--line);border-radius:var(--r2);background:var(--surface);padding:14px 16px;cursor:pointer}
   .erab:hover{border-color:var(--ink)}
-  .erab b{font-size:17px;font-weight:900;color:var(--ink)}
-  .erab span{display:block;font-size:13.5px;color:var(--ink-4);font-weight:600;margin:3px 0 9px}
+  .erab b{font-size:16px;font-weight:800;color:var(--ink)}
+  .erab span{display:block;font-size:14px;color:var(--ink-4);font-weight:600;margin:3px 0 9px}
   .side .card+.card{margin-top:14px}
   .rate{display:grid;grid-template-columns:72px 1fr 64px;gap:10px;align-items:center;font-size:14px;font-weight:700;padding:5px 0}
   .rate em{font-style:normal;font-family:var(--mono);font-weight:800;text-align:right;color:var(--ink-3)}
   .evlist{display:grid;gap:6px}
   .evrow{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:var(--r1);background:var(--surface);padding:9px 12px;cursor:pointer;text-align:left;width:100%}
   .evrow:hover{border-color:var(--ink)}
-  .evrow b{flex:1;font-size:15px;font-weight:700;color:var(--ink)}
-  .evrow .y{font-family:var(--mono);font-size:13.5px;font-weight:800;color:var(--ink-4);width:64px}
-  .evrow .n{font-family:var(--mono);font-size:13.5px;font-weight:800;color:var(--red)}
+  .evrow b{flex:1;font-size:16px;font-weight:700;color:var(--ink)}
+  .evrow .y{font-family:var(--mono);font-size:14px;font-weight:800;color:var(--ink-4);width:64px}
+  .evrow .n{font-family:var(--mono);font-size:14px;font-weight:800;color:var(--red)}
 
   /* ── 풀기 ── */
   .solve{max-width:860px;margin:0 auto}
   .exbar{position:sticky;top:var(--hh);z-index:40;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 0;margin-bottom:18px}
   .exbar .in{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-  .exbar .ttl{font-size:15px;font-weight:800;color:var(--ink)}
-  .exbar .tm{font-family:var(--mono);font-size:22px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
+  .exbar .ttl{font-size:16px;font-weight:800;color:var(--ink)}
+  .exbar .tm{font-family:var(--mono);font-size:20px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
   .exbar .tm.warn{color:var(--red)}
-  .exbar .pg{margin-left:auto;font-size:14.5px;color:var(--ink-3);font-weight:700}
+  .exbar .pg{margin-left:auto;font-size:14px;color:var(--ink-3);font-weight:700}
   .exbar .pg b{font-family:var(--mono);color:var(--ink)}
   .omr{display:grid;grid-template-columns:repeat(20,1fr);gap:4px;margin-top:10px}
-  .omr button{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--ink-4);border-radius:5px;padding:5px 0;cursor:pointer;
-    font-family:var(--mono);font-size:13.5px;font-weight:800;line-height:1.2}
+  .omr button{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--ink-4);border-radius:12px;padding:5px 0;cursor:pointer;
+    font-family:var(--mono);font-size:14px;font-weight:800;line-height:1.2}
   .omr button[data-done="1"]{background:var(--surface-3);color:var(--ink);border-color:var(--line-3)}
   .omr button[data-s="ok"]{background:var(--ok-soft);border-color:var(--ok);color:var(--ok)}
   .omr button[data-s="no"]{background:var(--red-soft);border-color:var(--red);color:var(--red)}
@@ -64,28 +64,28 @@
   .qc+.qc{margin-top:18px}
   .qh{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:11px 18px;border-bottom:1px solid var(--line)}
   .qh .no{font-family:var(--mono);font-size:16px;font-weight:800;color:var(--ink)}
-  .qh .src{font-size:13.5px;color:var(--ink-4);font-weight:700}
+  .qh .src{font-size:14px;color:var(--ink-4);font-weight:700}
   .qh .sp{flex:1}
   .qimg{padding:18px 18px 8px;background:#fff}
   .qimg img{display:block;width:100%;max-width:600px;height:auto;margin:0 auto}
   :root[data-skin="night"] .qimg{border-bottom:1px solid var(--line)}
   .ans{display:flex;gap:8px;padding:14px 18px;flex-wrap:wrap;border-top:1px solid var(--line)}
   .ans button{appearance:none;flex:1;min-width:52px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink);border-radius:var(--r1);
-    padding:10px 6px;font-size:18px;font-weight:800;cursor:pointer;transition:.12s}
+    padding:10px 6px;font-size:16px;font-weight:800;cursor:pointer;transition:.12s}
   .ans button:hover{border-color:var(--ink)}
   .ans button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
   .ans button.ok{background:var(--ok);border-color:var(--ok);color:#fff}
   .ans button.no{background:var(--red);border-color:var(--red);color:#fff}
   .ans button[disabled]{cursor:default}
   .exp{padding:16px 18px 18px;border-top:1px solid var(--line);background:var(--surface-2)}
-  .exp .verdict{font-size:16px;font-weight:900;margin-bottom:8px}
+  .exp .verdict{font-size:16px;font-weight:800;margin-bottom:8px}
   .exp .verdict.ok{color:var(--ok)} .exp .verdict.no{color:var(--red)}
-  .exp .intent{font-size:14.5px;font-weight:800;color:var(--ink);margin-bottom:6px}
-  .exp p{font-size:15px;line-height:1.75;color:var(--ink-2);white-space:pre-line}
+  .exp .intent{font-size:14px;font-weight:800;color:var(--ink);margin-bottom:6px}
+  .exp p{font-size:16px;line-height:1.75;color:var(--ink-2);white-space:pre-line}
   .exp .links{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
   .exp .ctx{margin-top:12px;border:1px solid var(--line);border-radius:var(--r1);background:var(--surface);padding:12px 14px}
-  .exp .ctx h6{margin:0 0 6px;font-size:14px;font-weight:900;color:var(--ink)}
-  .exp .ctx p{font-size:14.5px;color:var(--ink-3)}
+  .exp .ctx h6{margin:0 0 6px;font-size:14px;font-weight:800;color:var(--ink)}
+  .exp .ctx p{font-size:14px;color:var(--ink-3)}
   .exp .ctx p em{font-style:normal;font-weight:800;color:var(--ink-2);margin-right:4px}
   .nextrow{display:flex;gap:10px;justify-content:space-between;margin:18px 0 120px;flex-wrap:wrap}
   .nextrow.stick{position:sticky;bottom:0;z-index:30;margin:14px 0 0;padding:10px 0 calc(10px + env(safe-area-inset-bottom));background:linear-gradient(to top,var(--bg) 78%,transparent);flex-wrap:nowrap}
@@ -94,18 +94,18 @@
   @media(max-width:900px){.nextrow.stick{bottom:calc(57px + env(safe-area-inset-bottom,0px));padding-bottom:10px}}
   .result{border:1px solid var(--line);border-radius:var(--r2);background:var(--surface);padding:22px 24px;margin-bottom:22px}
   .result .big{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
-  .result .big b{font-family:var(--mono);font-size:48px;font-weight:800;color:var(--ink);letter-spacing:-.04em}
+  .result .big b{font-family:var(--mono);font-size:26px;font-weight:800;color:var(--ink);letter-spacing:-.04em}
   .result .big span{font-size:16px;font-weight:800;color:var(--ink-3)}
-  .result .big span.grade,.result .grade{font-family:var(--mono);font-size:20px;font-weight:800;color:#fff;background:var(--red);border-radius:6px;padding:3px 10px}
+  .result .big span.grade,.result .grade{font-family:var(--mono);font-size:20px;font-weight:800;color:#fff;background:var(--red);border-radius:12px;padding:3px 10px}
   .result .by{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px 18px;margin-top:16px}
   .hide{display:none!important}
   .qimg img{cursor:zoom-in}
   @media(max-width:700px){.qimg{padding:10px 4px 4px}.qh{padding:10px 12px}.ans{padding:12px}.exp{padding:14px 14px 16px}}
   .zoom{position:fixed;inset:0;z-index:90;background:rgba(10,12,16,.86);overflow:auto;display:flex;align-items:flex-start;justify-content:center;padding:56px 0 40px}
-  .zoom img{display:block;width:auto;max-width:none;height:auto;background:#fff;border-radius:6px}
+  .zoom img{display:block;width:auto;max-width:none;height:auto;background:#fff;border-radius:12px}
   @media(min-width:701px){.zoom img{width:min(900px,92vw)}}
   @media(max-width:700px){.zoom{justify-content:flex-start}.zoom img{width:165vw}}   /* 폰: 왼쪽부터 읽게, 가로로 밀어 본다 */
-  .zoom button{position:fixed;top:12px;right:12px;width:40px;height:40px;border-radius:8px;border:0;background:#fff;color:#111;font-size:20px;font-weight:800;cursor:pointer}
+  .zoom button{position:fixed;top:12px;right:12px;width:40px;height:40px;border-radius:12px;border:0;background:#fff;color:#111;font-size:20px;font-weight:800;cursor:pointer}
 
   /* ═══ 2026-11-10 화면표준 4절 — 안쪽 머리띠 56 · 진행 막대 4 · 문제 판 18 · 선지 52/14 · 다음 54 아래 고정 ═══ */
   .exbar{display:contents}
@@ -114,16 +114,16 @@
   .exbar .bk2{flex:none;width:36px;height:36px;border-radius:50%;border:1px solid var(--line-2);background:var(--surface);display:grid;place-items:center;color:var(--ink-2);padding:0;cursor:pointer}
   .exbar .bk2 svg{width:18px;height:18px}
   .exbar .ttl{flex:1;min-width:0;font-size:16px;font-weight:800;letter-spacing:-.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .exbar .tm{font-size:15px}
+  .exbar .tm{font-size:16px}
   .exbar .pg{margin-left:0;font-size:13px;font-weight:700;color:var(--ink-3);font-variant-numeric:tabular-nums;white-space:nowrap}
   .exbar .pg b{font-family:inherit;font-weight:700}
-  .exbar .btn.sm{height:36px;min-height:36px;border-radius:10px;padding:0 12px;font-size:13.5px}
+  .exbar .btn.sm{height:36px;min-height:36px;border-radius:12px;padding:0 12px;font-size:14px}
   .pbar2{position:sticky;top:56px;z-index:39;height:4px;background:var(--surface-3);margin:0 -16px 16px}
   @media(min-width:641px){.pbar2{margin:0 0 16px}}
   .pbar2 i{display:block;height:100%;width:0;background:var(--pt);transition:width .3s}
   .exbar:has(#timer.hide) .omr{display:none}
   .omr{margin:0 0 16px}
-  .omr button{border-radius:8px;border:1.5px solid var(--line-2);padding:7px 0}
+  .omr button{border-radius:12px;border:1.5px solid var(--line-2);padding:7px 0}
   .omr button[data-done="1"]{background:var(--surface-3);border-color:var(--line-2)}
   .omr button[data-s="ok"]{background:color-mix(in srgb,var(--ok-std) 10%,var(--surface));border-color:var(--ok-std);color:var(--ok-std)}
   .omr button[data-s="no"]{background:color-mix(in srgb,var(--no-std) 8%,var(--surface));border-color:var(--no-std);color:var(--no-std)}
@@ -131,10 +131,10 @@
   #solve{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
   .qc{border:0;border-radius:18px;box-shadow:0 1px 2px rgba(17,20,25,.05),0 0 0 1px var(--line)}
   .qh{border-bottom:0;padding:16px 18px 6px}
-  .qh .src{height:26px;padding:0 10px;border-radius:99px;background:var(--surface-2);display:inline-flex;align-items:center;font-size:12.5px;font-weight:700;color:var(--ink-3)}
+  .qh .src{height:26px;padding:0 10px;border-radius:999px;background:var(--surface-2);display:inline-flex;align-items:center;font-size:13px;font-weight:700;color:var(--ink-3)}
   .qimg{padding:10px 18px 8px}
   .ans{gap:8px;padding:12px 18px 16px;border-top:0}
-  .ans button{min-height:52px;border:1.5px solid var(--line-2);border-radius:14px;padding:0 6px;font-size:18px;font-weight:800;background:var(--surface);color:var(--ink)}
+  .ans button{min-height:52px;border:1.5px solid var(--line-2);border-radius:14px;padding:0 6px;font-size:16px;font-weight:800;background:var(--surface);color:var(--ink)}
   .ans button:hover{border-color:var(--line-3)}
   .ans button[aria-pressed="true"]{background:var(--pt-soft);border-color:var(--pt);color:var(--pt-ink)}
   .ans button.ok{background:color-mix(in srgb,var(--ok-std) 10%,var(--surface));border-color:var(--ok-std);color:var(--ok-std)}
@@ -144,16 +144,16 @@
   .exp{margin:0 14px 14px;padding:14px 16px;border-top:0;border-radius:14px;background:var(--surface-2)}
   .exp:has(.verdict.ok){background:color-mix(in srgb,var(--ok-std) 8%,var(--surface))}
   .exp:has(.verdict.no){background:color-mix(in srgb,var(--no-std) 6%,var(--surface))}
-  .exp .verdict{font-size:15px;font-weight:800}
+  .exp .verdict{font-size:16px;font-weight:800}
   .exp .verdict.ok{color:#0F7B4F} .exp .verdict.no{color:var(--no-std)}
   .exp .ctx{border:0;border-radius:14px}
   .nextrow.stick{position:fixed;left:50%;transform:translateX(-50%);width:100%;max-width:860px;bottom:0!important;margin:0;
     padding:10px 20px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(to top,var(--bg) 72%,transparent);z-index:45;gap:10px}
-  .nextrow.stick .btn{height:54px;min-height:54px;border-radius:16px;font-size:16.5px}
+  .nextrow.stick .btn{height:54px;min-height:54px;border-radius:14px;font-size:16px}
   .nextrow.stick #prev{flex:0 0 112px;background:var(--surface)}
   .result{border:0;border-radius:18px;box-shadow:0 1px 2px rgba(17,20,25,.05),0 0 0 1px var(--line)}
-  .result .grade,.result .big span.grade{background:var(--pt);border-radius:8px}
-  .paper .res .g{background:var(--pt-soft);color:var(--pt-ink);border-radius:99px;padding:1px 8px}
+  .result .grade,.result .big span.grade{background:var(--pt);border-radius:12px}
+  .paper .res .g{background:var(--pt-soft);color:var(--pt-ink);border-radius:999px;padding:1px 8px}
   .evrow{border:0;border-radius:14px;box-shadow:0 0 0 1px var(--line)}
 
   /* ═══ 2026-11-10 문제 화면 공용 부품(tera-q) — 머리 56 · 진행 8px · 번호 줄 · 5지선다 번호 · 해설 탭 · 아래 줄 72 ═══ */
@@ -163,7 +163,7 @@
   .exbar .in{position:sticky;top:0;height:56px;margin:0;padding:0 16px;background:#fff;border-bottom:0;gap:8px;z-index:41}
   .exbar .bk2{border:0;background:none;width:36px;height:36px;border-radius:0;color:var(--tq-ink)}
   .exbar .bk2 svg{width:20px;height:20px}
-  .exbar .ttl{flex:1;font-weight:600;font-size:18px;line-height:20px;color:#0F172A;letter-spacing:-.5px}
+  .exbar .ttl{flex:1;font-weight:600;font-size:16px;line-height:20px;color:#14171C;letter-spacing:-.5px}
   .exbar .tm{font-weight:500;font-size:14px;color:var(--tq-sub);font-family:inherit}
   .exbar .tm.warn{color:var(--tq-no)}
   .exbar .pg{display:none}
@@ -174,27 +174,27 @@
   .qc+.qc{margin-top:34px}
   .tq-meta{flex-wrap:wrap;row-gap:6px}
   .tq-no{white-space:nowrap}
-  .tq-meta .tag{height:22px;padding:0 8px;border-radius:99px;background:var(--tq-fill);font-size:12px;font-weight:600;color:#5B6B82;display:inline-flex;align-items:center}
-  .tq-meta .src{font-size:12.5px;font-weight:600;color:#5B6B82}
+  .tq-meta .tag{height:22px;padding:0 8px;border-radius:999px;background:var(--tq-fill);font-size:11.5px;font-weight:600;color:#5F6670;display:inline-flex;align-items:center}
+  .tq-meta .src{font-size:13px;font-weight:600;color:#5F6670}
   .qimg{padding:0 0 4px;background:#fff}
   .qimg img{max-width:560px}
   .ans{display:flex;gap:10px;padding:14px 0 6px;border:0;flex-wrap:nowrap;justify-content:space-between}
-  .ans button{flex:none;width:44px;min-width:44px;height:44px;min-height:44px;padding:0;border-radius:44px;border:1px solid #94A3B8;background:#fff;color:var(--tq-ink2);font-size:17px;font-weight:500;line-height:1}
+  .ans button{flex:none;width:44px;min-width:44px;height:44px;min-height:44px;padding:0;border-radius:999px;border:1px solid #9AA0A8;background:#fff;color:var(--tq-ink2);font-size:16px;font-weight:500;line-height:1}
   .ans button:hover{border-color:var(--tq-p)}
   .ans button[aria-pressed="true"]{background:#fff;border-color:var(--tq-p);color:var(--tq-pi);font-weight:700;box-shadow:0 0 0 1px var(--tq-p) inset}
   .ans button.ok{background:color-mix(in srgb,var(--tq-ok) 10%,#fff);border-color:var(--tq-ok);color:var(--tq-ok);font-weight:700}
   .ans button.no{background:color-mix(in srgb,var(--tq-no) 8%,#fff);border-color:var(--tq-no);color:var(--tq-no)}
   .ans button.ok::before,.ans button.no::before{content:none}
-  .ans button[disabled]:not(.ok):not(.no){color:#94A3B8;border-color:#CBD5E1}
+  .ans button[disabled]:not(.ok):not(.no){color:#9AA0A8;border-color:#D3D7DD}
   .tq-exp{margin:22px 0 0}
-  .tq-exp .verdict{font-size:15px;font-weight:800;margin-bottom:8px}
+  .tq-exp .verdict{font-size:16px;font-weight:800;margin-bottom:8px}
   .tq-exp .verdict.ok{color:#0F7B4F} .tq-exp .verdict.no{color:var(--tq-no)}
-  .tq-exp .intent{font-size:14.5px;font-weight:800;color:var(--tq-ink);margin-bottom:6px;line-height:1.5}
+  .tq-exp .intent{font-size:14px;font-weight:800;color:var(--tq-ink);margin-bottom:6px;line-height:1.5}
   .tq-exp p{font-size:16px;line-height:28.8px;color:var(--tq-ink2);white-space:pre-line;margin:0}
   .tq-exp .links{display:flex;gap:8px;flex-wrap:wrap;margin:0}
-  .tq-exp .ctx{margin-top:14px;border:1px solid var(--tq-fill);border-radius:12px;background:#F8FAFC;padding:12px 14px}
+  .tq-exp .ctx{margin-top:14px;border:1px solid var(--tq-fill);border-radius:12px;background:#F6F7F9;padding:12px 14px}
   .tq-exp .ctx h6{margin:0 0 6px;font-size:14px;font-weight:800;color:var(--tq-ink)}
-  .tq-exp .ctx p{font-size:14.5px;line-height:1.7;color:#475569}
+  .tq-exp .ctx p{font-size:14px;line-height:1.7;color:#4B5159}
   .tq-exp .ctx p em{font-style:normal;font-weight:800;color:var(--tq-ink2);margin-right:4px}
   .tq-omr{background:#fff}
   .tq-omr-row[data-s="ok"] i.is-on{background:var(--tq-ok);color:#fff}
@@ -267,7 +267,7 @@
   new MutationObserver(갱신).observe(g, {childList:true, characterData:true, subtree:true}); 갱신(); })();
 </script>
 <script src="js/tera-q.js?v=d6a6b8973b"></script>
-<script src="js/tera-pad.js?v=9177184ad8"></script>
+<script src="js/tera-pad.js?v=8c81b32827"></script>
 <script src="js/qhot.js?v=6f9a38732d"></script>
 <script src="js/qctx.js?v=6184b622dc"></script>
 <script src="js/qbank.js?v=10f0f80e19"></script>
@@ -591,7 +591,7 @@
     판.qs.forEach((q,k)=>{ if(판.고름[k]!==q.a){ const e = q.era||"기타"; 틀린시대[e] = (틀린시대[e]||0)+1; } });
     $("#result").innerHTML = `<div class="result"><div class="big"><b>${점}점</b><span>/ ${만점}</span><span class="grade">${등}등급</span></div>
       <div class="by">${Object.entries(틀린시대).sort((a,b)=>b[1]-a[1]).map(([e,n])=>`<div><b>${e}</b> ${n}문항 틀림</div>`).join("") || "<div>모두 맞았습니다.</div>"}</div>
-      <p style="margin-top:12px;color:var(--ink-3);font-size:14.5px">문항마다 정답·해설과 그 사건의 배경·결과가 아래에 펼쳐져 있습니다. 틀린 문항은 복습에 모였습니다.</p></div>`;
+      <p style="margin-top:12px;color:var(--ink-3);font-size:14px">문항마다 정답·해설과 그 사건의 배경·결과가 아래에 펼쳐져 있습니다. 틀린 문항은 복습에 모였습니다.</p></div>`;
     $("#submit").classList.add("hide"); 번호판(); 아래줄();
     $("#result .result").insertAdjacentHTML("beforeend", `<div class="links" style="display:flex;gap:8px;margin-top:14px"><button class="btn" id="tohome">목록으로</button></div>`);
     scrollTo({top:0, behavior:"smooth"});
