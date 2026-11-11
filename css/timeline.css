@@ -148,7 +148,7 @@
 .sheet-in{flex:1;overflow:auto;padding:16px 22px 40px}
 .sheet .meta{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 16px}
 .sheet .meta .f{color:#fff;background:var(--c);border-color:transparent}
-:root[data-skin="night"] .sheet .meta .f{color:#0B0F17}
+:root[data-skin="night"] .sheet .meta .f{color:#0B1716}
 .sheet .note{margin:0 0 14px;padding:10px 13px;border-radius:var(--r1);background:var(--red-soft);border:1px solid var(--red-line);font-size:14px;color:var(--ink-2)}
 .sheet .note b{color:var(--red);margin-right:6px}
 .sheet .gyeot{margin:0 0 12px;font-size:14px;color:var(--ink-3)}

@@ -3,16 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0F766E">
 <title>근현대 — 모두의 한국사</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script>try{var s=localStorage.getItem("hs-skin")||"white";document.documentElement.dataset.skin=s;document.documentElement.dataset.look=s==="night"?"night":"paper"}catch(e){}</script>
-<link rel="stylesheet" href="css/modu.css?v=063233f58c">
+<link rel="stylesheet" href="css/modu.css?v=1111h">
 <style>/* 11-10 정돈: 이 화면의 고유 그림 안쪽 모서리는 그대로 둔다 */:root{--r1:6px;--r2:10px;--r3:14px}</style>
-<link rel="stylesheet" href="css/timeline.css?v=3df411827f">
-<link rel="stylesheet" href="css/geundae.css?v=cb6cce20a8">
+<link rel="stylesheet" href="css/timeline.css?v=1111h">
+<link rel="stylesheet" href="css/geundae.css?v=1111h">
 </head>
 <body>
 
@@ -361,9 +362,9 @@
   옷(document.documentElement.dataset.look || "paper");
 })();
 </script>
-<script src="js/zzsfx.js?v=4dfd95248a" defer></script><script src="js/zzajan.js?v=a9c0ed7521" defer></script>
+<script src="js/zzsfx.js?v=4dfd95248a" defer></script><script src="js/zzajan.js?v=1111h" defer></script>
 <!-- 테라러닝 홈 단추(공용 terrahome) -->
-<script src="js/terrahome.js?v=243c5cfd6d" data-slot="#nav .wrap" defer></script>
+<script src="js/terrahome.js?v=1111h" data-slot="#nav .wrap" defer></script>
 <!-- 10-21 폰 지도 확대 -->
 <script>(function(){/* 폰(700px 아래): 지도 폭 1000을 340px에 넣으면 이름이 4~5px였다. 고장 둘레로 잘라 키우고, 그래도 12px이 안 되면 고장 표시(동그라미·숫자·이름·간격)를 같은 비율로 키운다 */
 function box(s,ps,labels){var x0=1e9,y0=1e9,x1=-1e9,y1=-1e9,inv=s.getCTM().inverse();ps.forEach(function(p){var els=labels?[p]:p.querySelectorAll('circle');[].forEach.call(els,function(e){var b=e.getBBox(),m=inv.multiply(e.getCTM()),q=s.createSVGPoint();[[b.x,b.y],[b.x+b.width,b.y+b.height]].forEach(function(v){q.x=v[0];q.y=v[1];var r=q.matrixTransform(m);x0=Math.min(x0,r.x);y0=Math.min(y0,r.y);x1=Math.max(x1,r.x);y1=Math.max(y1,r.y)})})});return[x0,y0,x1,y1]}

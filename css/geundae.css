@@ -8,8 +8,8 @@
 .chaps button b{font:800 16px/1.2 var(--sans);letter-spacing:-.03em;color:var(--ink)}
 .chaps button small{font:500 14px/1.35 var(--sans);color:var(--ink-4)}
 .chaps button:hover{border-color:var(--line-3)}
-.chaps button[aria-pressed="true"]{background:rgba(229,32,46,.10);border-color:rgba(229,32,46,.45);color:#B3141F}
-.chaps button[aria-pressed="true"] b,.chaps button[aria-pressed="true"] em,.chaps button[aria-pressed="true"] span,.chaps button[aria-pressed="true"] small{color:#B3141F}
+.chaps button[aria-pressed="true"]{background:rgba(15,118,110,.10);border-color:rgba(15,118,110,.45);color:#0B5F59}
+.chaps button[aria-pressed="true"] b,.chaps button[aria-pressed="true"] em,.chaps button[aria-pressed="true"] span,.chaps button[aria-pressed="true"] small{color:#0B5F59}
 
 /* ── 장 표지 ── */
 .cover{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:18px;align-items:center;
@@ -36,8 +36,8 @@
 .mapbox{background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r2);box-shadow:var(--shadow);
   padding:8px;position:relative}
 .mapbox svg{display:block;width:100%;height:auto;border-radius:var(--r1);background:var(--sea)}
-:root[data-look="paper"]{--sea:#DCE9F2; --land:#FBF9F4; --landline:#B9B2A2}
-:root[data-look="night"]{--sea:#0D1420; --land:#161D2B; --landline:#2A3446}
+:root[data-look="paper"]{--sea:#DCE9F2; --land:#FBF9F4; --landline:#A2B9B7}
+:root[data-look="night"]{--sea:#0D201E; --land:#162B29; --landline:#2A4644}
 .mapbox .land{fill:var(--land);stroke:none}
 .mapbox .coast{fill:none;stroke:var(--landline);stroke-width:1.3}
 .mapbox .border{fill:none;stroke:var(--landline);stroke-width:1;stroke-dasharray:5 4;opacity:.9}
@@ -199,7 +199,7 @@
 .vorgs span{font:600 13px/1 var(--sans);color:var(--ink-2);background:var(--surface);border:1px solid var(--line);
   border-left:3px solid var(--c);border-radius:5px;padding:5px 8px}
 .src2{display:block;margin-top:8px;font:500 13px/1.4 var(--sans);color:var(--ink-4)}
-.btn-next{appearance:none;margin-top:14px;border:0;background:var(--pt,#E5202E);color:#fff;border-radius:var(--r1);
+.btn-next{appearance:none;margin-top:14px;border:0;background:var(--pt,#0F766E);color:#fff;border-radius:var(--r1);
   padding:13px 20px;font:700 14px/1 var(--sans);cursor:pointer}
 .btn-next:hover{background:var(--red)}
 .btn-next{position:sticky;bottom:12px;width:100%;box-shadow:0 6px 18px rgba(0,0,0,.18)}
