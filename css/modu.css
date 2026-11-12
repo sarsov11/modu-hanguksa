@@ -25,7 +25,7 @@
 :root,:root[data-skin="white"]{
   --bg:#FFFFFF; --bg-2:#FAFAFB; --surface:#FFFFFF; --surface-2:#F6F7F9; --surface-3:#EFF1F4;
   --line:#E6E8EC; --line-2:#D3D7DD; --line-3:#B4BAC3;
-  --ink:#111918; --ink-1:#0B0E0E; --ink-2:#334140; --ink-3:#5A6766; --ink-4:#5F706F;
+  --ink:#111419; --ink-1:#0B0E0E; --ink-2:#333941; --ink-3:#5F6670; --ink-4:#5F6670;
   --red:#0F766E; --red-2:#0B5F59; --red-3:#0B4F4A; --red-soft:rgba(15,118,110,.07); --red-line:rgba(15,118,110,.40);
   --cta:#0F766E; --cta-2:#0B5F59; --cta-soft:rgba(15,118,110,.08); --cta-line:rgba(15,118,110,.38);
   --ok:#0F7B5F; --ok-soft:rgba(15,123,95,.09);
@@ -37,7 +37,7 @@
   --f-정치:#0F766E; --f-정치-soft:rgba(15,118,110,.07);
   --f-대외:#0B5F59; --f-대외-soft:rgba(28,171,159,.07);
   --f-경제:#7FB8B2; --f-경제-soft:rgba(156,222,217,.10);
-  --f-사회:#6B807E; --f-사회-soft:rgba(107,128,126,.07);
+  --f-사회:#6B7280; --f-사회-soft:rgba(107,128,126,.07);
   --f-문화:#9AA0A8; --f-문화-soft:rgba(154,160,168,.10);
   --f-없음:#8A8F9C; --f-없음-soft:rgba(138,143,156,.1); --f-세계:#8A8F9C;
   --hl:rgba(76,195,185,.48); --hl-2:rgba(76,195,185,.26);
@@ -81,7 +81,7 @@
 html{scroll-behavior:smooth;scroll-padding-top:calc(var(--hh) + 24px)}
 html,body{overflow-x:clip}   /* ⚠ hidden 이면 body 가 스크롤 상자가 되어 sticky 머리띠가 안 붙는다 */
 body{margin:0;background:var(--bg);background-image:var(--paper);background-size:var(--paper-size);background-attachment:fixed;
-  color:var(--ink-2);font-family:var(--kr);font-size:16px;line-height:1.68;font-weight:500;
+  color:var(--ink);font-family:var(--kr);font-size:16px;line-height:1.68;font-weight:500;
   -webkit-font-smoothing:antialiased;word-break:keep-all}
 h1,h2,h3,h4,h5{margin:0;color:var(--ink);font-family:var(--title);font-weight:800;letter-spacing:-.04em;line-height:1.2;text-wrap:balance}
 p{margin:0}
@@ -219,7 +219,7 @@ main.wrap{padding-bottom:120px}
   --pt:var(--red);--pt-2:var(--red-2);--pt-soft:color-mix(in srgb,var(--red) 10%,var(--surface));
   --pt-line:color-mix(in srgb,var(--red) 40%,var(--surface));--pt-ink:color-mix(in srgb,var(--red) 78%,var(--ink));
   --ok-std:#16B364;--no-std:#E5322D}
-:root[data-skin="white"]{--kr:"Pretendard Variable",Pretendard,"Noto Sans KR","Malgun Gothic",system-ui,sans-serif;--ink-3:#4B6361;--ink-4:#5F706F;
+:root[data-skin="white"]{--kr:"Pretendard Variable",Pretendard,"Noto Sans KR","Malgun Gothic",system-ui,sans-serif;--ink-3:#5F6670;--ink-4:#5F6670;
   --red-soft:rgba(15,118,110,.10)}
 /* 판 */
 .card,.stat,.door,.resume,.paper,.erab,.result,.notice{border:0;border-radius:18px;background:var(--surface);
@@ -323,14 +323,14 @@ main.wrap{padding-bottom:120px}
 .zsrow .ar{font-size:16px}
 b,strong{font-weight:800}
 /* 공용 tera-q.css 의 푸른 회색을 중립 회색으로 */
-html:root{--tq-ink:#141C1B;--tq-ink2:#3A4746;--tq-sub:#5F706F;--tq-line:#E6E8EC;--tq-fill:#F1F3F5}
-html body .tq-badge,html body .tq-tool,html body .tq-coach p{color:#4B5958}
-html body .tq-coach{color:#3A4746}
+html:root{--tq-ink:#111419;--tq-ink2:#333941;--tq-sub:#5F6670;--tq-line:#E6E8EC;--tq-fill:#F1F3F5}
+html body .tq-badge,html body .tq-tool,html body .tq-coach p{color:#5F6670}
+html body .tq-coach{color:#333941}
 html body .tq-coach,html body .tq-coach p{font-weight:500}
 /* 칩 한 가지: 높이 32 · 알약 · 13px (연표 · 계보 · 근현대) */
 html body .eras button,html body .chips .chip,html body .segs button,html body .seg button,html body .kinds button,html body .tabs button,html body .oversea button{display:inline-flex;align-items:center;justify-content:center;height:32px;min-height:32px;padding:0 13px;border-radius:999px;font-size:13px;font-weight:700;line-height:1}
 html body .evs a{border-radius:999px;font-size:13px}
 /* 홈 분야 칩 다섯 개: 같은 회색 칩 */
-html body .fkeys .tag.f{--c:#5F706F;--c-soft:#F1F3F5;background:#F1F3F5;color:#3A4746;border:1px solid #E6E8EC}
-html body .chips .chip,html body .kinds button,html body .fkeys .tag.f{--c:#5F706F!important;--c-soft:#F1F3F5!important}
+html body .fkeys .tag.f{--c:#5F6670;--c-soft:#F1F3F5;background:#F1F3F5;color:#333941;border:1px solid #E6E8EC}
+html body .chips .chip,html body .kinds button,html body .fkeys .tag.f{--c:#5F6670!important;--c-soft:#F1F3F5!important}
 html body .chips .chip[aria-pressed="true"],html body .kinds button[aria-pressed="true"]{--c:#0F766E!important;--c-soft:rgba(15,118,110,.10)!important;color:#0B5F59}
